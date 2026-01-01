@@ -2,9 +2,11 @@ import pytest
 import shutil
 from pathlib import Path
 
+
 @pytest.fixture(scope="session")
 def golden_data_dir():
     return Path(__file__).parent / "data"
+
 
 @pytest.fixture(scope="session")
 def setup_regression_env():

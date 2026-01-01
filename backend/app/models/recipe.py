@@ -1,16 +1,19 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
+
 class Ingredient(BaseModel):
     item: str
     quantity: Optional[str] = None
     unit: Optional[str] = None
     notes: Optional[str] = None
 
+
 class InstructionStep(BaseModel):
     step_number: int
     instruction: str
     duration_seconds: Optional[int] = None
+
 
 class RecipeData(BaseModel):
     title: str
@@ -21,5 +24,5 @@ class RecipeData(BaseModel):
     ingredients: List[Ingredient]
     instructions: List[InstructionStep]
     dietary_tags: List[str] = []
-    
+
     # Validation rules could be added here using @field_validator

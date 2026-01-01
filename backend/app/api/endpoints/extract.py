@@ -8,10 +8,10 @@ from app.services.cache import CacheService
 
 router = APIRouter()
 
+
 @router.post("", response_model=RecipeCreate)
 async def extract_recipe(
-    request: RecipeGenerateRequest,
-    db: AsyncSession = Depends(get_db)
+    request: RecipeGenerateRequest, db: AsyncSession = Depends(get_db)
 ):
     """
     Extract a recipe from a YouTube URL.
@@ -19,11 +19,11 @@ async def extract_recipe(
     try:
         # 1. Extract Video ID
         video_id = YouTubeService.extract_video_id(request.video_url)
-        
+
         # 2. Check Cache
         cache_service = CacheService(db)
         cached_recipe = await cache_service.get_cached_extraction(video_id)
-        
+
         if cached_recipe:
             recipe_data = cached_recipe
         else:
@@ -32,13 +32,13 @@ async def extract_recipe(
             # This is synchronous (network I/O wrapper), maybe create an async wrapper if blocking loop
             # For now running directly assuming it's fast enough or handled by threadpool in future
             transcript = yt_service.get_transcript(video_id)
-            
+
             # 4. Generate Recipe
             recipe_data = await GeminiService().extract_recipe(transcript, video_id)
-            
+
             # 5. Save to Cache
             await cache_service.save_extraction(video_id, recipe_data)
-        
+
         # 6. Map to Schema (RecipeData -> RecipeCreate)
         return RecipeCreate(
             title=recipe_data.title,
@@ -49,8 +49,10 @@ async def extract_recipe(
             prep_time_minutes=recipe_data.prep_time_minutes,
             cook_time_minutes=recipe_data.cook_time_minutes,
             ingredients=[i.model_dump() for i in recipe_data.ingredients],
-            steps=[s.model_dump() for s in recipe_data.instructions], # Mapping instructions -> steps
-            dietary_tags=recipe_data.dietary_tags
+            steps=[
+                s.model_dump() for s in recipe_data.instructions
+            ],  # Mapping instructions -> steps
+            dietary_tags=recipe_data.dietary_tags,
         )
 
     except ValueError as e:

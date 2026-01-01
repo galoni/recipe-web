@@ -11,11 +11,9 @@ from app.schemas.recipe import Recipe, RecipeCreate
 
 router = APIRouter()
 
+
 @router.post("/", response_model=Recipe)
-async def create_recipe(
-    recipe: RecipeCreate,
-    db: AsyncSession = Depends(get_db)
-):
+async def create_recipe(recipe: RecipeCreate, db: AsyncSession = Depends(get_db)):
     """
     Save a generated recipe to the database.
     """
@@ -25,7 +23,12 @@ async def create_recipe(
         user = result.scalar_one_or_none()
         if not user:
             # Create dummy user
-            user = UserModel(id=1, email="chef@stream.com", hashed_password="hashed_secret", is_active=True)
+            user = UserModel(
+                id=1,
+                email="chef@stream.com",
+                hashed_password="hashed_secret",
+                is_active=True,
+            )
             db.add(user)
             await db.commit()
             await db.refresh(user)
@@ -36,29 +39,26 @@ async def create_recipe(
             id=uuid.uuid4(),
             user_id=user.id,
             source_url=recipe.video_url,
-            data=recipe.model_dump() # Stores title, description, ingredients, steps, etc.
+            data=recipe.model_dump(),  # Stores title, description, ingredients, steps, etc.
         )
-        
+
         db.add(db_recipe)
         await db.commit()
         await db.refresh(db_recipe)
-        
+
         # Map back to Recipe schema for response
         return Recipe(
-            id=str(db_recipe.id),
-            **recipe.model_dump(),
-            created_at=db_recipe.created_at
+            id=str(db_recipe.id), **recipe.model_dump(), created_at=db_recipe.created_at
         )
     except Exception as e:
         print(f"Error creating recipe: {e}")
         await db.rollback()
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
+
 @router.get("/", response_model=List[Recipe])
 async def read_recipes(
-    skip: int = 0,
-    limit: int = 100,
-    db: AsyncSession = Depends(get_db)
+    skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)
 ):
     """
     Get all recipes.
@@ -66,17 +66,13 @@ async def read_recipes(
     try:
         result = await db.execute(select(RecipeModel).offset(skip).limit(limit))
         db_recipes = result.scalars().all()
-        
+
         # Map DB model back to schema
         recipes = []
         for r in db_recipes:
             # Data field in DB contains the original schema fields
             data = r.data
-            recipes.append(Recipe(
-                id=str(r.id),
-                **data,
-                created_at=r.created_at
-            ))
+            recipes.append(Recipe(id=str(r.id), **data, created_at=r.created_at))
         return recipes
     except Exception as e:
         print(f"Error reading recipes: {e}")

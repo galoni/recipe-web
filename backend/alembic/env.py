@@ -10,11 +10,12 @@ from alembic import context
 # Import app modules
 import sys
 import os
-sys.path.append(os.getcwd()) # Ensure backend/ is in path
+
+sys.path.append(os.getcwd())  # Ensure backend/ is in path
 
 from app.core.config import settings
 from app.core.database import Base
-from app.models import db, user # Import all models to register them
+from app.models import db, user  # Import all models to register them
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -33,6 +34,7 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 # ... rest of the file (standard async template functions) ...
+
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.

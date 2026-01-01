@@ -26,7 +26,7 @@ jobs:
       run: poetry run black . --check
     - name: Test with Pytest & Coverage
       run: |
-        poetry run pytest --cov=app --cov-report=term-missing --cov-fail-under=75
+        poetry run pytest -v --tb=short --cov=app --cov-report=term-missing --cov-fail-under=75
 
   frontend-qa:
     runs-on: ubuntu-latest

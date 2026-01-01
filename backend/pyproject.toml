@@ -3,6 +3,7 @@ name = "chefstream-backend"
 version = "0.1.0"
 description = "AI-powered recipe extractor backend"
 authors = ["ChefStream Team"]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10"

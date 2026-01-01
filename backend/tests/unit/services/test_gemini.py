@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 from app.services.gemini import GeminiService
 from app.models.recipe import RecipeData
 
@@ -56,9 +56,9 @@ async def test_chunking_limit(gemini_service):
     # Verify it limits transcript length to avoid context issues
     # GeminiService uses transcript[:30000]
     with patch.object(gemini_service, "model") as mock_model:
-        mock_response = AsyncMock()
+        mock_response = MagicMock()
         mock_response.text = '{"title": "test", "ingredients": [], "instructions": []}'
-        mock_model.generate_content_async.return_value = mock_response
+        mock_model.generate_content_async = AsyncMock(return_value=mock_response)
 
         long_transcript = "A" * 50000
         await gemini_service.extract_recipe(long_transcript, "vid")

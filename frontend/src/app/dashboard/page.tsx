@@ -5,9 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import { generateRecipe, saveRecipe } from "@/lib/api";
 import { Navbar } from "@/components/shared/navbar";
 import { Button } from "@/components/ui/button";
-import { Suspense, useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Clock, Users, Flame, ChevronRight, Check, Play, Info, Tag, Timer, Save } from "lucide-react";
+import { Suspense, useState } from "react";
+import { motion } from "framer-motion";
+import { Clock, Users, Flame, Check, Play, Info, Tag, Timer, Save } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -113,7 +113,7 @@ function DashboardContent() {
                     </div>
                     <h2 className="text-2xl font-black mb-3 font-outfit text-red-600">Generation Failed</h2>
                     <p className="text-red-700/80 mb-8 leading-relaxed">
-                        {(error as any)?.response?.data?.detail || "We couldn't extract the recipe from this video. It might be due to missing captions or a length restriction."}
+                        {(error as { response?: { data?: { detail?: string } } })?.response?.data?.detail || "We couldn't extract the recipe from this video. It might be due to missing captions or a length restriction."}
                     </p>
                     <Link href="/">
                         <Button variant="outline" className="rounded-full px-8 border-red-200 text-red-600 hover:bg-red-50 font-bold">

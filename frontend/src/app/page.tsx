@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/shared/navbar";
 import { Button } from "@/components/ui/button";
-import { LinkIcon, Youtube, Play, Zap, ChefHat, Sparkles, Wand2 } from "lucide-react";
+import { Youtube, Play, Zap, ChefHat, Sparkles, Wand2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 

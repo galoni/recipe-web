@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ChefHat, Search, BookOpen, Menu } from "lucide-react";
+import { ChefHat, Search, Menu } from "lucide-react";
 
 export function Navbar() {
     return (

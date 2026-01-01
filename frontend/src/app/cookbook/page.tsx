@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+
 import { Navbar } from "@/components/shared/navbar";
 import { Button } from "@/components/ui/button";
 import { ChefHat, BookOpen, Plus } from "lucide-react";

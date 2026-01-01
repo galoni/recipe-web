@@ -1,50 +1,49 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# ChefStream Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Gemini-First AI Strategy
+We rely on **Google Gemini** models for all AI operations, leveraging its native multimodal capabilities for superior YouTube video transcription and summarization. Prompt engineering must be optimized for Gemini's context window and reasoning style.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Modern Fullstack Architecture
+The application MUST adhere to a strict Next.js (Frontend) and FastAPI (Backend) separation. Communication happens over a structured REST API. PostgreSQL is the source of truth for all recipe data.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Production-Ready Scalability
+Every feature must be designed with scalability in mind. This includes Dockerization, structured logging, and CI/CD compatibility. Infrastructure as Code (Docker Compose) is the standard for development and deployment.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Strict Testing Discipline (NON-NEGOTIABLE)
+- **Coverage**: Backend service logic MUST maintain **>80% code coverage**.
+- **Regression**: All AI extraction features MUST include regression tests (using cached video inputs) to verify output consistency.
+- **Unit Tests**: Mandatory for all new functions and API endpoints.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Aggressive Modularity
+- **Complexity Cap**: Functions SHOULD NOT exceed **50 lines**. Files SHOULD NOT exceed **300 lines**.
+- **Refactoring**: If a component breaches these limits, it MUST be refactored into smaller, reusable units immediately.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### VI. Premium, Interactive UX
+User interfaces must prioritize a "wow" factor, using modern typography, subtle micro-animations, and a highly responsive, interactive step-by-step experience that feels alive and premium.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+### Versioning Policy
+This constitution follows Semantic Versioning (SemVer):
+- MAJOR: Backward incompatible changes to core principles.
+- MINOR: Additions of new principles or major guidance updates.
+- PATCH: Formatting, typo fixes, or minor clarifications.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+### Amendment Procedure
+Changes to this constitution require a dedicated PR, approval from the lead developer, and a summary of impacts on existing templates.
+
+## Sync Impact Report
+<!--
+Version change: 1.0.0 -> 1.1.0 (MINOR: Added strict limits and model strategy)
+List of modified principles:
+  - [I] AI-First Extraction -> Gemini-First AI Strategy
+  - [IV] Testing & Quality Discipline -> Strict Testing Discipline (Added 80% coverage + Regression)
+  - [V] Added: Aggressive Modularity (50/300 line limits)
+Templates requiring updates:
+  - .specify/templates/plan-template.md (✅ updated)
+Follow-up TODOs: None
+-->
+
+**Version**: 1.1.0 | **Ratified**: 2026-01-01 | **Last Amended**: 2026-01-01

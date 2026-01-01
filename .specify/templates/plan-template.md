@@ -28,10 +28,15 @@
 **Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
 ## Constitution Check
-
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **Gemini-First Strategy**: Does the design explicitly use Google Gemini models for multimodality/transcription?
+- [ ] **Modularity Limits**: Does the plan ensure files stay under 300 lines and functions under 50 lines?
+- [ ] **Test Coverage**: Does the plan include tests to meet the >80% coverage requirement?
+- [ ] **AI Regression**: Are regression tests with cached inputs defined for AI components?
+- [ ] **Fullstack Integrity**: Strict FastAPI/Next.js separation maintained?
+- [ ] **UX Wow Factor**: Micro-animations and premium UI elements included?
+- [ ] **Scalability**: Docker/CI/CD compatible?
 
 ## Project Structure
 

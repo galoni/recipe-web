@@ -20,13 +20,15 @@ services:
       dockerfile: Dockerfile
     container_name: chefstream-backend
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    env_file:
+      - ./backend/.env
     volumes:
       - ./backend:/app
     ports:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql+asyncpg://chef:password@db:5432/chefstream
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      # Openai and Gemini will be taken from env_file if not specified here
     depends_on:
       - db
 

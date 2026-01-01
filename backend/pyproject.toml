@@ -3,6 +3,7 @@ name = "chefstream-backend"
 version = "0.1.0"
 description = "AI-powered recipe extractor backend"
 authors = ["ChefStream Team"]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -16,11 +17,13 @@ alembic = "^1.13.1"
 httpx = "^0.26.0"
 python-multipart = "^0.0.9"
 youtube-transcript-api = "^0.6.2"
-openai = "^1.10.0"
+yt-dlp = "^2024.03.10"
+google-generativeai = ">=0.8.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"
 pytest-asyncio = "^0.23.4"
+pytest-cov = "^5.0.0"
 black = "^24.1.1"
 isort = "^5.13.2"
 flake8 = "^7.0.0"

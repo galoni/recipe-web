@@ -6,7 +6,7 @@ from app.core.database import Base
 from typing import List, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .recipe import Recipe
+    from .db import Recipe
 
 class User(Base):
     __tablename__ = "users"

@@ -1,0 +1,11 @@
+[
+    {
+        "video_id": "example123",
+        "transcript_snippet": "Today we are making scrambled eggs. You need 2 eggs and a pinch of salt. Whisk them and cook in a pan.",
+        "expected_title": "Scrambled Eggs",
+        "expected_ingredients": [
+            "eggs",
+            "salt"
+        ]
+    }
+]

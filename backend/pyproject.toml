@@ -16,7 +16,8 @@ alembic = "^1.13.1"
 httpx = "^0.26.0"
 python-multipart = "^0.0.9"
 youtube-transcript-api = "^0.6.2"
-openai = "^1.10.0"
+yt-dlp = "^2024.03.10"
+google-generativeai = ">=0.8.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"

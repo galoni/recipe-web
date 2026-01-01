@@ -1,0 +1,172 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ChefStream AI Extractor API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/extract": {
+            "post": {
+                "summary": "Extract Recipe from YouTube URL",
+                "operationId": "extract_recipe",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "url": {
+                                        "type": "string",
+                                        "format": "uri",
+                                        "example": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                    },
+                                    "force_refresh": {
+                                        "type": "boolean",
+                                        "default": false,
+                                        "description": "If true, ignores cache and re-runs extraction"
+                                    }
+                                },
+                                "required": [
+                                    "url"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Extraction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeData"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid URL or Non-Cooking Video",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "detail": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "No Transcript Available",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "detail": {
+                                            "type": "string",
+                                            "example": "No transcript available for this video"
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "example": "NO_TRANSCRIPT"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Ingredient": {
+                "type": "object",
+                "properties": {
+                    "item": {
+                        "type": "string"
+                    },
+                    "quantity": {
+                        "type": "string"
+                    },
+                    "unit": {
+                        "type": "string"
+                    },
+                    "notes": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "item"
+                ]
+            },
+            "InstructionStep": {
+                "type": "object",
+                "properties": {
+                    "step_number": {
+                        "type": "integer"
+                    },
+                    "instruction": {
+                        "type": "string"
+                    },
+                    "duration_seconds": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "step_number",
+                    "instruction"
+                ]
+            },
+            "RecipeData": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "servings": {
+                        "type": "integer"
+                    },
+                    "prep_time_minutes": {
+                        "type": "integer"
+                    },
+                    "cook_time_minutes": {
+                        "type": "integer"
+                    },
+                    "ingredients": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Ingredient"
+                        }
+                    },
+                    "instructions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/InstructionStep"
+                        }
+                    },
+                    "dietary_tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "title",
+                    "ingredients",
+                    "instructions"
+                ]
+            }
+        }
+    }
+}

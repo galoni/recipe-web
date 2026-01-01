@@ -10,11 +10,13 @@ from app.models.recipe import RecipeData, Ingredient, InstructionStep
 def test_extract_api_contract():
     # Because this is a contract test, we might want to mock the heavy services
     # But ensure the input/output schema matches
-    with patch("app.services.youtube.YouTubeService.get_transcript") as mock_yt, patch(
-        "app.services.gemini.GeminiService.extract_recipe"
-    ) as mock_gemini:
-
+    with patch("app.services.youtube.YouTubeService.get_transcript") as mock_yt, \
+         patch("app.services.gemini.GeminiService.extract_recipe") as mock_gemini, \
+         patch("app.services.cache.CacheService.get_cached_extraction") as mock_cache_get, \
+         patch("app.services.cache.CacheService.save_extraction") as mock_cache_save:
+        
         mock_yt.return_value = "Mock Transcript"
+        mock_cache_get.return_value = None # Force generation
 
         # Return actual Pydantic model as expected by strict typing in endpoint
         mock_gemini.return_value = RecipeData(

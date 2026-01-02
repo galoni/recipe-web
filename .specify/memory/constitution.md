@@ -11,17 +11,34 @@ The application MUST adhere to a strict Next.js (Frontend) and FastAPI (Backend)
 ### III. Production-Ready Scalability
 Every feature must be designed with scalability in mind. This includes Dockerization, structured logging, and CI/CD compatibility. Infrastructure as Code (Docker Compose) is the standard for development and deployment.
 
-### IV. Strict Testing Discipline (NON-NEGOTIABLE)
-- **Coverage**: Backend service logic MUST maintain **>80% code coverage**.
-- **Regression**: All AI extraction features MUST include regression tests (using cached video inputs) to verify output consistency.
+### IV. Infrastructure as Truth
+**Dockerfiles are the absolute source of truth** for the environment. They must be kept up-to-date with every dependency or system library change. Manual environment hacks are forbidden.
+
+### V. Strict Testing Discipline (NON-NEGOTIABLE)
+- **Backend Quality**: All service logic MUST maintain **>80% code coverage**. All AI extraction features MUST include regression tests (using cached video inputs).
+- **Frontend Quality**: All UI changes MUST be validated via browser-side testing (manual verification or automated E2E).
 - **Unit Tests**: Mandatory for all new functions and API endpoints.
 
-### V. Aggressive Modularity
+### VI. Security First
+- **OWASP Compliance**: All code must be reviewed against OWASP Top 10 vulnerabilities (Injection, Auth failures, etc.).
+- **Data Safety**: Strict authorization checks on every endpoint. No hardcoded secrets—use environment variables managed via Docker.
+
+### VII. Operational Excellence
+- **Structured Logging**: All logs must be structured JSON to enable scalable monitoring.
+- **Observability**: Every service must expose a standard health check endpoint.
+- **Fail-Safe**: graceful degradation for AI failures (retries, timeouts).
+
+### VIII. Living Documentation
+- **Centralized Knowledge**: The `docs/` folder is the project's brain. It MUST be updated *per work* to capture architecture decisions, process improvements, and setup guides.
+- **Documentation as Code**: API specs (OpenAPI), ADRs, and User Guides are first-class citizens, committed alongside code.
+
+### IX. Aggressive Modularity
 - **Complexity Cap**: Functions SHOULD NOT exceed **50 lines**. Files SHOULD NOT exceed **300 lines**.
 - **Refactoring**: If a component breaches these limits, it MUST be refactored into smaller, reusable units immediately.
 
-### VI. Premium, Interactive UX
+### X. Premium, Interactive UX
 User interfaces must prioritize a "wow" factor, using modern typography, subtle micro-animations, and a highly responsive, interactive step-by-step experience that feels alive and premium.
+
 
 ## Governance
 
@@ -46,4 +63,4 @@ Templates requiring updates:
 Follow-up TODOs: None
 -->
 
-**Version**: 1.1.0 | **Ratified**: 2026-01-01 | **Last Amended**: 2026-01-01
+**Version**: 2.0.0 | **Ratified**: 2026-01-02 | **Last Amended**: 2026-01-02

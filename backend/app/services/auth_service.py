@@ -6,6 +6,7 @@ from app.core.security import create_access_token
 from app.core.config import settings
 from app.core.logger import logger
 
+
 class AuthService:
     def __init__(self, db: AsyncSession):
         self.db = db
@@ -28,6 +29,4 @@ class AuthService:
 
     def create_token_for_user(self, user_id: int):
         access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-        return create_access_token(
-            subject=user_id, expires_delta=access_token_expires
-        )
+        return create_access_token(subject=user_id, expires_delta=access_token_expires)

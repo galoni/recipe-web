@@ -8,9 +8,9 @@ from app.core.database import get_db
 from app.models.user import User
 from app.core.logger import logger
 
+
 async def get_current_user(
-    request: Request,
-    db: AsyncSession = Depends(get_db)
+    request: Request, db: AsyncSession = Depends(get_db)
 ) -> User:
     """
     Get current user from JWT token in cookies.
@@ -43,5 +43,5 @@ async def get_current_user(
 
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    
+
     return user

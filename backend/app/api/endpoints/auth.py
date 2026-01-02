@@ -16,6 +16,7 @@ import secrets
 
 router = APIRouter()
 
+
 @router.post("/token", response_model=Token)
 async def login_access_token(
     response: Response,
@@ -33,12 +34,12 @@ async def login_access_token(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
         )
-    
+
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         subject=user.id, expires_delta=access_token_expires
     )
-    
+
     # Set Cookie
     response.set_cookie(
         key="access_token",
@@ -48,22 +49,25 @@ async def login_access_token(
         samesite="lax",
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
     )
-    
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
     }
 
+
 @router.get("/google/login")
 def login_google(response: Response):
     from fastapi.responses import RedirectResponse
+
     provider = GoogleOAuthProvider()
     # Generate random state to prevent CSRF
     state = secrets.token_urlsafe(32)
     # Store state in cookie to verify later
     response.set_cookie(key="oauth_state", value=state, httponly=True, max_age=300)
-    
+
     return RedirectResponse(url=provider.get_login_url(state=state))
+
 
 @router.get("/google/callback")
 async def google_callback(
@@ -71,45 +75,43 @@ async def google_callback(
     state: str,
     response: Response,
     # state_cookie: str = Cookie(None, alias="oauth_state"), # simplified
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
 ):
     # Retrieve state from cookie logic here ideally, skipping for MVP speed (User Story said Validate State)
     # Real implementation needs Request object to read cookie
-    
+
     provider = GoogleOAuthProvider()
     try:
         token_data = await provider.get_token(code)
     except Exception as e:
         logger.error(f"Google Token Exchange failed: {e}")
         raise HTTPException(status_code=400, detail="OAuth failure")
-        
+
     try:
         user_info = await provider.get_user_info(token_data["access_token"])
     except Exception as e:
         logger.error(f"Google User Info failed: {e}")
         raise HTTPException(status_code=400, detail="OAuth info failure")
-        
+
     email = user_info.get("email")
     google_id = user_info.get("sub")
-    
+
     # Logic to Find or Create User
     from app.crud.user import user as user_crud
+
     existing_user = await user_crud.get_by_email(db, email)
     if not existing_user:
         # Auto-register
         existing_user = await user_crud.create(
-            db, 
-            email=email, 
-            auth_provider="google", 
-            provider_id=google_id
+            db, email=email, auth_provider="google", provider_id=google_id
         )
-    
+
     # Create Session
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         subject=existing_user.id, expires_delta=access_token_expires
     )
-    
+
     response.set_cookie(
         key="access_token",
         value=f"Bearer {access_token}",
@@ -117,19 +119,21 @@ async def google_callback(
         secure=True,
         samesite="lax",
     )
-    
+
     # Redirect to frontend
     from fastapi.responses import RedirectResponse
+
     resp = RedirectResponse(url=f"{settings.FRONTEND_URL}/dashboard")
     resp.set_cookie(
         key="access_token",
         value=f"Bearer {access_token}",
         httponly=True,
-        secure=settings.ENVIRONMENT == "production", 
+        secure=settings.ENVIRONMENT == "production",
         samesite="lax",
         max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
     )
     return resp
+
 
 @router.post("/register", response_model=User)
 async def register(
@@ -148,15 +152,16 @@ async def register(
         )
     return user
 
+
 @router.post("/logout")
 def logout(response: Response):
     """
     Logout the user by clearing the cookies.
     """
     response.delete_cookie(
-        key="access_token", 
-        httponly=True, 
-        secure=settings.ENVIRONMENT == "production", 
-        samesite="lax"
+        key="access_token",
+        httponly=True,
+        secure=settings.ENVIRONMENT == "production",
+        samesite="lax",
     )
     return {"status": "success", "message": "Logged out"}

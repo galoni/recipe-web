@@ -5,7 +5,7 @@ from typing import Optional
 class Settings(BaseSettings):
     PROJECT_NAME: str = "ChefStream"
     API_V1_STR: str = "/api/v1"
-    ENVIRONMENT: str = "development" # development, production
+    ENVIRONMENT: str = "development"  # development, production
     DATABASE_URL: str = (
         "postgresql+asyncpg://postgres:postgres@localhost:5432/chefstream"
     )

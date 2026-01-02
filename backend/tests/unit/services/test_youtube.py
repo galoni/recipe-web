@@ -81,6 +81,7 @@ def test_transcript_parsing_logic(
     mock_caption2 = MagicMock()
     mock_caption2.text = "Line 1"  # duplicate check
     mock_caption3 = MagicMock()
+    mock_caption3.text = "Line 2"
 
     mock_webvtt_read.return_value = [mock_caption1, mock_caption2, mock_caption3]
 

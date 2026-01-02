@@ -3,12 +3,15 @@ from urllib.parse import urlencode
 from app.core.config import settings
 from typing import Optional, Dict, Any
 
+
 class GoogleOAuthProvider:
     def __init__(self):
         self.client_id = settings.GOOGLE_CLIENT_ID
         self.client_secret = settings.GOOGLE_CLIENT_SECRET
-        self.redirect_uri = f"http://localhost:8000/api/v1/auth/google/callback" # TODO: Update with env var
-        self.discovery_url = "https://accounts.google.com/.well-known/openid-configuration"
+        self.redirect_uri = f"http://localhost:8000/api/v1/auth/google/callback"  # TODO: Update with env var
+        self.discovery_url = (
+            "https://accounts.google.com/.well-known/openid-configuration"
+        )
 
     def get_login_url(self, state: str) -> str:
         params = {

@@ -8,7 +8,7 @@ This document outlines the coding standards, workflows, and CI/CD requirements t
 ### Backend (Python)
 - [ ] **Format**: `python3 -m black .` (within `/backend`).
 - [ ] **Initialize**: Ensure every new directory has an `__init__.py` file.
-- [ ] **Tests**: `poetry run pytest --cov=app --cov-fail-under=75`.
+- [ ] **Tests**: `poetry run pytest --cov=app --cov-fail-under=80`.
 - [ ] **Config**: Ensure `DATABASE_URL` has a default in `config.py` (for CI).
 - [ ] **Poetry**: Set `package-mode = false` in `pyproject.toml`.
 
@@ -25,6 +25,10 @@ This document outlines the coding standards, workflows, and CI/CD requirements t
 - **Logic Isolation**: All external API calls (Gemini, YouTube) MUST be wrapped in a class in `app/services/`.
 - **Async First**: Use `AsyncSession` for database interactions and `AsyncMock` for testing async logic.
 - **Fail Gracefully**: Database connections in `lifespan` handlers must be wrapped in `try/except` to allow CI runners to execute even without a live DB.
+
+### Aggressive Modularity
+- **Complexity Cap**: Functions SHOULD NOT exceed **50 lines**. Files SHOULD NOT exceed **300 lines**.
+- **Refactoring**: If a component breaches these limits, it MUST be refactored into smaller, reusable units immediately.
 
 ### Frontend Component Pattern
 - **Shadcn-lite**: UI components (buttons, inputs) live in `src/components/ui/`.

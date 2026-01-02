@@ -2,6 +2,7 @@ import json
 import google.generativeai as genai
 from app.core.config import settings
 from app.models.recipe import RecipeData, Ingredient, InstructionStep
+from app.core.logger import logger
 
 
 class GeminiService:
@@ -18,7 +19,7 @@ class GeminiService:
                 # Fallback for tests if no key is mocked properly, but in tests we mock the model cls
                 # If we are here in prod without key, we should raise
                 if not settings.GEMINI_API_KEY:
-                    print("Warning: No GEMINI_API_KEY found.")
+                    logger.warning("No GEMINI_API_KEY found.")
 
             prompt = f"""
             You are a professional chef. Extract a structured recipe from the following YouTube video transcript.
@@ -68,7 +69,7 @@ class GeminiService:
             )
 
         except Exception as e:
-            print(f"An error occurred: {e}")
+            logger.error(f"An error occurred: {e}")
             # For now return None or raise, test expects RecipeData
             # Logic: If failure, maybe return partial or raise custom error
             # For the test to pass with mocks, we need to ensure the mock setup mirrors this

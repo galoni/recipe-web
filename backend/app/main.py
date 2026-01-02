@@ -5,6 +5,7 @@ from app.api.api import api_router
 from app.core.database import engine, Base
 from app.core.config import settings
 from app.models import db as db_models, user as user_models  # Register models
+from app.core.logger import logger
 
 
 @asynccontextmanager
@@ -14,7 +15,7 @@ async def lifespan(app: FastAPI):
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
     except Exception as e:
-        print(f"Database connection failed, skipping initialization: {e}")
+        logger.error(f"Database connection failed, skipping initialization: {e}")
     yield
     # Shutdown
 

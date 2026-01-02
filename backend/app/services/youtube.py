@@ -1,6 +1,7 @@
-from youtube_transcript_api import YouTubeTranscriptApi
 from app.core.exceptions import NoTranscriptError
 import re
+from app.core.logger import logger
+import webvtt
 
 
 class YouTubeService:
@@ -54,46 +55,15 @@ class YouTubeService:
             # Pick the first one (usually best match)
             vtt_path = possible_files[0]
 
-            # Parse VTT to plain text
-            # We need a simple parser or just strip tags.
-            # Installing 'webvtt-py' would be ideal but maybe overkill to add a dep now?
-            # Let's do a simple regex strip for now or rudimentary VTT parsing.
-            # actually, let's just read lines that are not timestamps or IDs.
-
-            content = []
-            with open(vtt_path, "r", encoding="utf-8") as f:
-                # Simple VTT parser to extract text
-                # VTT format:
-                # 00:00:00.000 --> 00:00:05.000
-                # Some text here
-                # <c>Color</c> tags etc
-
-                # We can use regex to ignore headers and timestamps
-                for line in f:
-                    line = line.strip()
-                    if not line:
-                        continue
-                    if line == "WEBVTT":
-                        continue
-                    if "-->" in line:
-                        continue
-                    if re.match(r"^\d+$", line):
-                        continue  # seq numbers
-
-                    # Remove HTML-like tags e.g. <c.color> or <b>
-                    text = re.sub(r"<[^>]+>", "", line)
-                    # Remove timestamp tags if embedded like <00:00:01>
-                    # text = re.sub(r'<\d{2}:\d{2}:\d{2}\.\d{3}>', '', text)
-
-                    # Deduplicate repeated lines (common in rolling captions)
-                    if content and content[-1] == text:
-                        continue
-                    content.append(text)
-
-            return " ".join(content)
+            # Parse VTT to plain text using webvtt-py
+            captions = webvtt.read(vtt_path)
+            transcript = " ".join([c.text for c in captions])
+            
+            # Simple cleanup of whitespace
+            return " ".join(transcript.split())
 
         except Exception as e:
-            print(f"Error fetching transcript with yt-dlp: {e}")
+            logger.error(f"Error fetching transcript with yt-dlp: {e}")
             if isinstance(e, NoTranscriptError):
                 raise e
             raise NoTranscriptError(video_id)  # Wrap others

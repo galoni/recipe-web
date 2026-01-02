@@ -8,6 +8,7 @@ from app.core.database import get_db
 from app.models.db import Recipe as RecipeModel
 from app.models.user import User as UserModel
 from app.schemas.recipe import Recipe, RecipeCreate
+from app.core.logger import logger
 
 router = APIRouter()
 
@@ -51,7 +52,7 @@ async def create_recipe(recipe: RecipeCreate, db: AsyncSession = Depends(get_db)
             id=str(db_recipe.id), **recipe.model_dump(), created_at=db_recipe.created_at
         )
     except Exception as e:
-        print(f"Error creating recipe: {e}")
+        logger.error(f"Error creating recipe: {e}")
         await db.rollback()
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
@@ -75,5 +76,5 @@ async def read_recipes(
             recipes.append(Recipe(id=str(r.id), **data, created_at=r.created_at))
         return recipes
     except Exception as e:
-        print(f"Error reading recipes: {e}")
+        logger.error(f"Error reading recipes: {e}")
         raise HTTPException(status_code=500, detail=str(e))

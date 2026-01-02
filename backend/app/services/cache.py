@@ -9,6 +9,7 @@ from app.schemas.recipe import (
     Ingredient,
     Step,
 )  # For mapping if needed, but we store JSON
+from app.core.logger import logger
 
 
 class CacheService:
@@ -39,7 +40,7 @@ class CacheService:
                 data = cache_entry.raw_result
                 return RecipeData(**data)
             except Exception as e:
-                print(f"Cache parse error: {e}")
+                logger.error(f"Cache parse error: {e}")
                 return None
         return None
 

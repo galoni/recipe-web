@@ -42,7 +42,7 @@ def test_get_transcript_success(
     # Setup mocks
     mock_uuid.return_value = "fixed-uuid"
     mock_glob.return_value = ["/tmp/fixed-uuid.vtt"]
-    
+
     mock_caption = MagicMock()
     mock_caption.text = "This is a transcript."
     mock_webvtt_read.return_value = [mock_caption]
@@ -74,15 +74,15 @@ def test_transcript_parsing_logic(
     mock_remove, mock_webvtt_read, mock_glob, mock_ytdl, youtube_service
 ):
     mock_glob.side_effect = [["/tmp/test.vtt"], ["/tmp/test.vtt"]]
-    
+
     # Mock webvtt captions
     mock_caption1 = MagicMock()
     mock_caption1.text = "Line 1"
     mock_caption2 = MagicMock()
-    mock_caption2.text = "Line 1" # duplicate check
+    mock_caption2.text = "Line 1"  # duplicate check
     mock_caption3 = MagicMock()
     mock_caption3.text = "Line 2"
-    
+
     mock_webvtt_read.return_value = [mock_caption1, mock_caption2, mock_caption3]
 
     result = youtube_service.get_transcript("12345678901")

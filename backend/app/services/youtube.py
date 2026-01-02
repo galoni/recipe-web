@@ -58,7 +58,7 @@ class YouTubeService:
             # Parse VTT to plain text using webvtt-py
             captions = webvtt.read(vtt_path)
             transcript = " ".join([c.text for c in captions])
-            
+
             # Simple cleanup of whitespace
             return " ".join(transcript.split())
 

@@ -16,9 +16,9 @@ router = APIRouter()
 
 @router.post("/", response_model=Recipe)
 async def create_recipe(
-    recipe: RecipeCreate, 
+    recipe: RecipeCreate,
     db: AsyncSession = Depends(get_db),
-    current_user: UserModel = Depends(get_current_user)
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
     Save a generated recipe to the database.
@@ -48,10 +48,10 @@ async def create_recipe(
 
 @router.get("/", response_model=List[Recipe])
 async def read_recipes(
-    skip: int = 0, 
-    limit: int = 100, 
+    skip: int = 0,
+    limit: int = 100,
     db: AsyncSession = Depends(get_db),
-    current_user: UserModel = Depends(get_current_user)
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
     Get all recipes for the current user.

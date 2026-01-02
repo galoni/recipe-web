@@ -8,6 +8,13 @@
 ## Summary
 
 [Extract from feature spec: primary requirement + technical approach from research]
+ 
+ ## Operational & Security Context
+ 
+ *   **Security**: [What are the auth/data privacy implications? OWASP risks?]
+ *   **Observability**: [How will we monitor this? (Metrics, Logs, Health Checks)]
+ *   **Environment**: [Does this require Dockerfile updates? True/False]
+ *   **Docs Impact**: [What centralized docs need updating? e.g., docs/architecture/auth.md]
 
 ## Technical Context
 
@@ -30,13 +37,14 @@
 ## Constitution Check
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- [ ] **Gemini-First Strategy**: Does the design explicitly use Google Gemini models for multimodality/transcription?
-- [ ] **Modularity Limits**: Does the plan ensure files stay under 300 lines and functions under 50 lines?
-- [ ] **Test Coverage**: Does the plan include tests to meet the >80% coverage requirement?
-- [ ] **AI Regression**: Are regression tests with cached inputs defined for AI components?
-- [ ] **Fullstack Integrity**: Strict FastAPI/Next.js separation maintained?
-- [ ] **UX Wow Factor**: Micro-animations and premium UI elements included?
-- [ ] **Scalability**: Docker/CI/CD compatible?
+- [ ] **Infrastructure as Truth**: Are Dockerfile updates planned if dependencies change?
+ - [ ] **Backend Quality**: >80% coverage + Regression tests defined?
+ - [ ] **Frontend Quality**: Browser-side validation (E2E/Manual) defined?
+ - [ ] **Security First**: Authz checks & input validation planned (OWASP)?
+ - [ ] **Operational Excellence**: Structured logging & health checks included?
+ - [ ] **Living Documentation**: Updates to `docs/` planned?
+ - [ ] **Modularity**: Files <300 lines, Functions <50 lines?
+ - [ ] **UX Wow Factor**: Micro-animations and premium UI elements included?
 
 ## Project Structure
 

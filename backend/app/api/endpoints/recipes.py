@@ -7,6 +7,7 @@ import uuid
 from app.core.database import get_db
 from app.models.db import Recipe as RecipeModel
 from app.models.user import User as UserModel
+from app.api.deps import get_current_user
 from app.schemas.recipe import Recipe, RecipeCreate
 from app.core.logger import logger
 
@@ -14,31 +15,19 @@ router = APIRouter()
 
 
 @router.post("/", response_model=Recipe)
-async def create_recipe(recipe: RecipeCreate, db: AsyncSession = Depends(get_db)):
+async def create_recipe(
+    recipe: RecipeCreate,
+    db: AsyncSession = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
     """
     Save a generated recipe to the database.
     """
     try:
-        # Check if a dummy user exists, if not create one
-        result = await db.execute(select(UserModel).where(UserModel.id == 1))
-        user = result.scalar_one_or_none()
-        if not user:
-            # Create dummy user
-            user = UserModel(
-                id=1,
-                email="chef@stream.com",
-                hashed_password="hashed_secret",
-                is_active=True,
-            )
-            db.add(user)
-            await db.commit()
-            await db.refresh(user)
-
         # Map RecipeCreate schema to RecipeModel DB model
-        # The DB model uses source_url and a data blob
         db_recipe = RecipeModel(
             id=uuid.uuid4(),
-            user_id=user.id,
+            user_id=current_user.id,
             source_url=recipe.video_url,
             data=recipe.model_dump(),  # Stores title, description, ingredients, steps, etc.
         )
@@ -59,13 +48,21 @@ async def create_recipe(recipe: RecipeCreate, db: AsyncSession = Depends(get_db)
 
 @router.get("/", response_model=List[Recipe])
 async def read_recipes(
-    skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)
+    skip: int = 0,
+    limit: int = 100,
+    db: AsyncSession = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
 ):
     """
-    Get all recipes.
+    Get all recipes for the current user.
     """
     try:
-        result = await db.execute(select(RecipeModel).offset(skip).limit(limit))
+        result = await db.execute(
+            select(RecipeModel)
+            .where(RecipeModel.user_id == current_user.id)
+            .offset(skip)
+            .limit(limit)
+        )
         db_recipes = result.scalars().all()
 
         # Map DB model back to schema

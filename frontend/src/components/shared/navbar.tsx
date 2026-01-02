@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ChefHat, Search, Menu } from "lucide-react";
@@ -35,9 +36,26 @@ export function Navbar() {
                         />
                     </div>
 
-                    <div className="hidden md:flex gap-3">
-                        <Button variant="ghost" className="font-black border-none text-text-main hover:bg-muted rounded-xl px-6">
-                            Login
+                    <div className="hidden md:flex gap-3 items-center">
+                        <Link href="/login">
+                            <Button variant="ghost" className="font-black border-none text-text-main hover:bg-muted rounded-xl px-6">
+                                Login
+                            </Button>
+                        </Link>
+                        <Link href="/register">
+                            <Button variant="ghost" className="font-black border-none text-text-main hover:bg-muted rounded-xl px-6">
+                                Register
+                            </Button>
+                        </Link>
+                        <Button
+                            variant="ghost"
+                            className="font-black border-none text-red-500 hover:bg-red-50 rounded-xl px-6"
+                            onClick={async () => {
+                                const { logout } = await import("@/lib/auth");
+                                await logout();
+                            }}
+                        >
+                            Logout
                         </Button>
                         <Button className="font-black bg-primary hover:bg-primary-dark text-white rounded-xl px-8 shadow-glow">
                             Start Cooking

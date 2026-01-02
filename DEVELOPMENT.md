@@ -37,6 +37,21 @@ This document outlines the coding standards, workflows, and CI/CD requirements t
 
 ---
 
+## Feature Development Workflow
+
+We use **Spec-Kit** for all feature development.
+Please verify the full workflow in [`docs/processes/spec_workflow.md`](docs/processes/spec_workflow.md).
+
+**Quick Summary**:
+1. Run `.specify/scripts/bash/create-new-feature.sh`
+2. Write Spec (`spec.md`)
+3. Run `.specify/scripts/bash/setup-plan.sh`
+4. Write Plan (`plan.md`)
+5. Create Tasks (`tasks.md`)
+6. Implement & Verify
+
+---
+
 ## 🧪 Testing Strategy
 
 1. **Unit Tests**: Test single functions/classes in isolation. Mock ALL network calls.

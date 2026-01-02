@@ -87,8 +87,4 @@ def test_transcript_parsing_logic(
 
     result = youtube_service.get_transcript("12345678901")
 
-    # If we add deduplication to youtube.py, this should be "Line 1 Line 2"
-    # For now it's "Line 1 Line 1 Line 2"
-    assert "Line 1" in result
-    assert "Line 2" in result
-    # assert result.count("Line 1") == 1 # This would be nice
+    assert result == "Line 1 Line 1 Line 2"

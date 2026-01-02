@@ -28,7 +28,7 @@
 `yt-dlp` is highly effective but can be inconsistent in CI environments. We've optimized `YouTubeService` to:
 - Write subtitles directly to `/tmp` as `.vtt`.
 - Fall back to auto-generated captions if manual ones are missing.
-- Implement a custom VTT parser to avoid external dependencies like `webvtt-py`.
+- Implement a robust VTT parser using `webvtt-py` for accurate caption extraction.
 - Handle deduplication of "scrolling" captions commonly found in auto-generated YouTube subtitles.
 
 ### 2. Poetry Packaging

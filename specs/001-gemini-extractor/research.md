@@ -21,3 +21,20 @@
 **Alternatives Considered**:
 - **Whisper (OpenAI)**: Rejected due to cost and need for audio download.
 - **Full Video Multimodality**: Rejected due to high latency (video upload + processing time) and cost.
+
+## Lessons Learned (Post-Implementation)
+
+### 1. Robust Transcript Fetching
+`yt-dlp` is highly effective but can be inconsistent in CI environments. We've optimized `YouTubeService` to:
+- Write subtitles directly to `/tmp` as `.vtt`.
+- Fall back to auto-generated captions if manual ones are missing.
+- Implement a robust VTT parser using `webvtt-py` for accurate caption extraction.
+- Handle deduplication of "scrolling" captions commonly found in auto-generated YouTube subtitles.
+
+### 2. Poetry Packaging
+For backend applications (not libraries), `package-mode = false` in `pyproject.toml` is essential to avoid "Package not found" errors during dependency installation.
+
+### 3. CI/CD Robustness
+- **Environment Isolation**: Always provide dummy defaults for `DATABASE_URL` in `config.py` to allow the app to initialize its configuration in CI runners.
+- **Async Testing**: `AsyncMock` behavior differs from `MagicMock`. When mocking a method that is awaited, the attribute itself must be assigned to an `AsyncMock` to avoid `TypeError`.
+- **Package Discovery**: Explicitly adding `__init__.py` files to `/app` and `/tests` subdirectories ensures consistent package discovery across different OS environments (macOS local vs Linux CI).

@@ -1,24 +1,102 @@
-# ChefStream
+# 🍳 ChefStream
 
-ChefStream is an AI-powered cooking companion that turns YouTube videos into interactive, step-by-step recipes.
+**ChefStream** is a premium, AI-powered cooking companion that transforms YouTube videos into interactive, high-fidelity recipes. Powered by **Gemini 2.0**, it extracts ingredients, timing, and steps directly from video transcripts to provide a focused, ad-free cooking experience.
 
-## Tech Stack
-- **Frontend**: Next.js, Tailwind CSS
-- **Backend**: FastAPI, Python
-- **Database**: PostgreSQL
-- **AI**: LLM Integration for Recipe Extraction
+---
 
-## Getting Started
+## ✨ Features
+
+- 🪄 **Instant Extraction**: Convert any YouTube URL into a structured recipe in seconds.
+- 🥗 **Smart Ingredients**: High-precision ingredient extraction with unit normalization.
+- ⏱️ **Timed Steps**: Automatic extraction of cooking durations and sequence.
+- 📦 **Cookbook**: Save and organize your favorite recipes for later.
+- 📱 **Cooking Mode**: A focused, distraction-free UI designed for the kitchen.
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Styling**: Tailwind CSS + Framer Motion for rich animations.
+- **State Management**: React Query (TanStack Query) for efficient caching.
+- **Icons**: Lucide React.
+
+### Backend
+- **Framework**: [FastAPI](https://fastapi.tiangolo.com/) (Python 3.11+)
+- **LLM**: Google Gemini 1.5 Flash (via `google-generativeai`).
+- **Extraction**: `yt-dlp` for robust transcript retrieval.
+- **Database**: PostgreSQL with SQLAlchemy (Async).
+- **Migrations**: Alembic.
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 - Docker & Docker Compose
-- Node.js 20+ (for local dev without Docker)
-- Python 3.10+ (for local dev without Docker)
+- Node.js 20+
+- Python 3.11+
+- A Google Gemini API Key ([Get one here](https://aistudio.google.com/))
 
-### Running Locally
-1. Clone the repo.
-2. Run `docker-compose up --build`.
-3. Open `http://localhost:3000`.
+### Local Development (Docker)
+The easiest way to get started is using Docker Compose:
 
-## Architecture
-See `.agent/rules.md` and `implementation_plan.md` for architectural details.
+```bash
+docker-compose up --build
+```
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8000
+- **Swagger Docs**: http://localhost:8000/docs
+
+### Local Development (Manual)
+
+#### 1. Backend Setup
+```bash
+cd backend
+cp .env.example .env  # Add your GEMINI_API_KEY
+pip install poetry
+poetry install
+poetry run uvicorn app.main:app --reload
+```
+
+#### 2. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 🧪 Testing & QA
+
+We maintain a high bar for code quality with automated CI pipelines.
+
+### Backend Tests
+```bash
+cd backend
+poetry run pytest --cov=app --cov-fail-under=75
+```
+Includes:
+- **Unit Tests**: Business logic isolation.
+- **Contract Tests**: API schema validation.
+- **Regression Tests**: Quality checks against "Golden Samples" (located in `backend/tests/regression/data`).
+
+### Frontend Quality
+```bash
+cd frontend
+npm run lint      # High-strictness ESLint
+npx tsc --noEmit  # Type checking
+```
+
+---
+
+## 📖 Documentation
+Detailed specifications and research for major features can be found in the `specs/` directory:
+- [001-Gemini Extractor](./specs/001-gemini-extractor/spec.md): The core AI engine.
+
+---
+
+## 🤝 Contributing
+Please see [DEVELOPMENT.md](./DEVELOPMENT.md) for our coding standards and CI/CD guidelines.

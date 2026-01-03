@@ -42,8 +42,8 @@ export function DeleteConfirmation({ isOpen, onClose, onConfirm, title, isDeleti
 
                             <div className="space-y-2">
                                 <h3 className="text-2xl font-black font-outfit text-text-main">Delete recipe?</h3>
-                                <p className="text-text-muted font-medium">
-                                    Are you sure you want to remove <span className="text-text-main font-bold">"{title}"</span>? This action cannot be undone.
+                                <p className="text-text-muted mb-8">
+                                    Are you sure you want to delete &quot;{title}&quot;? This action cannot be undone.
                                 </p>
                             </div>
 

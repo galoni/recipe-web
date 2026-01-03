@@ -52,7 +52,11 @@ export const deleteRecipe = async (recipeId: string | number): Promise<void> => 
  * Fetches the current authenticated user.
  * @returns A promise that resolves to the User data.
  */
-export const getCurrentUser = async (): Promise<any> => {
-    const response = await api.get("/api/v1/auth/me");
-    return response.data;
+export const getCurrentUser = async (): Promise<{ id: number; email: string } | null> => {
+    try {
+        const response = await api.get("/api/v1/auth/me");
+        return response.data;
+    } catch {
+        return null;
+    }
 };

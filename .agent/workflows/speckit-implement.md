@@ -9,6 +9,6 @@ description: Execute the implementation tasks
    - **Execute** the task (create file, write code, run test).
    - **Verify** the task (run test, check build).
    - Mark task as complete `[x]`.
-   - **Commit** (checking `constitution.md` rules like tests and docs).
+   - **Commit** (checking `.gemini/constitution.md` rules like tests and docs).
 3. If blocked, Notify User.
 4. When all tasks are done, create a `walkthrough.md`.

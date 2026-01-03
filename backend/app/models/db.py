@@ -1,4 +1,4 @@
-from sqlalchemy import String, Integer, JSON, ForeignKey, DateTime, Text
+from sqlalchemy import String, Integer, JSON, ForeignKey, DateTime, Text, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 from datetime import datetime
@@ -21,6 +21,7 @@ class Recipe(Base):
 
     source_url: Mapped[str] = mapped_column(Text, nullable=False)
     data: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    is_public: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

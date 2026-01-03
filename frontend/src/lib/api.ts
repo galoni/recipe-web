@@ -42,6 +42,18 @@ export const getRecipes = async (): Promise<Recipe[]> => {
 };
 
 /**
+ * Searches and explores public recipes.
+ * @param query The search query string.
+ * @returns A promise that resolves to an array of matching Recipe objects.
+ */
+export const exploreRecipes = async (query?: string): Promise<Recipe[]> => {
+    const response = await api.get<Recipe[]>("/api/v1/recipes/explore", {
+        params: { q: query },
+    });
+    return response.data;
+};
+
+/**
  * Fetches a single recipe by ID.
  * @param id The ID of the recipe to fetch.
  * @returns A promise that resolves to the Recipe object.
@@ -57,6 +69,17 @@ export const getRecipeById = async (id: string | number): Promise<Recipe> => {
  */
 export const deleteRecipe = async (recipeId: string | number): Promise<void> => {
     await api.delete(`/api/v1/recipes/${recipeId}`);
+};
+
+/**
+ * Toggles the public/private status of a recipe.
+ * @param recipeId The ID of the recipe.
+ * @param isPublic The new public status.
+ * @returns A promise that resolves to the updated Recipe.
+ */
+export const toggleRecipePrivacy = async (recipeId: string | number, isPublic: boolean): Promise<Recipe> => {
+    const response = await api.patch<Recipe>(`/api/v1/recipes/${recipeId}`, { is_public: isPublic });
+    return response.data;
 };
 /**
  * Fetches the current authenticated user.

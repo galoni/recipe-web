@@ -3,17 +3,23 @@
 import { Navbar } from "@/components/shared/navbar";
 import { PillButton } from "@/components/ui/PillButton";
 import { InfiniteMarquee } from "@/components/ui/InfiniteMarquee";
+import { SearchBar } from "@/components/ui/search-bar";
+import { RecipeCard } from "@/components/shared/recipe-card";
+import { exploreRecipes } from "@/lib/api";
+import { Recipe } from "@/lib/types";
 
-import { Sparkles, ChefHat, Zap, Monitor, ArrowRight, Check, X, Play, Youtube, Instagram, Cpu } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { Sparkles, ChefHat, Zap, Monitor, ArrowRight, Check, X, Play, Youtube, Instagram, Cpu, Compass } from "lucide-react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { BackgroundLayout } from "@/components/shared/BackgroundLayout";
 import { cn } from "@/lib/utils";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 
 export default function LandingPage() {
+  const router = useRouter();
   const workflowRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: workflowRef,
@@ -95,6 +101,18 @@ export default function LandingPage() {
             </motion.p>
 
             <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 }}
+              className="w-full max-w-2xl mb-12"
+            >
+              <SearchBar
+                onSearch={(q) => router.push(`/explore?q=${encodeURIComponent(q)}`)}
+                placeholder="Find existing recipes..."
+              />
+            </motion.div>
+
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
@@ -106,12 +124,35 @@ export default function LandingPage() {
                   <ArrowRight className="ml-2 size-5" />
                 </PillButton>
               </Link>
-              <Link href="/login">
+              <Link href="/explore">
                 <PillButton variant="secondary" size="lg" className="h-16 px-12 text-lg">
-                  Watch Demo
+                  Explore Library
                 </PillButton>
               </Link>
             </motion.div>
+          </div>
+        </section>
+
+        {/* RECENT DISCOVERIES SECTION */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="container px-6 max-w-7xl mx-auto">
+            <div className="flex items-center justify-between mb-12">
+              <div className="space-y-2">
+                <h3 className="text-sm font-bold text-primary uppercase tracking-[0.3em] flex items-center gap-2">
+                  <Compass className="size-4" /> Fresh Mentions
+                </h3>
+                <h2 className="text-4xl font-bold text-white">Community <span className="font-serif italic text-primary">Discoveries</span>.</h2>
+              </div>
+              <Link href="/explore">
+                <PillButton variant="ghost" className="text-white/40 hover:text-white">
+                  View All <ArrowRight className="ml-2 size-4" />
+                </PillButton>
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <RecentDiscoveries />
+            </div>
           </div>
         </section>
 
@@ -270,6 +311,47 @@ export default function LandingPage() {
         </section>
       </main>
     </BackgroundLayout>
+  );
+}
+
+function RecentDiscoveries() {
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const data = await exploreRecipes();
+        setRecipes(data.slice(0, 3));
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    load();
+  }, []);
+
+  if (isLoading) {
+    return Array(3).fill(0).map((_, i) => (
+      <div key={i} className="h-96 rounded-[3.5rem] bg-white/5 animate-pulse border border-white/5" />
+    ));
+  }
+
+  return (
+    <AnimatePresence>
+      {recipes.map((recipe, idx) => (
+        <motion.div
+          key={recipe.id}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: idx * 0.1 }}
+        >
+          <RecipeCard recipe={recipe} />
+        </motion.div>
+      ))}
+    </AnimatePresence>
   );
 }
 

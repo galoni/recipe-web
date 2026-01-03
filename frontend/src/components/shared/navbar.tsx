@@ -35,7 +35,8 @@ export function Navbar() {
 
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center gap-2 p-1 rounded-full bg-white/5 border border-white/5">
-                        <NavLink href="/" active={isActive('/') && pathname === '/'}>Gallery</NavLink>
+                        <NavLink href="/" active={pathname === '/'}>Gallery</NavLink>
+                        <NavLink href="/explore" active={isActive('/explore')}>Explore</NavLink>
                         {isAuthed && (
                             <NavLink href="/dashboard" active={isActive('/dashboard')}>Studio</NavLink>
                         )}

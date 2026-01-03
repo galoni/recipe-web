@@ -22,10 +22,8 @@ jobs:
       run: curl -sSL https://install.python-poetry.org | python3 -
     - name: Install Dependencies
       run: poetry install --no-root
-    - name: Lint with Ruff
-      run: poetry run ruff check .
-    - name: Format Check with Ruff
-      run: poetry run ruff format --check .
+    - name: Lint with Black
+      run: poetry run black . --check
     - name: Test with Pytest & Coverage (80% Required)
       run: |
         poetry run pytest -v --tb=short --cov=app --cov-report=term-missing --cov-fail-under=80

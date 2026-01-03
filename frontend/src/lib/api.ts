@@ -81,6 +81,7 @@ export const toggleRecipePrivacy = async (recipeId: string | number, isPublic: b
     const response = await api.patch<Recipe>(`/api/v1/recipes/${recipeId}`, { is_public: isPublic });
     return response.data;
 };
+
 /**
  * Fetches the current authenticated user.
  * @returns A promise that resolves to the User data.

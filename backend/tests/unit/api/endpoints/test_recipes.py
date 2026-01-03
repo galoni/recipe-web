@@ -29,12 +29,19 @@ def recipe_create_data():
     return RecipeCreate(
         title="Test Recipe",
         description="A test recipe",
-        ingredients=["Ingredient 1", "Ingredient 2"],
-        steps=["Step 1", "Step 2"],
-        time="30 min",
-        servings="2",
-        thumbnail_url="http://example.com/image.jpg",
         video_url="http://youtube.com/watch?v=123",
+        thumbnail_url="http://example.com/image.jpg",
+        servings=2,
+        prep_time_minutes=30,
+        cook_time_minutes=15,
+        ingredients=[
+            {"item": "Ingredient 1", "quantity": "1", "unit": "cup"},
+            {"item": "Ingredient 2", "quantity": "2", "unit": "tbsp"},
+        ],
+        steps=[
+            {"step_number": 1, "instruction": "Step 1 instruction"},
+            {"step_number": 2, "instruction": "Step 2 instruction"},
+        ],
     )
 
 
@@ -67,8 +74,8 @@ async def test_read_recipes(mock_db, mock_user):
         "description": "desc",
         "ingredients": [],
         "steps": [],
-        "time": "1m",
-        "servings": "1",
+        "prep_time_minutes": 10,
+        "servings": 4,
         "thumbnail_url": "thumb",
     }
 

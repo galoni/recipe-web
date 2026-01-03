@@ -1,9 +1,19 @@
 "use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ChefHat, Search, Menu } from "lucide-react";
+import { ChefHat, Search, Menu, LogOut, User as UserIcon } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUser } from "@/lib/api";
 
 export function Navbar() {
+    const { data: user, isLoading } = useQuery({
+        queryKey: ["currentUser"],
+        queryFn: getCurrentUser,
+        retry: false,
+    });
+
+    const isAuthed = !!user;
+
     return (
         <header className="w-full bg-background-light/70 dark:bg-background-dark/70 backdrop-blur-xl border-b border-border sticky top-0 z-[100]">
             <div className="px-6 md:px-12 h-20 flex items-center justify-between max-w-[1440px] mx-auto w-full">
@@ -37,26 +47,40 @@ export function Navbar() {
                     </div>
 
                     <div className="hidden md:flex gap-3 items-center">
-                        <Link href="/login">
-                            <Button variant="ghost" className="font-black border-none text-text-main hover:bg-muted rounded-xl px-6">
-                                Login
-                            </Button>
-                        </Link>
-                        <Link href="/register">
-                            <Button variant="ghost" className="font-black border-none text-text-main hover:bg-muted rounded-xl px-6">
-                                Register
-                            </Button>
-                        </Link>
-                        <Button
-                            variant="ghost"
-                            className="font-black border-none text-red-500 hover:bg-red-50 rounded-xl px-6"
-                            onClick={async () => {
-                                const { logout } = await import("@/lib/auth");
-                                await logout();
-                            }}
-                        >
-                            Logout
-                        </Button>
+                        {!isAuthed && !isLoading ? (
+                            <>
+                                <Link href="/login">
+                                    <Button variant="ghost" className="font-black border-none text-text-main hover:bg-muted rounded-xl px-6">
+                                        Login
+                                    </Button>
+                                </Link>
+                                <Link href="/register">
+                                    <Button variant="ghost" className="font-black border-none text-text-main hover:bg-muted rounded-xl px-6">
+                                        Register
+                                    </Button>
+                                </Link>
+                            </>
+                        ) : isAuthed ? (
+                            <>
+                                <div className="flex items-center gap-2 mr-2 px-3 py-1.5 bg-muted/50 rounded-xl">
+                                    <UserIcon className="size-4 text-primary" />
+                                    <span className="text-sm font-bold max-w-[120px] truncate">{user.email}</span>
+                                </div>
+                                <Button
+                                    variant="ghost"
+                                    className="font-black border-none text-red-500 hover:bg-red-50 rounded-xl px-6 flex items-center gap-2"
+                                    onClick={async () => {
+                                        const { logout } = await import("@/lib/auth");
+                                        await logout();
+                                    }}
+                                >
+                                    <LogOut className="size-4" />
+                                    Logout
+                                </Button>
+                            </>
+                        ) : (
+                            <div className="size-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-4" />
+                        )}
                         <Button className="font-black bg-primary hover:bg-primary-dark text-white rounded-xl px-8 shadow-glow">
                             Start Cooking
                         </Button>

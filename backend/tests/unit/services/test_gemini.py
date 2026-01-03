@@ -10,25 +10,24 @@ def gemini_service():
 
 
 @patch("app.services.gemini.settings")
-@patch("google.generativeai.GenerativeModel")
+@patch("google.genai.Client")
 @pytest.mark.asyncio
-async def test_generate_recipe_success(mock_model_cls, mock_settings):
+async def test_generate_recipe_success(mock_client_cls, mock_settings):
     mock_settings.GEMINI_API_KEY = "mock_key"
     service = GeminiService()
 
-    mock_model = mock_model_cls.return_value
-    mock_response = AsyncMock()
+    mock_client = mock_client_cls.return_value
+    mock_response = MagicMock()
     mock_response.text = """
-    ```json
     {
         "title": "Test Recipe",
         "description": "A test",
         "ingredients": [{"item": "Egg", "quantity": "2", "unit": "pcs", "notes": ""}],
         "instructions": [{"step_number": 1, "instruction": "Cook", "duration_seconds": 60}]
     }
-    ```
     """
-    mock_model.generate_content_async = AsyncMock(return_value=mock_response)
+    # mock_client.aio.models.generate_content is an async method
+    mock_client.aio.models.generate_content = AsyncMock(return_value=mock_response)
 
     result = await service.extract_recipe("Transcript", "vid")
 
@@ -38,14 +37,14 @@ async def test_generate_recipe_success(mock_model_cls, mock_settings):
 
 
 @patch("app.services.gemini.settings")
-@patch("google.generativeai.GenerativeModel")
+@patch("google.genai.Client")
 @pytest.mark.asyncio
-async def test_extract_recipe_error_handling(mock_model_cls, mock_settings):
+async def test_extract_recipe_error_handling(mock_client_cls, mock_settings):
     mock_settings.GEMINI_API_KEY = "mock_key"
     service = GeminiService()
 
-    mock_model = mock_model_cls.return_value
-    mock_model.generate_content_async.side_effect = Exception("API Error")
+    mock_client = mock_client_cls.return_value
+    mock_client.aio.models.generate_content.side_effect = Exception("API Error")
 
     with pytest.raises(Exception, match="API Error"):
         await service.extract_recipe("Transcript", "vid")
@@ -55,16 +54,16 @@ async def test_extract_recipe_error_handling(mock_model_cls, mock_settings):
 async def test_chunking_limit(gemini_service):
     # Verify it limits transcript length to avoid context issues
     # GeminiService uses transcript[:30000]
-    with patch.object(gemini_service, "model") as mock_model:
+    with patch.object(gemini_service, "client") as mock_client:
         mock_response = MagicMock()
         mock_response.text = '{"title": "test", "ingredients": [], "instructions": []}'
-        mock_model.generate_content_async = AsyncMock(return_value=mock_response)
+        mock_client.aio.models.generate_content = AsyncMock(return_value=mock_response)
 
         long_transcript = "A" * 50000
         await gemini_service.extract_recipe(long_transcript, "vid")
 
-        # Check the first arg of the call
-        call_args = mock_model.generate_content_async.call_args[0][0]
+        # Check the call args of generate_content
+        call_args = mock_client.aio.models.generate_content.call_args.kwargs["contents"]
         assert len(long_transcript) > 30000
         assert "A" * 30000 in call_args
         assert "A" * 30001 not in call_args

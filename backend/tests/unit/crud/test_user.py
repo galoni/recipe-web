@@ -1,5 +1,6 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.user import user as crud_user
 from app.models.user import User
 from app.core.security import get_password_hash
@@ -7,7 +8,8 @@ from app.core.security import get_password_hash
 
 @pytest.mark.asyncio
 async def test_get_user_by_email():
-    db = AsyncMock()
+    db = MagicMock(spec=AsyncSession)
+    db.execute = AsyncMock()
     email = "test@example.com"
     mock_user = User(email=email)
 
@@ -22,7 +24,9 @@ async def test_get_user_by_email():
 
 @pytest.mark.asyncio
 async def test_create_user():
-    db = AsyncMock()
+    db = MagicMock(spec=AsyncSession)
+    db.commit = AsyncMock()
+    db.refresh = AsyncMock()
     email = "new@example.com"
     password = "password123"
 
@@ -37,7 +41,8 @@ async def test_create_user():
 
 @pytest.mark.asyncio
 async def test_authenticate_user_success():
-    db = AsyncMock()
+    db = MagicMock(spec=AsyncSession)
+    db.execute = AsyncMock()
     email = "auth@example.com"
     password = "valid_password"
     hashed_password = get_password_hash(password)
@@ -55,7 +60,8 @@ async def test_authenticate_user_success():
 
 @pytest.mark.asyncio
 async def test_authenticate_user_failure():
-    db = AsyncMock()
+    db = MagicMock(spec=AsyncSession)
+    db.execute = AsyncMock()
     email = "fail@example.com"
     password = "wrong_password"
     hashed_password = get_password_hash("correct_password")

@@ -2,7 +2,7 @@ import pytest
 import json
 from app.services.gemini import GeminiService
 from app.models.recipe import RecipeData
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, patch, MagicMock
 
 
 # This test simulates checking quality against golden samples
@@ -27,8 +27,9 @@ async def test_regression_quality_golden_samples(golden_data_dir):
 
         # We need to mock the generate_content call to return something that matches our expectations
         # strictly for the purpose of the test structure, unless we record VCR cassettes
-        with patch("google.generativeai.GenerativeModel") as MockModel:
-            mock_instance = MockModel.return_value
+        # We need to mock the client and its nested methods
+        with patch("google.genai.Client") as MockClient:
+            mock_client = MockClient.return_value
 
             # Construct minimal valid JSON response for Gemini
             mock_json_response = {
@@ -41,15 +42,18 @@ async def test_regression_quality_golden_samples(golden_data_dir):
                 "dietary_tags": [],
             }
 
-            mock_resp_obj = AsyncMock()
+            mock_resp_obj = MagicMock()
             mock_resp_obj.text = json.dumps(mock_json_response)
-            mock_instance.generate_content_async = AsyncMock(return_value=mock_resp_obj)
+            # The service calls await self.client.aio.models.generate_content(...)
+            mock_client.aio.models.generate_content = AsyncMock(
+                return_value=mock_resp_obj
+            )
 
             # Need to patch settings too if service reads them
             with patch("app.services.gemini.settings") as mock_settings:
                 mock_settings.GEMINI_API_KEY = "dummy"
 
-                # Re-init service with mocked settings/model
+                # Re-init service with mocked settings/client
                 service = GeminiService()
 
                 result = await service.extract_recipe(transcript, video_id)

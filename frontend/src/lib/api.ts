@@ -48,3 +48,11 @@ export const getRecipes = async (): Promise<Recipe[]> => {
 export const deleteRecipe = async (recipeId: string | number): Promise<void> => {
     await api.delete(`/api/v1/recipes/${recipeId}`);
 };
+/**
+ * Fetches the current authenticated user.
+ * @returns A promise that resolves to the User data.
+ */
+export const getCurrentUser = async (): Promise<any> => {
+    const response = await api.get("/api/v1/auth/me");
+    return response.data;
+};

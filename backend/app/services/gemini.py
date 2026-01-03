@@ -1,5 +1,5 @@
 import json
-import google.generativeai as genai
+from google import genai
 from app.core.config import settings
 from app.models.recipe import RecipeData, Ingredient, InstructionStep
 from app.core.logger import logger
@@ -8,24 +8,22 @@ from app.core.logger import logger
 class GeminiService:
     def __init__(self):
         if settings.GEMINI_API_KEY:
-            genai.configure(api_key=settings.GEMINI_API_KEY)
-            self.model = genai.GenerativeModel("models/gemini-flash-latest")
+            self.client = genai.Client(api_key=settings.GEMINI_API_KEY)
         else:
-            self.model = None
+            self.client = None
+        self.model_name = "gemini-flash-latest"
 
     async def extract_recipe(self, transcript: str, video_id: str) -> RecipeData:
         try:
-            if not self.model:
-                # Fallback for tests if no key is mocked properly, but in tests we mock the model cls
-                # If we are here in prod without key, we should raise
-                if not settings.GEMINI_API_KEY:
-                    logger.warning("No GEMINI_API_KEY found.")
+            if not self.client:
+                logger.warning("No GEMINI_API_KEY found.")
+                raise ValueError("Gemini API key is not configured.")
 
             prompt = f"""
             You are a professional chef. Extract a structured recipe from the following YouTube video transcript.
             
             Transcript:
-            {transcript[:30000]} # Gemini 1.5 Flash has large context, but let's be safe
+            {transcript[:30000]}
             
             Return ONLY valid JSON matching this schema:
             {{
@@ -44,15 +42,19 @@ class GeminiService:
             }}
             """
 
-            response = await self.model.generate_content_async(prompt)
+            # Use the async client
+            response = await self.client.aio.models.generate_content(
+                model=self.model_name, contents=prompt
+            )
 
             # Parse JSON
+            text = response.text
             try:
-                data = json.loads(response.text)
+                data = json.loads(text)
             except json.JSONDecodeError:
                 # Cleanup if markdown code blocks exist
-                text = response.text.replace("```json", "").replace("```", "")
-                data = json.loads(text)
+                clean_text = text.replace("```json", "").replace("```", "").strip()
+                data = json.loads(clean_text)
 
             # Map to Pydantic
             return RecipeData(
@@ -69,8 +71,5 @@ class GeminiService:
             )
 
         except Exception as e:
-            logger.error(f"An error occurred: {e}")
-            # For now return None or raise, test expects RecipeData
-            # Logic: If failure, maybe return partial or raise custom error
-            # For the test to pass with mocks, we need to ensure the mock setup mirrors this
+            logger.error(f"Gemini Extraction Error: {e}")
             raise e

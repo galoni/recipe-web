@@ -3,7 +3,12 @@ import uuid
 from datetime import datetime
 
 import pytest
-from app.api.endpoints.recipes import create_recipe, delete_recipe, read_recipes
+from app.api.endpoints.recipes import (
+    create_recipe,
+    delete_recipe,
+    read_recipes,
+    read_recipe,
+)
 from app.schemas.recipe import RecipeCreate
 
 
@@ -117,3 +122,35 @@ async def test_delete_recipe(mock_db, mock_user):
     # Assert
     mock_db.delete.assert_called_with(mock_recipe_model)
     mock_db.commit.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_read_recipe(mock_db, mock_user):
+    # Setup
+    recipe_id = uuid.uuid4()
+    mock_result = MagicMock()
+    mock_recipe_model = MagicMock()
+    mock_recipe_model.id = recipe_id
+    mock_recipe_model.created_at = datetime.now()
+    mock_recipe_model.data = {
+        "title": "Single Recipe",
+        "video_url": "url",
+        "description": "desc",
+        "ingredients": [],
+        "steps": [],
+        "prep_time_minutes": 10,
+        "servings": 4,
+        "thumbnail_url": "thumb",
+    }
+
+    # Configure scalar_one_or_none returning the recipe
+    mock_result.scalar_one_or_none.return_value = mock_recipe_model
+    mock_db.execute.return_value = mock_result
+
+    # Act
+    result = await read_recipe(recipe_id=recipe_id, db=mock_db, current_user=mock_user)
+
+    # Assert
+    assert result.id == str(recipe_id)
+    assert result.title == "Single Recipe"
+    mock_db.execute.assert_called()

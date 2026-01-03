@@ -1,48 +1,54 @@
+"use client";
+
 import RegisterForm from '@/components/auth/RegisterForm';
 import SocialLoginButton from '@/components/auth/SocialLoginButton';
 import Link from 'next/link';
+import { BackgroundLayout } from '@/components/shared/BackgroundLayout';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { Sparkles } from 'lucide-react';
 
 export default function RegisterPage() {
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center p-4 relative overflow-hidden bg-background font-sans">
-            {/* Background decoration */}
-            <div className="absolute top-0 left-0 w-full h-[50vh] bg-gradient-to-b from-primary/10 to-transparent -z-10" />
-            <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[100px] -z-10 animate-float" />
-            {/* Glow Effect */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -z-10" />
-
-            <div className="w-full max-w-md space-y-8 glass p-10 rounded-[2.5rem] shadow-2xl border border-white/20 dark:border-white/10">
-                <div className="text-center space-y-3">
-                    <h1 className="text-4xl font-black tracking-tighter text-foreground font-display">Create Account</h1>
-                    <p className="text-muted-foreground font-medium text-lg">Start saving your favorite recipes</p>
-                </div>
-
-                <div className="space-y-8">
-                    <SocialLoginButton />
-
-                    <div className="relative">
-                        <div className="absolute inset-0 flex items-center">
-                            <span className="w-full border-t border-border/50" />
+        <BackgroundLayout>
+            <div className="flex-grow flex items-center justify-center p-4">
+                <GlassCard variant="neon" className="w-full max-w-md p-8 md:p-10 rounded-[2.5rem] border-primary/20 shadow-[0_0_50px_rgba(0,0,0,0.5)] bg-black/40 backdrop-blur-2xl">
+                    <div className="flex flex-col items-center gap-6 mb-8">
+                        <div className="size-16 rounded-2xl bg-accent/10 flex items-center justify-center border border-accent/20 shadow-[0_0_20px_rgba(124,58,237,0.2)]">
+                            <Sparkles className="size-8 text-accent" />
                         </div>
-                        <div className="relative flex justify-center text-xs uppercase tracking-widest font-bold">
-                            <span className="bg-transparent px-4 text-muted-foreground">
-                                Or sign up using email
-                            </span>
+                        <div className="text-center space-y-2">
+                            <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white font-display">Join the Future</h1>
+                            <p className="text-blue-200/60 font-medium">Create your AI cookbook account</p>
                         </div>
                     </div>
 
-                    <RegisterForm />
-                </div>
+                    <div className="space-y-8">
+                        <SocialLoginButton />
 
-                <div className="text-center text-sm font-medium">
-                    <p className="text-muted-foreground">
-                        Already have an account?{' '}
-                        <Link href="/login" className="font-bold text-primary hover:text-primary/80 hover:underline">
-                            Sign in
-                        </Link>
-                    </p>
-                </div>
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t border-white/10" />
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase tracking-widest font-bold">
+                                <span className="bg-transparent px-4 text-muted-foreground/50">
+                                    Or with email
+                                </span>
+                            </div>
+                        </div>
+
+                        <RegisterForm />
+                    </div>
+
+                    <div className="text-center text-sm font-medium mt-8">
+                        <p className="text-muted-foreground">
+                            Already joined?{' '}
+                            <Link href="/login" className="font-bold text-primary hover:text-cyan-300 transition-colors">
+                                Sign in
+                            </Link>
+                        </p>
+                    </div>
+                </GlassCard>
             </div>
-        </main>
+        </BackgroundLayout>
     );
 }

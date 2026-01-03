@@ -42,6 +42,16 @@ export const getRecipes = async (): Promise<Recipe[]> => {
 };
 
 /**
+ * Fetches a single recipe by ID.
+ * @param id The ID of the recipe to fetch.
+ * @returns A promise that resolves to the Recipe object.
+ */
+export const getRecipeById = async (id: string | number): Promise<Recipe> => {
+    const response = await api.get<Recipe>(`/api/v1/recipes/${id}`);
+    return response.data;
+};
+
+/**
  * Deletes a recipe from the database.
  * @param recipeId The ID of the recipe to delete.
  */

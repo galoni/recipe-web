@@ -76,7 +76,7 @@ export function RecipeCard({ recipe, onDelete }: RecipeCardProps) {
                 </div>
 
                 <div className="pt-2">
-                    <Link href={`/dashboard?url=${encodeURIComponent(recipe.video_url)}`}>
+                    <Link href={`/recipe/${recipe.id}`}>
                         <Button className="w-full h-14 rounded-2xl bg-muted/50 hover:bg-primary hover:text-primary-foreground text-foreground font-bold transition-all group/btn flex items-center justify-center gap-2">
                             Cook Now
                             <ChevronRight className="size-5 group-hover/btn:translate-x-1 transition-transform" />

@@ -34,3 +34,4 @@ Thumbs.db
 backend/.env
 frontend/.env
 .coverage
+.specify/

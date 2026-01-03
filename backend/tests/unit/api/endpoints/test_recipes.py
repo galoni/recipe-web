@@ -55,9 +55,9 @@ async def test_create_recipe(mock_db, mock_user, recipe_create_data):
     # Assert
     assert result.title == recipe_create_data.title
     assert result.video_url == recipe_create_data.video_url
-    assert mock_db.add.called
-    assert mock_db.commit.called
-    assert mock_db.refresh.called
+    mock_db.add.assert_called()
+    mock_db.commit.assert_called()
+    mock_db.refresh.assert_called()
 
 
 @pytest.mark.asyncio
@@ -89,7 +89,7 @@ async def test_read_recipes(mock_db, mock_user):
     # Assert
     assert len(results) == 1
     assert results[0].title == "Test"
-    assert mock_db.execute.called
+    mock_db.execute.assert_called()
 
 
 @pytest.mark.asyncio
@@ -107,5 +107,5 @@ async def test_delete_recipe(mock_db, mock_user):
     await delete_recipe(recipe_id=recipe_id, db=mock_db, current_user=mock_user)
 
     # Assert
-    assert mock_db.delete.called_with(mock_recipe_model)
-    assert mock_db.commit.called
+    mock_db.delete.assert_called_with(mock_recipe_model)
+    mock_db.commit.assert_called()

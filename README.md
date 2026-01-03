@@ -7,9 +7,9 @@
 ## ✨ Features
 
 - 🪄 **Instant Extraction**: Convert any YouTube URL into a structured recipe in seconds.
-- 🥗 **Smart Ingredients**: High-precision ingredient extraction with unit normalization.
-- ⏱️ **Timed Steps**: Automatic extraction of cooking durations and sequence.
-- 📦 **Cookbook**: Save and organize your favorite recipes for later.
+- 🔍 **Search & Explore**: Discover recipes from the community or find your own in the vault.
+- 📦 **The Vault**: Save and organize your personal high-fidelity cookbook.
+- 🍱 **Global Sharing**: Recipes are public by default, while your collection remains private.
 - 📱 **Cooking Mode**: A focused, distraction-free UI designed for the kitchen.
 
 ---

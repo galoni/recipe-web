@@ -33,13 +33,14 @@ class RecipeBase(BaseModel):
     ingredients: List[Ingredient]
     steps: List[Step]
     dietary_tags: List[str] = []
+    is_public: bool = True
 
 
 # --- Create/Update Models ---
 
 
 class RecipeCreate(RecipeBase):
-    pass
+    id: Optional[str] = None
 
 
 class RecipeGenerateRequest(BaseModel):

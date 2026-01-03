@@ -6,7 +6,7 @@ import { BookOpen, Plus, Loader2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getRecipes, deleteRecipe } from "@/lib/api";
+import { getRecipes, deleteRecipe, toggleRecipePrivacy } from "@/lib/api";
 import { RecipeCard } from "@/components/shared/recipe-card";
 import { useState } from "react";
 import { DeleteConfirmation } from "@/components/shared/delete-confirmation";
@@ -29,6 +29,14 @@ export default function CookbookPage() {
             queryClient.invalidateQueries({ queryKey: ["recipes"] });
             setIsDeleteDialogOpen(false);
             setSelectedRecipe(null);
+        },
+    });
+
+    const toggleMutation = useMutation({
+        mutationFn: ({ id, isPublic }: { id: string | number; isPublic: boolean }) =>
+            toggleRecipePrivacy(id, isPublic),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["recipes"] });
         },
     });
 
@@ -94,6 +102,7 @@ export default function CookbookPage() {
                                     <RecipeCard
                                         recipe={recipe}
                                         onDelete={() => handleDeleteClick(recipe)}
+                                        onTogglePublic={(id, current) => toggleMutation.mutate({ id, isPublic: !current })}
                                     />
                                 </motion.div>
                             ))}

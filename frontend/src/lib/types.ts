@@ -24,5 +24,6 @@ export interface Recipe {
     ingredients: Ingredient[];
     steps: Step[];
     dietary_tags: string[];
+    is_public?: boolean;
     created_at?: string;
 }

@@ -30,6 +30,10 @@ This document outlines the coding standards, workflows, and CI/CD requirements t
 - **Complexity Cap**: Functions SHOULD NOT exceed **50 lines**. Files SHOULD NOT exceed **300 lines**.
 - **Refactoring**: If a component breaches these limits, it MUST be refactored into smaller, reusable units immediately.
 
+### Database Migrations
+- **Alembic**: ALWAYS use `alembic revision --autogenerate` for schema changes.
+- **Handling Data**: If adding a `NOT NULL` column, ensure the migration script handles existing rows by setting a default value.
+
 ### Frontend Component Pattern
 - **Shadcn-lite**: UI components (buttons, inputs) live in `src/components/ui/`.
 - **Page Isolation**: Use `Suspense` around client components that use `useSearchParams`.

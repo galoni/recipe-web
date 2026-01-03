@@ -8,32 +8,86 @@ const config: Config = {
         "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
     theme: {
-        extend: {
-            colors: {
-                "primary": "#45cf17",
-                "primary-dark": "#36a812",
-                "background-light": "#f9fcf8",
-                "background-dark": "#152111",
-                "surface-light": "#ffffff",
-                "surface-dark": "#1e2e19",
-                "text-main": "#111b0e",
-                "text-muted": "#60974e",
+        container: {
+            center: true,
+            padding: "2rem",
+            screens: {
+                "2xl": "1400px",
             },
+        },
+        extend: {
             fontFamily: {
-                "display": ["var(--font-inter)", "sans-serif"],
-                "body": ["var(--font-inter)", "sans-serif"],
+                sans: ["var(--font-inter)", "sans-serif"],
+                display: ["var(--font-outfit)", "sans-serif"],
+            },
+            colors: {
+                border: "hsl(var(--border))",
+                input: "hsl(var(--input))",
+                ring: "hsl(var(--ring))",
+                background: "hsl(var(--background))",
+                foreground: "hsl(var(--foreground))",
+                primary: {
+                    DEFAULT: "hsl(var(--primary))",
+                    foreground: "hsl(var(--primary-foreground))",
+                },
+                secondary: {
+                    DEFAULT: "hsl(var(--secondary))",
+                    foreground: "hsl(var(--secondary-foreground))",
+                },
+                destructive: {
+                    DEFAULT: "hsl(var(--destructive))",
+                    foreground: "hsl(var(--destructive-foreground))",
+                },
+                muted: {
+                    DEFAULT: "hsl(var(--muted))",
+                    foreground: "hsl(var(--muted-foreground))",
+                },
+                accent: {
+                    DEFAULT: "hsl(var(--accent))",
+                    foreground: "hsl(var(--accent-foreground))",
+                },
+                popover: {
+                    DEFAULT: "hsl(var(--popover))",
+                    foreground: "hsl(var(--popover-foreground))",
+                },
+                card: {
+                    DEFAULT: "hsl(var(--card))",
+                    foreground: "hsl(var(--card-foreground))",
+                },
             },
             borderRadius: {
-                "DEFAULT": "0.375rem",
-                "lg": "0.5rem",
-                "xl": "0.75rem",
-                "2xl": "1rem",
-                "full": "9999px"
+                lg: "var(--radius)",
+                md: "calc(var(--radius) - 2px)",
+                sm: "calc(var(--radius) - 4px)",
             },
             boxShadow: {
                 'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-                'glow': '0 0 15px rgba(69, 207, 23, 0.2)',
-            }
+                'glow': '0 0 20px hsl(var(--primary) / 0.3)',
+            },
+            keyframes: {
+                "accordion-down": {
+                    from: { height: "0" },
+                    to: { height: "var(--radix-accordion-content-height)" },
+                },
+                "accordion-up": {
+                    from: { height: "var(--radix-accordion-content-height)" },
+                    to: { height: "0" },
+                },
+                shimmer: {
+                    "0%": { transform: "translateX(-100%)" },
+                    "100%": { transform: "translateX(100%)" },
+                },
+                float: {
+                    "0%, 100%": { transform: "translateY(0)" },
+                    "50%": { transform: "translateY(-10px)" },
+                }
+            },
+            animation: {
+                "accordion-down": "accordion-down 0.2s ease-out",
+                "accordion-up": "accordion-up 0.2s ease-out",
+                shimmer: "shimmer 2s infinite",
+                float: "float 4s ease-in-out infinite",
+            },
         },
     },
     plugins: [],

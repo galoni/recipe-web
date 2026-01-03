@@ -18,8 +18,8 @@ const config: Config = {
         },
         extend: {
             fontFamily: {
-                sans: ["var(--font-inter)", "sans-serif"],
-                display: ["var(--font-outfit)", "sans-serif"],
+                sans: ["var(--font-inter-tight)", "sans-serif"],
+                serif: ["var(--font-instrument-serif)", "serif"],
             },
             colors: {
                 border: "hsl(var(--border))",
@@ -64,11 +64,11 @@ const config: Config = {
             boxShadow: {
                 'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
                 'glow': '0 0 20px hsl(var(--primary) / 0.3)',
-                'neon': '0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--primary) / 0.3)',
+                'premium': '0 10px 30px -10px rgba(0, 0, 0, 0.3)',
             },
             backgroundImage: {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                'hero-glow': 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg)',
+                'aurora': 'radial-gradient(circle at center, var(--tw-gradient-stops))',
             },
             keyframes: {
                 "accordion-down": {

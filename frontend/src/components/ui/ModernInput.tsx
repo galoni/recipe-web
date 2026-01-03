@@ -10,15 +10,15 @@ export const ModernInput = forwardRef<HTMLInputElement, InputProps>(
         return (
             <div className="relative flex items-center w-full group">
                 {icon && (
-                    <div className="absolute left-3 text-muted-foreground group-focus-within:text-primary transition-colors">
+                    <div className="absolute left-4 text-white/20 group-focus-within:text-primary transition-all duration-500">
                         {icon}
                     </div>
                 )}
                 <input
                     type={type}
                     className={cn(
-                        "flex h-11 w-full rounded-lg border border-input bg-black/20 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-300 backdrop-blur-sm",
-                        icon && "pl-10",
+                        "flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-lg text-white ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-white/20 focus-visible:outline-none focus-visible:border-primary/50 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-500 backdrop-blur-xl",
+                        icon && "pl-14",
                         className
                     )}
                     ref={ref}

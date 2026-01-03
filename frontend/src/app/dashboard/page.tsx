@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/shared/navbar";
-import { NeonButton } from "@/components/ui/NeonButton";
+import { PillButton } from "@/components/ui/PillButton";
 import { ModernInput } from "@/components/ui/ModernInput";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { Youtube, Sparkles } from "lucide-react";
+import { Youtube, Sparkles, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "@/lib/api";
@@ -50,7 +50,7 @@ export default function Dashboard() {
         <BackgroundLayout>
             <Navbar />
 
-            <main className="flex-grow flex flex-col items-center justify-center p-6 relative">
+            <main className="flex-grow flex flex-col items-center justify-center p-6 pt-32 relative">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -60,40 +60,42 @@ export default function Dashboard() {
                         <motion.div
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            className="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-primary/20 bg-primary/10 text-primary text-sm font-bold tracking-wider mb-6"
+                            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/50 text-[10px] font-bold tracking-[0.2em] uppercase mb-10"
                         >
-                            <Sparkles className="size-4" />
-                            <span>AI KITCHEN INTERFACE</span>
+                            <Sparkles className="size-3.5 text-primary animate-pulse" />
+                            <span>Neural Extraction Suite</span>
                         </motion.div>
-                        <h1 className="text-4xl md:text-5xl font-display font-bold text-white tracking-tight mb-4">
-                            Initialize Recipe extraction
+                        <h1 className="text-6xl md:text-7xl font-bold text-white leading-[0.9] mb-8">
+                            Initialize <br />
+                            <span className="font-serif italic text-primary">extraction</span>.
                         </h1>
-                        <p className="text-blue-200/60 text-lg">
-                            System ready. Input source video stream below.
+                        <p className="text-white/40 text-xl max-w-lg mx-auto font-medium">
+                            Paste your source video stream below to begin neural processing.
                         </p>
                     </div>
 
-                    <GlassCard variant="neon" className="p-8 rounded-3xl backdrop-blur-xl border-primary/20 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-                        <div className="flex flex-col gap-6">
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-primary/80 uppercase tracking-widest ml-1">Video Source URL</label>
+                    <GlassCard variant="neon" className="p-10 md:p-14">
+                        <div className="flex flex-col gap-8">
+                            <div className="space-y-4">
+                                <label className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] ml-1">Video Source URL</label>
                                 <ModernInput
-                                    icon={<Youtube className="size-5" />}
+                                    icon={<Youtube className="size-6 text-white/20" />}
                                     placeholder="https://youtube.com/watch?v=..."
                                     value={videoUrl}
                                     onChange={(e) => setVideoUrl(e.target.value)}
                                     onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
-                                    className="bg-black/40 border-primary/20 focus:border-primary/50 text-lg h-14"
+                                    className="bg-white/5 border-white/10 focus:border-primary/50 text-xl h-16 rounded-2xl"
                                 />
                             </div>
 
-                            <NeonButton
+                            <PillButton
                                 onClick={handleGenerate}
                                 size="lg"
-                                className="w-full h-14 text-lg font-bold rounded-xl shadow-[0_0_20px_rgba(0,240,255,0.2)] hover:shadow-[0_0_30px_rgba(0,240,255,0.4)]"
+                                className="w-full h-16 text-xl"
                             >
-                                EXTRACT DATA
-                            </NeonButton>
+                                Process Stream
+                                <ArrowRight className="ml-2 size-6" />
+                            </PillButton>
                         </div>
                     </GlassCard>
                 </motion.div>

@@ -8,30 +8,32 @@ export function BackgroundLayout({ children }: { children: React.ReactNode }) {
             {/* Global Animated Background */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none -z-50">
                 {/* Deep Gradient Base */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-background to-background" />
+                <div className="absolute inset-0 bg-background" />
 
-                {/* Animated Orbs */}
+                {/* Aurora Orbs - Large, soft, and slow */}
                 <motion.div
                     animate={{
-                        x: [0, 100, 0],
-                        y: [0, -50, 0],
-                        opacity: [0.3, 0.5, 0.3]
+                        x: [0, 100, -100, 0],
+                        y: [0, -50, 50, 0],
+                        scale: [1, 1.2, 0.8, 1],
+                        opacity: [0.15, 0.25, 0.15]
                     }}
-                    transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px]"
+                    transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                    className="absolute top-[-20%] left-[-10%] w-[1000px] h-[1000px] bg-primary/20 rounded-full blur-[200px]"
                 />
                 <motion.div
                     animate={{
-                        x: [0, -100, 0],
-                        y: [0, 50, 0],
-                        opacity: [0.2, 0.4, 0.2]
+                        x: [0, -100, 100, 0],
+                        y: [0, 50, -50, 0],
+                        scale: [1, 0.8, 1.2, 1],
+                        opacity: [0.1, 0.2, 0.1]
                     }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                    className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-accent/20 rounded-full blur-[140px]"
+                    transition={{ duration: 50, repeat: Infinity, ease: "linear", delay: 5 }}
+                    className="absolute bottom-[-30%] right-[-10%] w-[1200px] h-[1200px] bg-accent/20 rounded-full blur-[240px]"
                 />
 
-                {/* Mesh Grid Overlay (Optional) */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)]" />
+                {/* Subtle Grain Overlay */}
+                <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[url('https://grain-y.com/images/grain-dark.png')] mix-blend-overlay" />
             </div>
 
             <div className="relative z-10 flex-grow flex flex-col">

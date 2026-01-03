@@ -7,7 +7,8 @@ import { BackgroundLayout } from "@/components/shared/BackgroundLayout";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Clock, Users, Flame, ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import { NeonButton } from "@/components/ui/NeonButton";
+import { PillButton } from "@/components/ui/PillButton";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Ingredient, Step } from "@/lib/types";
 
@@ -46,11 +47,11 @@ export default function RecipeViewPage({ params }: { params: Promise<{ id: strin
         return (
             <BackgroundLayout>
                 <div className="flex-grow flex items-center justify-center p-6">
-                    <GlassCard className="p-8 text-center max-w-md">
-                        <h2 className="text-2xl font-bold text-red-500 mb-4">Error</h2>
-                        <p className="text-white/60 mb-6">{error}</p>
+                    <GlassCard className="p-12 text-center max-w-md">
+                        <h2 className="text-3xl font-bold text-red-500 mb-4">Error</h2>
+                        <p className="text-white/40 mb-8 text-lg font-medium">{error}</p>
                         <Link href="/cookbook">
-                            <NeonButton>Back to Cookbook</NeonButton>
+                            <PillButton variant="secondary">Back to Library</PillButton>
                         </Link>
                     </GlassCard>
                 </div>
@@ -60,66 +61,61 @@ export default function RecipeViewPage({ params }: { params: Promise<{ id: strin
 
     return (
         <BackgroundLayout>
-            <div className="container mx-auto px-4 py-8 max-w-4xl">
+            <div className="container mx-auto px-6 py-12 max-w-7xl pt-32 md:pt-40">
                 {/* Back Button */}
-                <Link href="/cookbook" className="inline-flex items-center text-white/50 hover:text-primary mb-6 transition-colors font-bold">
-                    <ChevronLeft className="size-5 mr-1" />
-                    Back to Cookbook
+                <Link href="/cookbook" className="inline-flex items-center text-white/40 hover:text-primary mb-12 transition-all font-bold group text-sm uppercase tracking-[0.2em]">
+                    <ChevronLeft className="size-5 mr-2 group-hover:-translate-x-1 transition-transform" />
+                    Back to Library
                 </Link>
 
-                <div className="grid gap-8">
+                <div className="grid gap-12">
                     {/* Header Card */}
-                    <GlassCard className="p-0 overflow-hidden rounded-[2rem]">
-                        <div className="aspect-[21/9] w-full relative bg-black/40">
+                    <GlassCard className="p-0 overflow-hidden relative border-white/10">
+                        <div className="aspect-[21/9] w-full relative bg-neutral-900">
                             {recipe.thumbnail_url && (
-                                <div className="relative w-full h-full">
+                                <div className="absolute inset-0">
                                     <Image
                                         src={recipe.thumbnail_url}
                                         alt={recipe.title}
                                         fill
-                                        className="object-cover opacity-80"
+                                        className="object-cover opacity-40 mix-blend-luminosity grayscale group-hover:grayscale-0 transition-all duration-1000"
                                         unoptimized
                                     />
                                 </div>
                             )}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
 
-                            <div className="absolute bottom-0 left-0 p-8 w-full">
-                                <h1 className="text-3xl md:text-5xl font-black font-display text-white mb-4 leading-tight">
-                                    {recipe.title}
+                            <div className="absolute bottom-0 left-0 p-10 md:p-16 w-full">
+                                <h1 className="text-5xl md:text-8xl font-bold text-white mb-8 leading-[0.9] max-w-4xl">
+                                    {recipe.title.split(' ').map((word, i) => (
+                                        <span key={i} className={i % 4 === 2 ? "font-serif italic font-normal text-primary" : ""}>
+                                            {word}{' '}
+                                        </span>
+                                    ))}
                                 </h1>
-                                <div className="flex flex-wrap gap-4 text-sm font-bold uppercase tracking-widest text-white/70">
-                                    <div className="flex items-center gap-2 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-                                        <Clock className="size-4 text-primary" />
-                                        <span>{(recipe.prep_time_minutes || 0) + (recipe.cook_time_minutes || 0)} min</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-                                        <Users className="size-4 text-primary" />
-                                        <span>{recipe.servings || 2} servings</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-                                        <Flame className="size-4 text-orange-500" />
-                                        <span>Medium</span>
-                                    </div>
+                                <div className="flex flex-wrap gap-4">
+                                    <Badge icon={<Clock className="size-4" />} text={`${(recipe.prep_time_minutes || 0) + (recipe.cook_time_minutes || 0)} min`} />
+                                    <Badge icon={<Users className="size-4" />} text={`${recipe.servings || 2} servings`} />
+                                    <Badge icon={<Flame className="size-4" />} text="Neural Verified" primary />
                                 </div>
                             </div>
                         </div>
                     </GlassCard>
 
                     {/* Content Grid */}
-                    <div className="grid md:grid-cols-[1fr_2fr] gap-8">
+                    <div className="grid lg:grid-cols-[1fr_2fr] gap-12">
                         {/* Ingredients Column */}
-                        <div className="space-y-6">
-                            <GlassCard className="p-6 h-full rounded-2xl">
-                                <h2 className="text-xl font-bold font-display text-white mb-6 flex items-center gap-2">
-                                    <span className="w-1 h-6 bg-primary rounded-full" />
-                                    Ingredients
-                                </h2>
-                                <ul className="space-y-4">
+                        <div className="space-y-8">
+                            <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-4">
+                                <span className="font-serif italic font-normal text-primary text-4xl">01</span>
+                                Ingredients
+                            </h2>
+                            <GlassCard className="p-10 rounded-[2.5rem]">
+                                <ul className="space-y-6">
                                     {recipe.ingredients.map((ing: Ingredient, i: number) => (
-                                        <li key={i} className="flex items-start gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5 group">
-                                            <div className="size-2 rounded-full bg-primary/50 mt-2 group-hover:bg-primary group-hover:shadow-[0_0_10px_#00f0ff] transition-all" />
-                                            <span className="text-blue-100/80 leading-relaxed font-medium">
+                                        <li key={i} className="flex items-start gap-5 group">
+                                            <div className="size-2 rounded-full bg-primary/20 mt-2.5 group-hover:bg-primary transition-all duration-500" />
+                                            <span className="text-white/50 leading-relaxed font-medium text-lg">
                                                 <span className="text-white font-bold">{ing.quantity} {ing.unit}</span> {ing.item}
                                             </span>
                                         </li>
@@ -129,30 +125,43 @@ export default function RecipeViewPage({ params }: { params: Promise<{ id: strin
                         </div>
 
                         {/* Instructions Column */}
-                        <div className="space-y-6">
-                            <GlassCard className="p-8 h-full rounded-2xl">
-                                <h2 className="text-xl font-bold font-display text-white mb-6 flex items-center gap-2">
-                                    <span className="w-1 h-6 bg-accent rounded-full" />
-                                    Instructions
-                                </h2>
-                                <div className="space-y-8">
-                                    {recipe.steps.map((step: Step, i: number) => (
-                                        <div key={i} className="relative pl-8 group">
-                                            <div className="absolute left-0 top-0 text-3xl font-black text-white/5 group-hover:text-primary/20 transition-colors font-display">
-                                                {step.step_number || i + 1}
+                        <div className="space-y-8">
+                            <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-4">
+                                <span className="font-serif italic font-normal text-primary text-4xl">02</span>
+                                Extraction Path
+                            </h2>
+                            <div className="space-y-8">
+                                {recipe.steps.map((step: Step, i: number) => (
+                                    <GlassCard key={i} className="p-10 rounded-[2.5rem] group hover:border-primary/30">
+                                        <div className="flex gap-8">
+                                            <div className="text-5xl font-serif italic text-white/5 group-hover:text-primary/20 transition-all duration-700 shrink-0">
+                                                {(step.step_number || i + 1).toString().padStart(2, '0')}
                                             </div>
-                                            <div className="absolute left-[11px] top-10 bottom-[-10px] w-px bg-white/5 group-last:hidden" />
-                                            <p className="text-lg text-blue-100/90 leading-relaxed">
+                                            <p className="text-xl text-white/60 group-hover:text-white/90 leading-relaxed font-medium transition-colors">
                                                 {step.instruction}
                                             </p>
                                         </div>
-                                    ))}
-                                </div>
-                            </GlassCard>
+                                    </GlassCard>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </BackgroundLayout>
     );
+}
+
+function Badge({ icon, text, primary }: { icon: React.ReactNode, text: string, primary?: boolean }) {
+    return (
+        <div className={cn(
+            "flex items-center gap-3 px-6 py-3 rounded-full border text-[10px] font-bold uppercase tracking-[0.2em] backdrop-blur-xl transition-all",
+            primary
+                ? "bg-primary/10 border-primary/20 text-primary"
+                : "bg-white/5 border-white/10 text-white/60"
+        )}>
+            <span className={primary ? "text-primary" : "text-primary"}>{icon}</span>
+            <span>{text}</span>
+        </div>
+    )
 }

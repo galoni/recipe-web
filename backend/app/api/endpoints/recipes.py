@@ -75,3 +75,35 @@ async def read_recipes(
     except Exception as e:
         logger.error(f"Error reading recipes: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.delete("/{recipe_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_recipe(
+    recipe_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
+    """
+    Delete a recipe from the database.
+    """
+    try:
+        result = await db.execute(
+            select(RecipeModel).where(
+                RecipeModel.id == recipe_id, RecipeModel.user_id == current_user.id
+            )
+        )
+        db_recipe = result.scalar_one_or_none()
+
+        if not db_recipe:
+            raise HTTPException(
+                status_code=404, detail="Recipe not found or not owned by user"
+            )
+
+        await db.delete(db_recipe)
+        await db.commit()
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting recipe: {e}")
+        await db.rollback()
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")

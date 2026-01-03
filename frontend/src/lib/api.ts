@@ -31,3 +31,20 @@ export const saveRecipe = async (recipe: Recipe): Promise<Recipe> => {
     const response = await api.post<Recipe>("/api/v1/recipes/", recipe);
     return response.data;
 };
+
+/**
+ * Fetches all saved recipes for the current user.
+ * @returns A promise that resolves to an array of Recipe objects.
+ */
+export const getRecipes = async (): Promise<Recipe[]> => {
+    const response = await api.get<Recipe[]>("/api/v1/recipes/");
+    return response.data;
+};
+
+/**
+ * Deletes a recipe from the database.
+ * @param recipeId The ID of the recipe to delete.
+ */
+export const deleteRecipe = async (recipeId: string | number): Promise<void> => {
+    await api.delete(`/api/v1/recipes/${recipeId}`);
+};

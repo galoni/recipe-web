@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import animate from "tailwindcss-animate";
 
 const config: Config = {
     darkMode: "class",
@@ -17,8 +18,8 @@ const config: Config = {
         },
         extend: {
             fontFamily: {
-                sans: ["var(--font-inter)", "sans-serif"],
-                display: ["var(--font-outfit)", "sans-serif"],
+                sans: ["var(--font-inter-tight)", "sans-serif"],
+                serif: ["var(--font-instrument-serif)", "serif"],
             },
             colors: {
                 border: "hsl(var(--border))",
@@ -63,6 +64,11 @@ const config: Config = {
             boxShadow: {
                 'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
                 'glow': '0 0 20px hsl(var(--primary) / 0.3)',
+                'premium': '0 10px 30px -10px rgba(0, 0, 0, 0.3)',
+            },
+            backgroundImage: {
+                'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                'aurora': 'radial-gradient(circle at center, var(--tw-gradient-stops))',
             },
             keyframes: {
                 "accordion-down": {
@@ -80,16 +86,21 @@ const config: Config = {
                 float: {
                     "0%, 100%": { transform: "translateY(0)" },
                     "50%": { transform: "translateY(-10px)" },
+                },
+                pulse: {
+                    "0%, 100%": { opacity: "1" },
+                    "50%": { opacity: "0.5" },
                 }
             },
             animation: {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
                 shimmer: "shimmer 2s infinite",
-                float: "float 4s ease-in-out infinite",
+                float: "float 6s ease-in-out infinite",
+                pulse: "pulse 3s ease-in-out infinite",
             },
         },
     },
-    plugins: [],
+    plugins: [animate],
 };
 export default config;

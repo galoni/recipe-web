@@ -13,7 +13,7 @@ export interface Step {
 }
 
 export interface Recipe {
-    id?: number;
+    id?: string | number;
     title: string;
     description?: string | null;
     video_url: string;

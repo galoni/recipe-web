@@ -77,6 +77,36 @@ async def read_recipes(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/{recipe_id}", response_model=Recipe)
+async def read_recipe(
+    recipe_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user),
+):
+    """
+    Get a specific recipe by ID.
+    """
+    try:
+        result = await db.execute(
+            select(RecipeModel).where(
+                RecipeModel.id == recipe_id, RecipeModel.user_id == current_user.id
+            )
+        )
+        db_recipe = result.scalar_one_or_none()
+
+        if not db_recipe:
+            raise HTTPException(status_code=404, detail="Recipe not found")
+
+        data = db_recipe.data
+        return Recipe(id=str(db_recipe.id), **data, created_at=db_recipe.created_at)
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error reading recipe {recipe_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+
+
 @router.delete("/{recipe_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_recipe(
     recipe_id: uuid.UUID,

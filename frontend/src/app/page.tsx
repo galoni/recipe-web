@@ -1,207 +1,329 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/shared/navbar";
-import { Button } from "@/components/ui/button";
-import { FeatureCard } from "@/components/ui/feature-card";
-import { StepCard } from "@/components/ui/step-card";
-import { Youtube, Zap, ChefHat, Sparkles, Smartphone, Monitor } from "lucide-react";
-import { motion } from "framer-motion";
+import { PillButton } from "@/components/ui/PillButton";
+import { InfiniteMarquee } from "@/components/ui/InfiniteMarquee";
+
+import { Sparkles, ChefHat, Zap, Monitor, ArrowRight, Check, X, Play, Youtube, Instagram, Cpu } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import { BackgroundLayout } from "@/components/shared/BackgroundLayout";
+import { cn } from "@/lib/utils";
+import { useRef } from "react";
 
-export default function Home() {
-  const [videoUrl, setVideoUrl] = useState("");
-  const router = useRouter();
+import Image from "next/image";
 
-  const handleGenerate = () => {
-    if (!videoUrl) return;
-    router.push(`/dashboard?url=${encodeURIComponent(videoUrl)}`);
-  };
+export default function LandingPage() {
+  const workflowRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: workflowRef,
+    offset: ["start end", "end start"]
+  });
+
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, 300]);
 
   return (
-    <div className="flex min-h-screen w-full flex-col font-sans bg-background selection:bg-primary/20">
+    <BackgroundLayout>
       <Navbar />
 
-      <main className="flex-grow flex flex-col">
+      <main className="flex-grow flex flex-col pt-20 md:pt-32">
         {/* HERO SECTION */}
-        <section className="relative w-full py-32 lg:py-48 flex flex-col items-center justify-center overflow-hidden">
-          {/* Background Ambience */}
-          <div className="absolute inset-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px] animate-float opacity-60" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent/5 rounded-full blur-[120px] animate-float opacity-60" style={{ animationDelay: "2s" }} />
+        <section className="relative w-full py-20 lg:py-32 flex flex-col items-center justify-center overflow-hidden">
+          {/* Floating Elements */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <motion.div
+              animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
+              transition={{ duration: 5, repeat: Infinity }}
+              className="absolute top-1/4 left-10 md:left-20 px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl rotate-[-12deg]"
+            >
+              <div className="flex items-center gap-2">
+                <Youtube className="size-4 text-red-500" />
+                <span className="text-xs font-bold text-white/40 uppercase tracking-widest">Neural Source</span>
+              </div>
+            </motion.div>
+            <motion.div
+              animate={{ y: [0, 20, 0], x: [0, -15, 0] }}
+              transition={{ duration: 7, repeat: Infinity }}
+              className="absolute bottom-1/3 right-10 md:right-20 px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl rotate-[8deg]"
+            >
+              <div className="flex items-center gap-2">
+                <Cpu className="size-4 text-primary" />
+                <span className="text-xs font-bold text-white/40 uppercase tracking-widest">Processing v4.2</span>
+              </div>
+            </motion.div>
+            <motion.div
+              animate={{ y: [0, -30, 0], x: [0, 20, 0] }}
+              transition={{ duration: 9, repeat: Infinity }}
+              className="absolute top-1/2 right-[15%] px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl rotate-[-5deg] hidden lg:block"
+            >
+              <div className="flex items-center gap-2">
+                <Instagram className="size-4 text-pink-500" />
+                <span className="text-xs font-bold text-white/40 uppercase tracking-widest">Visual Hook</span>
+              </div>
+            </motion.div>
           </div>
 
-          <div className="container px-6 relative z-10 flex flex-col items-center text-center">
+          <div className="container px-6 relative z-10 flex flex-col items-center text-center max-w-5xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 text-primary font-bold text-xs uppercase tracking-widest mb-8 shadow-glow"
+              transition={{ duration: 0.8 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-10"
             >
-              <Sparkles className="size-3.5" />
-              <span>AI-Powered Cooking Assistant</span>
+              <Sparkles className="size-3.5 text-primary animate-pulse" />
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/60">Now in Private Beta</span>
             </motion.div>
 
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-foreground mb-6 font-display max-w-5xl"
+              transition={{ delay: 0.2, duration: 1 }}
+              className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-8 leading-[0.9]"
             >
-              Turn YouTube into <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-emerald-400 to-teal-500">
-                Cooking Mode.
-              </span>
+              Your <span className="font-serif italic text-primary">own</span> <br />
+              Creative Kitchen.
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-lg md:text-2xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="text-xl md:text-2xl text-white/50 max-w-2xl mb-14 leading-relaxed font-medium"
             >
-              Stop pausing and rewinding. Get a clean list of ingredients
-              and step-by-step instructions from any video instantly.
+              Stop pausing videos. Extract ingredients instantly with neural parsing. The evolution of the home cook begins here.
             </motion.p>
 
-            {/* INPUT FIELD */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
-              className="w-full max-w-2xl relative group"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="flex flex-col sm:flex-row gap-5"
             >
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary to-emerald-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200" />
-              <div className="relative flex items-center bg-card border border-border rounded-2xl p-2 shadow-2xl focus-within:ring-2 focus-within:ring-primary/20 transition-all">
-                <div className="pl-4 pr-3 text-muted-foreground">
-                  <Youtube className="size-6" />
-                </div>
-                <input
-                  type="text"
-                  className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground/50 text-lg font-medium h-12"
-                  placeholder="Paste YouTube URL here..."
-                  value={videoUrl}
-                  onChange={(e) => setVideoUrl(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
-                />
-                <Button
-                  onClick={handleGenerate}
-                  size="lg"
-                  className="h-12 px-8 rounded-xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-transform active:scale-95"
-                >
-                  Generate
-                </Button>
-              </div>
+              <Link href="/register">
+                <PillButton size="lg" className="h-16 px-12 text-lg">
+                  Start Extracting
+                  <ArrowRight className="ml-2 size-5" />
+                </PillButton>
+              </Link>
+              <Link href="/login">
+                <PillButton variant="secondary" size="lg" className="h-16 px-12 text-lg">
+                  Watch Demo
+                </PillButton>
+              </Link>
             </motion.div>
           </div>
         </section>
 
-        {/* HOW IT WORKS */}
-        <section className="py-32 bg-secondary/30 border-y border-border/50 relative overflow-hidden">
-          <div className="container px-6">
-            <div className="text-center mb-20">
-              <h2 className="text-3xl md:text-5xl font-black font-display text-foreground mb-6">How it works</h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Transform complexity into simplicity in just three steps.
-              </p>
-            </div>
+        {/* MARQUEE */}
+        <InfiniteMarquee
+          items={["Neural Parsing", "Smart Inventory", "Kitchen Display", "Cinematic AI", "Global Cookbook", "Recipe Sync"]}
+          speed={60}
+          className="border-y border-white/5 my-10"
+        />
 
-            <div className="grid md:grid-cols-3 gap-8 relative z-10">
-              <StepCard
-                number={1}
-                title="Paste Link"
-                description="Copy any cooking video URL from YouTube and paste it into ChefStream."
-              />
-              <StepCard
-                number={2}
-                title="AI Processing"
-                description="Our Gemini 2.0 AI analyzes the video to extract ingredients and precise steps."
-              />
-              <StepCard
-                number={3}
-                title="Start Cooking"
-                description="Follow the interactive guide with hands-free mode and timers tailored for you."
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* FEATURES */}
-        <section className="py-32 container px-6">
-          <div className="flex flex-col md:flex-row gap-16 items-center">
-            <div className="md:w-1/2">
-              <h2 className="text-3xl md:text-5xl font-black font-display text-foreground mb-6 leading-tight">
-                Built for the <br />
-                <span className="text-primary">Modern Kitchen</span>
-              </h2>
-              <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
-                ChefStream isn&apos;t just a transcriber. It&apos;s an intelligent companion that understands context,
-                timing, and the nuance of cooking.
-              </p>
-
-              <div className="grid sm:grid-cols-2 gap-4">
-                <FeatureCard
-                  icon={ChefHat}
-                  title="Smart Detection"
-                  description="Identifies ingredients even if they aren't explicitly listed."
-                />
-                <FeatureCard
-                  icon={Smartphone}
-                  title="Mobile First"
-                  description="Designed to look perfect on your phone while you cook."
-                />
-                <FeatureCard
-                  icon={Zap}
-                  title="Instant Sync"
-                  description="Save recipes to your personal cookbook forever."
-                />
-                <FeatureCard
-                  icon={Monitor}
-                  title="Focus Mode"
-                  description="Distraction-free interface designed for messy hands."
-                />
+        {/* WORKFLOW SECTION */}
+        <section ref={workflowRef} className="py-24 relative bg-white/[0.02] overflow-hidden">
+          <div className="container px-6 max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-20 items-stretch">
+              <div className="relative">
+                <motion.div
+                  style={{ y: y1 }}
+                  className="sticky top-40 rounded-[3rem] overflow-hidden border border-white/10 shadow-premium aspect-[4/5] md:aspect-video lg:aspect-square group"
+                >
+                  <Image
+                    src="/ai_workflow_abstract.png"
+                    alt="AI Workflow"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                  />
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      className="size-24 rounded-full bg-primary/20 backdrop-blur-3xl border border-primary/30 flex items-center justify-center cursor-pointer shadow-[0_0_50px_rgba(0,240,255,0.2)]"
+                    >
+                      <Play className="size-10 text-primary fill-primary ml-1" />
+                    </motion.div>
+                  </div>
+                </motion.div>
               </div>
-            </div>
 
-            {/* Visual element for features */}
-            <div className="md:w-1/2 relative">
-              <div className="aspect-square rounded-[3rem] bg-gradient-to-tr from-primary/10 to-secondary/10 border border-white/10 relative overflow-hidden flex items-center justify-center">
-                <div className="absolute inset-0 backdrop-blur-3xl" />
-                <div className="relative z-10 p-10 text-center">
-                  <div className="size-24 bg-background rounded-2xl shadow-xl flex items-center justify-center mx-auto mb-6 rotate-12">
-                    <ChefHat className="size-12 text-primary" />
-                  </div>
-                  <div className="glass-card p-6 rounded-2xl max-w-xs mx-auto -rotate-3 transition-transform hover:rotate-0 duration-500">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="size-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">1</div>
-                      <div className="h-2 w-24 bg-muted rounded-full" />
-                    </div>
-                    <div className="space-y-2">
-                      <div className="h-2 w-full bg-muted rounded-full" />
-                      <div className="h-2 w-3/4 bg-muted rounded-full" />
-                      <div className="h-2 w-5/6 bg-muted rounded-full" />
-                    </div>
-                  </div>
+              <div className="flex flex-col gap-12 py-20">
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  className="text-4xl md:text-7xl font-bold text-white leading-tight"
+                >
+                  From <span className="font-serif italic font-normal">Streaming</span> <br />
+                  to the Stove.
+                </motion.h2>
+
+                <div className="flex flex-col gap-16">
+                  <WorkflowStep
+                    number="01"
+                    title="Paste Your Link"
+                    desc="Drop any cooking tutorial URL. From YouTube to Instagram, we've got you covered."
+                    delay={0.1}
+                  />
+                  <WorkflowStep
+                    number="02"
+                    title="Neural Parsing"
+                    desc="Our AI watches the video frame-by-frame, identifying ingredients and techniques in milliseconds."
+                    delay={0.2}
+                  />
+                  <WorkflowStep
+                    number="03"
+                    title="Cinematic Cooking"
+                    desc="A distraction-free interface designed for your tablet or kitchen display."
+                    delay={0.3}
+                  />
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="border-t border-border py-12 px-6 bg-secondary/10">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="text-center md:text-left">
-              <span className="text-2xl font-black font-display text-foreground tracking-tighter">ChefStream</span>
-              <p className="text-muted-foreground text-sm mt-2">© 2026 ChefStream AI. All rights reserved.</p>
+        {/* FEATURES GRID */}
+        <section className="py-32 relative">
+          <div className="container px-6 max-w-7xl mx-auto">
+            <div className="text-center mb-24">
+              <h2 className="text-4xl md:text-8xl font-bold text-white mb-8">Built for <span className="font-serif italic font-normal text-primary">Mastery</span>.</h2>
+              <p className="text-white/40 text-2xl max-w-3xl mx-auto font-medium leading-relaxed">Every tool you need to build your digital heritage collection using cutting-edge vision models.</p>
             </div>
-            <div className="flex gap-8">
-              <Link href="#" className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link>
-              <Link href="#" className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link>
+            <div className="grid md:grid-cols-3 gap-8">
+              <FeatureCard
+                icon={<Zap className="size-8" />}
+                title="Neural Extraction"
+                desc="Proprietary AI models that understand kitchen terminology and visual context."
+              />
+              <FeatureCard
+                icon={<ChefHat className="size-8" />}
+                title="Smart Inventory"
+                desc="Automatically cross-references extracted items with your digital pantry."
+              />
+              <FeatureCard
+                icon={<Monitor className="size-8" />}
+                title="Kitchen Overlay"
+                desc="A bold, high-contrast UI that stays readable even from across the room."
+              />
             </div>
           </div>
-        </footer>
+        </section>
+
+        {/* COMPARISON SECTION */}
+        <section className="py-32 relative overflow-hidden">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-1/2 -right-1/4 size-[1000px] border border-white/5 rounded-full pointer-events-none"
+          />
+
+          <div className="container px-6 max-w-5xl mx-auto relative z-10">
+            <div className="glass-card rounded-[4rem] p-12 md:p-24 overflow-hidden relative border-white/10 shadow-premium">
+              <motion.div
+                style={{ y: y2 }}
+                className="absolute top-0 right-0 p-10 opacity-[0.03]"
+              >
+                <Monitor className="size-80 text-primary" />
+              </motion.div>
+
+              <h2 className="text-5xl md:text-8xl font-bold text-white mb-20 text-center">
+                The <span className="font-serif italic font-normal">Upgrade</span>.
+              </h2>
+
+              <div className="grid md:grid-cols-2 gap-px bg-white/10 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl">
+                <div className="p-12 md:p-16 bg-background/60 backdrop-blur-3xl">
+                  <h3 className="text-xs font-bold text-white/40 mb-10 uppercase tracking-[0.3em] flex items-center gap-3">
+                    <X className="size-4 text-destructive" /> The Old Way
+                  </h3>
+                  <ul className="space-y-8">
+                    <ComparisonItem text="Pausing videos every 5 seconds" />
+                    <ComparisonItem text="Messy notes on napkins" />
+                    <ComparisonItem text="Screen turning off mid-cook" />
+                    <ComparisonItem text="Searching for that 'one' video" />
+                  </ul>
+                </div>
+                <div className="p-12 md:p-16 bg-primary/5 backdrop-blur-3xl relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent pointer-events-none" />
+                  <h3 className="text-xs font-bold text-primary mb-10 uppercase tracking-[0.3em] flex items-center gap-3">
+                    <Check className="size-4" /> The ChefStream Way
+                  </h3>
+                  <ul className="space-y-8">
+                    <ComparisonItem text="Instant neural extraction" active />
+                    <ComparisonItem text="Clean, digital cookbook" active />
+                    <ComparisonItem text="Hands-free cinematic mode" active />
+                    <ComparisonItem text="Universal search \u0026 AI tags" active />
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-24 text-center">
+                <Link href="/register">
+                  <PillButton size="lg" className="h-20 px-20 text-2xl shadow-[0_20px_60px_-15px_rgba(0,240,255,0.3)]">
+                    Join the Evolution
+                  </PillButton>
+                </Link>
+                <p className="mt-8 text-white/20 text-sm font-bold uppercase tracking-[0.2em]">Free during closed beta</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
-    </div>
+    </BackgroundLayout>
   );
+}
+
+function WorkflowStep({ number, title, desc, delay }: { number: string, title: string, desc: string, delay: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ delay, duration: 0.8 }}
+      className="flex gap-10 group"
+    >
+      <span className="text-2xl font-serif italic text-primary/20 group-hover:text-primary transition-all duration-500 scale-150 origin-top-left">{number}</span>
+      <div className="space-y-4">
+        <h4 className="text-3xl font-bold text-white group-hover:translate-x-2 transition-transform duration-500">{title}</h4>
+        <p className="text-xl text-white/30 leading-relaxed font-medium group-hover:text-white/50 transition-colors duration-500">{desc}</p>
+      </div>
+    </motion.div>
+  )
+}
+
+function FeatureCard({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -15 }}
+      className="glass-card p-12 rounded-[3.5rem] group border-white/5 hover:border-primary/20 transition-all duration-700 hover:shadow-[0_30px_100px_-20px_rgba(0,0,0,0.8)]"
+    >
+      <div className="size-20 rounded-[2rem] bg-white/5 flex items-center justify-center text-white/30 mb-10 group-hover:bg-primary group-hover:text-black transition-all duration-700 shadow-inner">
+        {icon}
+      </div>
+      <h3 className="text-3xl font-bold text-white mb-6 group-hover:text-primary transition-colors duration-500">{title}</h3>
+      <p className="text-xl text-white/30 leading-relaxed font-medium group-hover:text-white/50 transition-colors duration-500">{desc}</p>
+    </motion.div>
+  )
+}
+
+function ComparisonItem({ text, active }: { text: string, active?: boolean }) {
+  return (
+    <motion.li
+      whileHover={{ x: 10 }}
+      className={cn(
+        "flex items-center gap-6 text-xl font-medium transition-all duration-500",
+        active ? "text-white" : "text-white/20"
+      )}
+    >
+      <div className={cn(
+        "size-8 rounded-full flex items-center justify-center border transition-all duration-500",
+        active ? "bg-primary/20 border-primary/50 text-primary" : "bg-white/5 border-white/5 text-white/10"
+      )}>
+        {active ? <Check className="size-5" /> : <X className="size-4" />}
+      </div>
+      {text}
+    </motion.li>
+  )
 }

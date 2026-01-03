@@ -1,11 +1,14 @@
 "use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ChefHat, Search, Menu, LogOut, User as UserIcon } from "lucide-react";
+import { ChefHat, Search, Menu, LogOut, User as UserIcon, Book, Home } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "@/lib/api";
+import { usePathname } from "next/navigation";
 
 export function Navbar() {
+    const pathname = usePathname();
     const { data: user, isLoading } = useQuery({
         queryKey: ["currentUser"],
         queryFn: getCurrentUser,
@@ -14,79 +17,93 @@ export function Navbar() {
 
     const isAuthed = !!user;
 
+    const isActive = (path: string) => pathname === path;
+
     return (
-        <header className="w-full bg-background-light/70 dark:bg-background-dark/70 backdrop-blur-xl border-b border-border sticky top-0 z-[100]">
-            <div className="px-6 md:px-12 h-20 flex items-center justify-between max-w-[1440px] mx-auto w-full">
+        <header className="w-full glass sticky top-0 z-[100] border-b border-border/40">
+            <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+                {/* Logo Area */}
                 <div className="flex items-center gap-12">
                     <Link href="/" className="flex items-center gap-3 group">
-                        <div className="size-11 bg-primary rounded-xl flex items-center justify-center shadow-glow group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                            <ChefHat className="size-6 text-white" />
+                        <div className="size-10 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+                            <ChefHat className="size-6 text-primary group-hover:text-white transition-colors" />
                         </div>
-                        <h2 className="text-text-main dark:text-white text-2xl font-black font-outfit tracking-tighter">
+                        <span className="text-xl font-bold font-display tracking-tight text-foreground">
                             ChefStream
-                        </h2>
+                        </span>
                     </Link>
 
+                    {/* Desktop Nav */}
                     <nav className="hidden lg:flex items-center gap-8">
-                        <Link href="/" className="text-sm font-black uppercase tracking-widest text-text-muted hover:text-primary transition-colors flex items-center gap-2">
-                            Discover
+                        <Link
+                            href="/"
+                            className={`text-sm font-medium transition-colors flex items-center gap-2 ${isActive('/') ? 'text-primary font-bold' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                            <Home className="size-4" />
+                            Home
                         </Link>
-                        <Link href="/cookbook" className="text-sm font-black uppercase tracking-widest text-text-muted hover:text-primary transition-colors flex items-center gap-2">
+                        <Link
+                            href="/cookbook"
+                            className={`text-sm font-medium transition-colors flex items-center gap-2 ${isActive('/cookbook') ? 'text-primary font-bold' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                            <Book className="size-4" />
                             My Cookbook
                         </Link>
                     </nav>
                 </div>
 
+                {/* Right Actions */}
                 <div className="flex items-center gap-4">
-                    <div className="hidden sm:flex items-center px-4 py-2 rounded-xl bg-muted border border-border group focus-within:border-primary/50 transition-all">
-                        <Search className="size-4 text-text-muted group-focus-within:text-primary" />
+                    {/* Search Bar */}
+                    <div className="hidden sm:flex items-center px-3 py-2 rounded-full bg-secondary/50 border border-transparent focus-within:border-primary/30 focus-within:bg-background transition-all w-64">
+                        <Search className="size-4 text-muted-foreground mr-2" />
                         <input
-                            placeholder="Explore recipes..."
-                            className="bg-transparent border-none outline-none px-3 text-sm font-bold w-40 focus:w-64 transition-all"
+                            placeholder="Search recipes..."
+                            className="bg-transparent border-none outline-none text-sm w-full text-foreground placeholder:text-muted-foreground/70"
                         />
                     </div>
 
-                    <div className="hidden md:flex gap-3 items-center">
+                    <div className="hidden md:flex items-center gap-3">
                         {!isAuthed && !isLoading ? (
                             <>
                                 <Link href="/login">
-                                    <Button variant="ghost" className="font-black border-none text-text-main hover:bg-muted rounded-xl px-6">
-                                        Login
+                                    <Button variant="ghost" size="sm" className="font-medium text-foreground hover:bg-muted rounded-full">
+                                        Log in
                                     </Button>
                                 </Link>
                                 <Link href="/register">
-                                    <Button variant="ghost" className="font-black border-none text-text-main hover:bg-muted rounded-xl px-6">
-                                        Register
+                                    <Button size="sm" className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold shadow-md hover:shadow-glow transition-all">
+                                        Sign up
                                     </Button>
                                 </Link>
                             </>
                         ) : isAuthed ? (
-                            <>
-                                <div className="flex items-center gap-2 mr-2 px-3 py-1.5 bg-muted/50 rounded-xl">
-                                    <UserIcon className="size-4 text-primary" />
-                                    <span className="text-sm font-bold max-w-[120px] truncate">{user.email}</span>
-                                </div>
+                            <div className="flex items-center gap-4">
+                                <Link href="/profile" className="flex items-center gap-2 pl-1 pr-3 py-1 bg-muted/50 rounded-full hover:bg-muted transition-colors border border-transparent hover:border-border">
+                                    <div className="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                                        <UserIcon className="size-4" />
+                                    </div>
+                                    <span className="text-sm font-medium max-w-[100px] truncate text-foreground">{user?.email?.split('@')[0]}</span>
+                                </Link>
                                 <Button
                                     variant="ghost"
-                                    className="font-black border-none text-red-500 hover:bg-red-50 rounded-xl px-6 flex items-center gap-2"
+                                    size="icon"
+                                    className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-full"
                                     onClick={async () => {
                                         const { logout } = await import("@/lib/auth");
                                         await logout();
                                     }}
                                 >
-                                    <LogOut className="size-4" />
-                                    Logout
+                                    <LogOut className="size-5" />
                                 </Button>
-                            </>
+                            </div>
                         ) : (
-                            <div className="size-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-4" />
+                            <div className="size-8 rounded-full bg-muted animate-pulse" />
                         )}
-                        <Button className="font-black bg-primary hover:bg-primary-dark text-white rounded-xl px-8 shadow-glow">
-                            Start Cooking
-                        </Button>
                     </div>
 
-                    <Button variant="ghost" className="md:hidden size-10 flex items-center justify-center rounded-xl hover:bg-muted">
+                    {/* Mobile Menu Toggle */}
+                    <Button variant="ghost" size="icon" className="md:hidden rounded-full text-foreground hover:bg-muted">
                         <Menu className="size-6" />
                     </Button>
                 </div>

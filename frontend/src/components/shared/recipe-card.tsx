@@ -19,7 +19,7 @@ export function RecipeCard({ recipe, onDelete }: RecipeCardProps) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             whileHover={{ y: -8 }}
-            className="group relative bg-white dark:bg-surface-dark rounded-[2.5rem] border border-border shadow-soft overflow-hidden hover:shadow-2xl transition-all duration-500"
+            className="group relative bg-card/50 backdrop-blur-sm rounded-[2.5rem] border border-border/50 shadow-sm overflow-hidden hover:shadow-2xl transition-all duration-500"
         >
             {/* Image Section */}
             <div className="relative aspect-[16/10] overflow-hidden bg-muted">
@@ -46,7 +46,7 @@ export function RecipeCard({ recipe, onDelete }: RecipeCardProps) {
                             e.stopPropagation();
                             if (recipe.id) onDelete(recipe.id);
                         }}
-                        className="absolute top-4 right-4 size-10 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-red-500 hover:text-white transition-all opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100"
+                        className="absolute top-4 right-4 size-10 rounded-full bg-black/20 backdrop-blur-md text-white hover:bg-destructive hover:text-white transition-all opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100"
                     >
                         <Trash2 className="size-5" />
                     </Button>
@@ -56,20 +56,20 @@ export function RecipeCard({ recipe, onDelete }: RecipeCardProps) {
             {/* Content Section */}
             <div className="p-8 space-y-5">
                 <div className="space-y-2">
-                    <h3 className="text-2xl font-black font-outfit text-text-main line-clamp-1 group-hover:text-primary transition-colors">
+                    <h3 className="text-2xl font-bold font-display text-foreground line-clamp-1 group-hover:text-primary transition-colors">
                         {recipe.title}
                     </h3>
-                    <p className="text-sm text-text-muted line-clamp-2 leading-relaxed font-medium">
+                    <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed font-medium">
                         {recipe.description || "No description provided."}
                     </p>
                 </div>
 
-                <div className="flex items-center gap-4 text-xs font-black text-text-muted uppercase tracking-widest">
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/50 border border-border">
+                <div className="flex items-center gap-4 text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/50 border border-transparent">
                         <Clock className="size-3.5 text-primary" />
                         <span>{(recipe.prep_time_minutes || 0) + (recipe.cook_time_minutes || 0)}m</span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/50 border border-border">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/50 border border-transparent">
                         <Users className="size-3.5 text-primary" />
                         <span>{recipe.servings || 2}</span>
                     </div>
@@ -77,7 +77,7 @@ export function RecipeCard({ recipe, onDelete }: RecipeCardProps) {
 
                 <div className="pt-2">
                     <Link href={`/dashboard?url=${encodeURIComponent(recipe.video_url)}`}>
-                        <Button className="w-full h-14 rounded-2xl bg-muted dark:bg-muted/10 hover:bg-primary hover:text-white text-text-main dark:text-gray-100 font-black transition-all group/btn flex items-center justify-center gap-2">
+                        <Button className="w-full h-14 rounded-2xl bg-muted/50 hover:bg-primary hover:text-primary-foreground text-foreground font-bold transition-all group/btn flex items-center justify-center gap-2">
                             Cook Now
                             <ChevronRight className="size-5 group-hover/btn:translate-x-1 transition-transform" />
                         </Button>

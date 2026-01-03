@@ -8,7 +8,7 @@ function cn(...inputs: ClassValue[]) {
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
-    size?: "sm" | "md" | "lg" | "xl";
+    size?: "sm" | "md" | "lg" | "xl" | "icon";
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -28,6 +28,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                         "h-12 px-6 text-xs": size === "md",
                         "h-14 px-8 text-sm": size === "lg",
                         "h-16 px-10 text-base": size === "xl",
+                        "h-10 w-10 min-w-10 p-0 rounded-full": size === "icon",
                     },
                     className
                 )}

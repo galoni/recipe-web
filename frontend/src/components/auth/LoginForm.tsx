@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loginWithEmail } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import { ArrowRight, Loader2, Mail, Lock } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export default function LoginForm() {
+    const queryClient = useQueryClient();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -20,6 +22,7 @@ export default function LoginForm() {
 
         try {
             await loginWithEmail(email, password);
+            await queryClient.invalidateQueries({ queryKey: ["currentUser"] });
             router.push('/dashboard');
         } catch {
             setError('Invalid email or password.');

@@ -87,4 +87,4 @@ def test_transcript_parsing_logic(
 
     result = youtube_service.get_transcript("12345678901")
 
-    assert result == "Line 1 Line 1 Line 2"
+    assert result == "Line 1 Line 2"

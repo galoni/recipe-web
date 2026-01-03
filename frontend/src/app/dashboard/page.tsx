@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { generateRecipe, saveRecipe } from "@/lib/api";
+import { generateRecipe, saveRecipe, getCurrentUser } from "@/lib/api";
 import { Navbar } from "@/components/shared/navbar";
 import { Button } from "@/components/ui/button";
 import { Suspense, useState } from "react";
@@ -23,6 +23,12 @@ function DashboardContent() {
         queryKey: ["recipe", videoUrl],
         queryFn: () => generateRecipe(videoUrl || ""),
         enabled: !!videoUrl,
+        retry: false,
+    });
+
+    const { data: user } = useQuery({
+        queryKey: ["currentUser"],
+        queryFn: getCurrentUser,
         retry: false,
     });
 
@@ -189,7 +195,7 @@ function DashboardContent() {
 
                         <div className="pt-4">
                             <Button
-                                onClick={handleSave}
+                                onClick={user ? handleSave : () => router.push('/login')}
                                 disabled={isSaving || isSaved}
                                 className={`rounded-2xl px-8 h-14 font-black shadow-glow transition-all ${isSaved ? 'bg-secondary' : 'bg-primary hover:bg-primary-dark'
                                     }`}
@@ -201,7 +207,7 @@ function DashboardContent() {
                                 ) : (
                                     <Save className="size-5 mr-2" />
                                 )}
-                                {isSaved ? 'Saved to Cookbook' : 'Save to Cookbook'}
+                                {isSaved ? 'Saved to Cookbook' : user ? 'Save to Cookbook' : 'Login to Save'}
                             </Button>
                         </div>
                     </div>

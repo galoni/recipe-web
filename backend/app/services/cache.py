@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.models.db import ExtractionCache
 from app.models.recipe import RecipeData
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 import json
 from app.schemas.recipe import (
@@ -17,7 +17,7 @@ class CacheService:
         self.db = db
         # Configurable constants could be in settings
         self.PROMPT_VERSION = "v1"
-        self.MODEL_VERSION = "gemini-1.5-flash"
+        self.MODEL_VERSION = "gemini-flash-latest"
         self.TTL_DAYS = 30
 
     async def get_cached_extraction(self, video_id: str) -> Optional[RecipeData]:
@@ -28,7 +28,7 @@ class CacheService:
             ExtractionCache.video_id == video_id,
             ExtractionCache.prompt_version == self.PROMPT_VERSION,
             ExtractionCache.model == self.MODEL_VERSION,
-            ExtractionCache.expires_at > datetime.utcnow(),
+            ExtractionCache.expires_at > datetime.now(timezone.utc),
         )
         result = await self.db.execute(query)
         cache_entry = result.scalar_one_or_none()
@@ -52,7 +52,7 @@ class CacheService:
         data = recipe_data.model_dump()
 
         # Calculate expiration
-        expires_at = datetime.utcnow() + timedelta(days=self.TTL_DAYS)
+        expires_at = datetime.now(timezone.utc) + timedelta(days=self.TTL_DAYS)
 
         # Upsert logic (delete existing or update)
         # Simple approach: Delete old cache for this key then insert

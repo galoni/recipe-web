@@ -6,7 +6,6 @@ from sqlalchemy import select
 from app.core.config import settings
 from app.core.database import get_db
 from app.models.user import User
-from app.core.logger import logger
 
 
 async def get_current_user(
@@ -21,6 +20,10 @@ async def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Not authenticated",
         )
+
+    # Strip 'Bearer ' if present (some parts of the app might set it)
+    if token.startswith("Bearer "):
+        token = token.replace("Bearer ", "", 1)
 
     try:
         payload = jwt.decode(

@@ -57,9 +57,40 @@ class YouTubeService:
 
             # Parse VTT to plain text using webvtt-py
             captions = webvtt.read(vtt_path)
-            transcript = " ".join([c.text for c in captions])
 
-            # Simple cleanup of whitespace
+            # YouTube auto-captions are often overlapping and repeating.
+            # Example:
+            # 1: "hey"
+            # 2: "hey everybody"
+            # 3: "hey everybody it's"
+            # We want to keep only unique content.
+
+            text_lines = []
+            last_text = ""
+
+            for caption in captions:
+                text = caption.text.strip()
+                if not text:
+                    continue
+
+                # If the current text starts with the last text, it's likely an extension
+                if text.startswith(last_text) and last_text:
+                    # Replace the last line with the current one as it's more complete
+                    if text_lines:
+                        text_lines[-1] = text
+                    else:
+                        text_lines.append(text)
+                elif last_text.startswith(text) and text:
+                    # Current text is already contained in last text, skip
+                    continue
+                else:
+                    text_lines.append(text)
+
+                last_text = text
+
+            transcript = " ".join(text_lines)
+
+            # Final cleanup of whitespace
             return " ".join(transcript.split())
 
         except Exception as e:

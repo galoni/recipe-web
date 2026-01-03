@@ -10,10 +10,18 @@ from app.schemas.recipe import RecipeCreate
 @pytest.fixture
 def mock_db():
     mock = AsyncMock()
+    mock.add = MagicMock()  # add is synchronous
     mock.commit = AsyncMock()
-    mock.refresh = AsyncMock()
     mock.rollback = AsyncMock()
     mock.delete = AsyncMock()
+
+    async def mock_refresh(instance):
+        instance.created_at = datetime.now()
+        instance.id = (
+            uuid.uuid4()
+        )  # Ensure ID is also present if needed (though passed in init usually)
+
+    mock.refresh = AsyncMock(side_effect=mock_refresh)
     return mock
 
 

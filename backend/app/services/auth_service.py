@@ -34,5 +34,11 @@ class AuthService:
         )
 
     def create_token_for_user(self, user_id: int):
+        import uuid
+
+        jti = str(uuid.uuid4())
         access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-        return create_access_token(subject=user_id, expires_delta=access_token_expires)
+        token = create_access_token(
+            subject=user_id, expires_delta=access_token_expires, token_id=jti
+        )
+        return token, jti

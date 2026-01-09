@@ -4,6 +4,7 @@ import { Navbar } from "@/components/shared/navbar";
 import { BackgroundLayout } from "@/components/shared/BackgroundLayout";
 import { Settings, Bell, Lock, Eye, Palette, Globe } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { PillButton } from "@/components/ui/PillButton";
 
 export default function SettingsPage() {
@@ -29,8 +30,14 @@ export default function SettingsPage() {
                             <SettingsItem icon={<Globe />} title="Region" desc="Synchronize with local culinary databases" value="Global / EN" />
                         </SettingsGroup>
 
-                        <SettingsGroup title="Security \u0026 Privacy">
-                            <SettingsItem icon={<Lock />} title="Neural Encryption" desc="Manage biometric and cryptographic access" action="Manage" />
+                        <SettingsGroup title="Security & Privacy">
+                            <SettingsItem
+                                icon={<Lock />}
+                                title="Neural Encryption"
+                                desc="Manage biometric and cryptographic access"
+                                action="Manage"
+                                href="/settings/security"
+                            />
                             <SettingsItem icon={<Eye />} title="Visibility" desc="Control recipe broadcast settings" value="Private Library" />
                         </SettingsGroup>
 
@@ -59,9 +66,9 @@ function SettingsGroup({ title, children }: { title: string, children: React.Rea
     );
 }
 
-function SettingsItem({ icon, title, desc, value, action }: { icon: React.ReactNode, title: string, desc: string, value?: string, action?: string }) {
-    return (
-        <div className="group p-4 md:p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all duration-300 flex items-center justify-between">
+function SettingsItem({ icon, title, desc, value, action, href }: { icon: React.ReactNode, title: string, desc: string, value?: string, action?: string, href?: string }) {
+    const content = (
+        <div className="group p-4 md:p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all duration-300 flex items-center justify-between cursor-pointer">
             <div className="flex items-center gap-6">
                 <div className="size-10 rounded-xl bg-white/5 flex items-center justify-center text-white/30 group-hover:text-primary transition-colors">
                     {icon}
@@ -72,7 +79,17 @@ function SettingsItem({ icon, title, desc, value, action }: { icon: React.ReactN
                 </div>
             </div>
             {value && <span className="text-xs font-bold text-primary px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">{value}</span>}
-            {action && <PillButton variant="ghost" size="sm" className="text-xs h-9 px-4">{action}</PillButton>}
+            {action && (
+                <div className="px-5 py-2.5 rounded-3xl bg-white/5 border border-white/10 text-xs font-bold text-white group-hover:bg-primary group-hover:text-white transition-all">
+                    {action}
+                </div>
+            )}
         </div>
     );
+
+    if (href) {
+        return <Link href={href}>{content}</Link>;
+    }
+
+    return content;
 }

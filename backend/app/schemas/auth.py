@@ -4,8 +4,10 @@ from pydantic import BaseModel, EmailStr
 
 
 class Token(BaseModel):
-    access_token: str
-    token_type: str
+    access_token: str | None = None
+    token_type: str | None = None
+    requires_2fa: bool = False
+    challenge_token: str | None = None
 
 
 class TokenData(BaseModel):
@@ -16,3 +18,8 @@ class TokenData(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+
+class TwoFactorVerify(BaseModel):
+    code: str
+    challenge_token: str

@@ -15,7 +15,7 @@ sys.path.append(os.getcwd())  # Ensure backend/ is in path
 
 from app.core.config import settings
 from app.core.database import Base
-from app.models import db, user  # Import all models to register them
+from app.models import db, user, security  # Import all models to register them
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

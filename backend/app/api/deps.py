@@ -41,6 +41,31 @@ async def get_current_user(
             detail="Could not validate credentials",
         )
 
+    # Check session revocation
+    jti = payload.get("jti")
+    if jti:
+        from app.models.security import Session
+        from sqlalchemy import update
+        from datetime import datetime, timezone
+
+        session_result = await db.execute(
+            select(Session).where(Session.token_jti == jti, Session.revoked_at == None)
+        )
+        session = session_result.scalar_one_or_none()
+        if not session:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Session revoked or expired",
+            )
+
+        # Update last active
+        await db.execute(
+            update(Session)
+            .where(Session.id == session.id)
+            .values(last_active_at=datetime.now(timezone.utc))
+        )
+        await db.commit()
+
     result = await db.execute(select(User).where(User.id == int(user_id)))
     user = result.scalar_one_or_none()
 
@@ -71,6 +96,20 @@ async def get_current_user_optional(
         user_id: str = payload.get("sub")
         if user_id is None:
             return None
+
+        # Check session revocation
+        jti = payload.get("jti")
+        if jti:
+            from app.models.security import Session
+
+            session_result = await db.execute(
+                select(Session).where(
+                    Session.token_jti == jti, Session.revoked_at == None
+                )
+            )
+            session = session_result.scalar_one_or_none()
+            if not session:
+                return None
 
         result = await db.execute(select(User).where(User.id == int(user_id)))
         return result.scalar_one_or_none()

@@ -33,4 +33,22 @@ export interface User {
     email: string;
     full_name?: string | null;
     is_active: boolean;
+    last_login_at?: string | null;
+    last_login_ip?: string | null;
+    is_2fa_enabled: boolean;
+    security_notifications_enabled: boolean;
+}
+
+export interface Session {
+    id: string;
+    device_type: string;
+    browser_name: string;
+    browser_version: string;
+    os_name: string;
+    os_version: string;
+    ip_address: string;
+    location_city: string | null;
+    location_country: string | null;
+    last_active_at: string;
+    is_current: boolean;
 }

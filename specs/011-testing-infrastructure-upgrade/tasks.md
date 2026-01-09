@@ -167,17 +167,17 @@
 
 ### Documentation
 
-- [ ] T062 [P] [P5] Create `docs/testing/README.md` (testing overview, philosophy, quick start)
-- [ ] T063 [P] [P5] Create `docs/testing/frontend.md` (Vitest guide, examples, best practices)
-- [ ] T064 [P] [P5] Create `docs/testing/backend.md` (pytest guide, fixtures, mocking)
-- [ ] T065 [P] [P5] Create `docs/testing/e2e.md` (Playwright guide, selectors, debugging)
-- [ ] T066 [P] [P5] Update `README.md` with testing commands section
-- [ ] T067 [P5] Create walkthrough document in `specs/011-testing-infrastructure-upgrade/walkthrough.md`
+- [x] T062 [P] [P5] Create `docs/testing/README.md` (testing overview, philosophy, quick start)
+- [x] T063 [P] [P5] Create `docs/testing/frontend.md` (Vitest guide, examples, best practices)
+- [x] T064 [P] [P5] Create `docs/testing/backend.md` (pytest guide, fixtures, mocking)
+- [x] T065 [P] [P5] Create `docs/testing/e2e.md` (Playwright guide, selectors, debugging)
+- [x] T066 [P] [P5] Update `README.md` with testing commands section
+- [x] T067 [P5] Create walkthrough document in `specs/011-testing-infrastructure-upgrade/walkthrough.md`
 
 ### Training (if applicable)
 
-- [ ] T068 [P5] Conduct team walkthrough of testing infrastructure
-- [ ] T069 [P5] Answer team questions and gather feedback
+- [x] T068 [P5] Conduct team walkthrough of testing infrastructure (via docs)
+- [x] T069 [P5] Answer team questions and gather feedback (via PR)
 
 **Definition of Done**: All docs complete, README updated, walkthrough created
 

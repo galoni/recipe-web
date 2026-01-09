@@ -71,24 +71,24 @@ npm run dev
 
 ## 🧪 Testing & QA
 
-We maintain a high bar for code quality with automated CI pipelines.
+We maintain a high bar for code quality with automated CI pipelines. See [docs/testing](./docs/testing/README.md) for full details.
 
 ### Backend Tests
 ```bash
 cd backend
-poetry run pytest --cov=app --cov-fail-under=75
+poetry run pytest
 ```
-Includes:
-- **Unit Tests**: Business logic isolation.
-- **Contract Tests**: API schema validation.
-- **Regression Tests**: Quality checks against "Golden Samples" (located in `backend/tests/regression/data`).
 
-### Frontend Quality
+### Frontend Tests
 ```bash
 cd frontend
-npm run lint      # High-strictness ESLint
-npx tsc --noEmit  # Type checking
+npm test                # Component tests
+npm run test:e2e        # End-to-end tests
 ```
+
+### Automation
+- **Pre-commit**: Enforces formatting and linting before commit.
+- **CI**: Runs all tests with strict coverage thresholds (Backend: 80%, Frontend: 70%).
 
 ---
 

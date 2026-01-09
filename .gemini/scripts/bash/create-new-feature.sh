@@ -201,6 +201,7 @@ generate_branch_name() {
 
         # Keep words that are NOT stop words AND (length >= 3 OR are potential acronyms)
         # Keep words that are NOT stop words AND (length >= 3 OR are potential acronyms)
+        # Keep words that are NOT stop words AND (length >= 3 OR are potential acronyms)
         if ! echo "$word" | grep -qiE "$stop_words"; then
             if [ ${#word} -ge 3 ]; then
                 meaningful_words+=("$word")

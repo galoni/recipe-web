@@ -4,13 +4,11 @@ from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
+
 class EmailService:
     @staticmethod
     async def send_email(
-        email_to: str,
-        subject: str,
-        template_name: str,
-        template_data: Dict[str, Any]
+        email_to: str, subject: str, template_name: str, template_data: Dict[str, Any]
     ) -> bool:
         """
         Sends an email using the configured SMTP server.
@@ -18,7 +16,7 @@ class EmailService:
         """
         logger.info(f"Sending security email to {email_to}: {subject}")
         logger.info(f"Template: {template_name}, Data: {template_data}")
-        
+
         # In a real implementation, you'd use a library like fast-mail or aiyomail
         # For now, we simulate success and log the "content"
         print(f"\n--- SECURITY EMAIL SENT ---")
@@ -27,16 +25,12 @@ class EmailService:
         print(f"TEMPLATE: {template_name}")
         print(f"DATA: {template_data}")
         print(f"--- END EMAIL ---\n")
-        
+
         return True
 
     @staticmethod
     async def send_new_device_login_email(
-        email_to: str,
-        device_info: str,
-        location: str,
-        ip_address: str,
-        timestamp: str
+        email_to: str, device_info: str, location: str, ip_address: str, timestamp: str
     ):
         await EmailService.send_email(
             email_to=email_to,
@@ -46,8 +40,8 @@ class EmailService:
                 "device_info": device_info,
                 "location": location,
                 "ip_address": ip_address,
-                "timestamp": timestamp
-            }
+                "timestamp": timestamp,
+            },
         )
 
     @staticmethod
@@ -56,7 +50,7 @@ class EmailService:
             email_to=email_to,
             subject="Security Update: Two-Factor Authentication Enabled",
             template_name="2fa_enabled",
-            template_data={}
+            template_data={},
         )
 
     @staticmethod
@@ -65,5 +59,5 @@ class EmailService:
             email_to=email_to,
             subject="Security Alert: Two-Factor Authentication Disabled",
             template_name="2fa_disabled",
-            template_data={}
+            template_data={},
         )

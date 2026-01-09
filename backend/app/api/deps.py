@@ -47,7 +47,7 @@ async def get_current_user(
         from app.models.security import Session
         from sqlalchemy import update
         from datetime import datetime, timezone
-        
+
         session_result = await db.execute(
             select(Session).where(Session.token_jti == jti, Session.revoked_at == None)
         )
@@ -57,7 +57,7 @@ async def get_current_user(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Session revoked or expired",
             )
-        
+
         # Update last active
         await db.execute(
             update(Session)
@@ -101,8 +101,11 @@ async def get_current_user_optional(
         jti = payload.get("jti")
         if jti:
             from app.models.security import Session
+
             session_result = await db.execute(
-                select(Session).where(Session.token_jti == jti, Session.revoked_at == None)
+                select(Session).where(
+                    Session.token_jti == jti, Session.revoked_at == None
+                )
             )
             session = session_result.scalar_one_or_none()
             if not session:

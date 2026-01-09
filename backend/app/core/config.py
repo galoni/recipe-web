@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_SECRET: Optional[str] = None
     FRONTEND_URL: str = "http://localhost:3000"
     TOTP_ISSUER: str = "ChefStream"
-    
+
     # Email
     SMTP_TLS: bool = True
     SMTP_PORT: Optional[int] = 587

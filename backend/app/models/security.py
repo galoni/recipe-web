@@ -20,17 +20,17 @@ class Session(Base):
         Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
     token_jti: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
-    
+
     device_type: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     browser_name: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     browser_version: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     os_name: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     os_version: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
-    
+
     ip_address: Mapped[Optional[str]] = mapped_column(String(45), nullable=True)
     location_city: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     location_country: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
-    
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

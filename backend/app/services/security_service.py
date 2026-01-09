@@ -25,13 +25,13 @@ class SecurityService:
     ) -> Session:
         # Parse user agent
         ua_result = user_agent_parser.Parse(user_agent)
-        
+
         device_type = "Desktop"
-        if ua_result.get('device', {}).get('family') != 'Other':
-            device_type = ua_result['device']['family']
+        if ua_result.get("device", {}).get("family") != "Other":
+            device_type = ua_result["device"]["family"]
         elif "Mobile" in user_agent:
             device_type = "Mobile"
-            
+
         from app.services.geoip import GeoIPService
 
         city, country = await GeoIPService.get_location(ip_address)
@@ -49,7 +49,7 @@ class SecurityService:
             location_country=country,
         )
         self.db.add(session)
-        
+
         # Log security event
         event = SecurityEvent(
             user_id=user_id,
@@ -57,18 +57,18 @@ class SecurityService:
             event_metadata={
                 "ip": ip_address,
                 "device": device_type,
-                "browser": ua_result['user_agent']['family']
-            }
+                "browser": ua_result["user_agent"]["family"],
+            },
         )
         self.db.add(event)
-        
+
         # Update user's last login
         await self.db.execute(
             update(User)
             .where(User.id == user_id)
             .values(last_login_at=datetime.now(timezone.utc), last_login_ip=ip_address)
         )
-        
+
         await self.db.commit()
 
         # Check for new device and send notification
@@ -80,7 +80,7 @@ class SecurityService:
                 Session.ip_address == ip_address,
                 Session.browser_name == ua_result["user_agent"]["family"],
                 Session.token_jti != token_jti,
-                Session.revoked_at == None
+                Session.revoked_at == None,
             )
         )
         result = await self.db.execute(query)
@@ -98,7 +98,9 @@ class SecurityService:
                     device_info=device_info,
                     location=location,
                     ip_address=ip_address,
-                    timestamp=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+                    timestamp=datetime.now(timezone.utc).strftime(
+                        "%Y-%m-%d %H:%M:%S UTC"
+                    ),
                 )
 
         return session
@@ -135,23 +137,21 @@ class SecurityService:
 
     async def enable_2fa(self, user_id: int, secret: str, backup_codes: List[str]):
         from passlib.context import CryptContext
+
         pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
         hashed_codes = [pwd_context.hash(code) for code in backup_codes]
-        
+
         await self.db.execute(
             update(User)
             .where(User.id == user_id)
             .values(
                 totp_secret=secret,
                 is_2fa_enabled=True,
-                backup_codes_hashed=hashed_codes
+                backup_codes_hashed=hashed_codes,
             )
         )
-        
-        event = SecurityEvent(
-            user_id=user_id,
-            event_type="2fa_enabled"
-        )
+
+        event = SecurityEvent(user_id=user_id, event_type="2fa_enabled")
         self.db.add(event)
         await self.db.commit()
 
@@ -165,17 +165,10 @@ class SecurityService:
         await self.db.execute(
             update(User)
             .where(User.id == user_id)
-            .values(
-                totp_secret=None,
-                is_2fa_enabled=False,
-                backup_codes_hashed=None
-            )
+            .values(totp_secret=None, is_2fa_enabled=False, backup_codes_hashed=None)
         )
-        
-        event = SecurityEvent(
-            user_id=user_id,
-            event_type="2fa_disabled"
-        )
+
+        event = SecurityEvent(user_id=user_id, event_type="2fa_disabled")
         self.db.add(event)
         await self.db.commit()
 

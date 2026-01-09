@@ -60,7 +60,7 @@ origins = [
 if settings.ENVIRONMENT == "development":
     app.add_middleware(
         CORSMiddleware,
-        allow_origin_regex=".*", # Permissive in development
+        allow_origin_regex=".*",  # Permissive in development
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

@@ -10,6 +10,6 @@ class GeoIPService:
         """
         if ip_address == "127.0.0.1" or ip_address == "unknown":
             return "Local", "Localhost"
-        
+
         # For MVP, return unknown unless we have a real DB
         return None, None

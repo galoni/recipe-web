@@ -53,15 +53,12 @@ async def login_access_token(
             {
                 "sub": str(user.id),
                 "exp": datetime.now(timezone.utc) + timedelta(minutes=5),
-                "type": "2fa_challenge"
+                "type": "2fa_challenge",
             },
             settings.SECRET_KEY,
-            algorithm=settings.ALGORITHM
+            algorithm=settings.ALGORITHM,
         )
-        return {
-            "requires_2fa": True,
-            "challenge_token": challenge_token
-        }
+        return {"requires_2fa": True, "challenge_token": challenge_token}
 
     access_token, jti = auth_service.create_token_for_user(user.id)
 
@@ -108,15 +105,15 @@ async def verify_2fa(
 
     try:
         payload = jwt.decode(
-            data.challenge_token, 
-            settings.SECRET_KEY, 
-            algorithms=[settings.ALGORITHM]
+            data.challenge_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
         if payload.get("type") != "2fa_challenge":
             raise HTTPException(status_code=400, detail="Invalid challenge token")
         user_id = int(payload.get("sub"))
     except Exception:
-        raise HTTPException(status_code=400, detail="Invalid or expired challenge token")
+        raise HTTPException(
+            status_code=400, detail="Invalid or expired challenge token"
+        )
 
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
@@ -204,12 +201,14 @@ async def google_callback(
             {
                 "sub": str(existing_user.id),
                 "exp": datetime.now(timezone.utc) + timedelta(minutes=5),
-                "type": "2fa_challenge"
+                "type": "2fa_challenge",
             },
             settings.SECRET_KEY,
-            algorithm=settings.ALGORITHM
+            algorithm=settings.ALGORITHM,
         )
-        return RedirectResponse(url=f"{settings.FRONTEND_URL}/login/2fa?token={challenge_token}")
+        return RedirectResponse(
+            url=f"{settings.FRONTEND_URL}/login/2fa?token={challenge_token}"
+        )
 
     # Create Session
     auth_service = AuthService(db)

@@ -7,7 +7,7 @@ import uuid
 from app.core.database import get_db
 from app.models.db import Recipe as RecipeModel
 from app.models.user import User as UserModel
-from app.api.deps import get_current_user
+from app.api.deps import get_current_user, get_current_user_optional
 from app.schemas.recipe import Recipe, RecipeCreate
 from app.core.logger import logger
 from app.services.discovery import DiscoveryService
@@ -104,21 +104,23 @@ async def read_recipes(
 async def read_recipe(
     recipe_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
-    current_user: UserModel = Depends(get_current_user),
+    current_user: Optional[UserModel] = Depends(get_current_user_optional),
 ):
     """
     Get a specific recipe by ID.
     """
     try:
-        result = await db.execute(
-            select(RecipeModel).where(
-                RecipeModel.id == recipe_id, RecipeModel.user_id == current_user.id
+        recipe = None
+        if current_user:
+            result = await db.execute(
+                select(RecipeModel).where(
+                    RecipeModel.id == recipe_id, RecipeModel.user_id == current_user.id
+                )
             )
-        )
-        recipe = result.scalar_one_or_none()
+            recipe = result.scalar_one_or_none()
 
         if not recipe:
-            # Check if it's a public recipe even if not owned
+            # Check if it's a public recipe even if not owned or not logged in
             result = await db.execute(
                 select(RecipeModel).where(RecipeModel.id == recipe_id, RecipeModel.is_public == True)
             )

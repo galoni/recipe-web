@@ -18,9 +18,10 @@ export default function CookbookPage() {
     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-    const { data: recipes, isLoading } = useQuery({
+    const { data: recipes, isLoading, error } = useQuery({
         queryKey: ["recipes"],
         queryFn: getRecipes,
+        retry: false,
     });
 
     const deleteMutation = useMutation({
@@ -88,6 +89,16 @@ export default function CookbookPage() {
                     <div className="flex flex-col items-center justify-center py-40 space-y-6">
                         <Loader2 className="size-16 text-primary animate-spin" />
                         <p className="text-white/20 font-bold uppercase tracking-[0.2em] text-[10px]">Synchronizing Library...</p>
+                    </div>
+                ) : error ? (
+                    <div className="flex flex-col items-center justify-center py-40 space-y-6">
+                        <div className="p-8 rounded-[2rem] bg-red-500/10 border border-red-500/20 text-center max-w-md">
+                            <h3 className="text-2xl font-bold text-red-500 mb-4">Connection Terminated</h3>
+                            <p className="text-white/40 font-medium mb-8">Unable to synchronize with your neural library. Please ensure you are authenticated.</p>
+                            <Link href="/login">
+                                <PillButton>Authenticate Identity</PillButton>
+                            </Link>
+                        </div>
                     </div>
                 ) : recipes && recipes.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">

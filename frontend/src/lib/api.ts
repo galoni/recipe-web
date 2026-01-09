@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Recipe } from "./types";
+import { Recipe, User } from "./types";
 
 // Base URL for the API
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -86,7 +86,7 @@ export const toggleRecipePrivacy = async (recipeId: string | number, isPublic: b
  * Fetches the current authenticated user.
  * @returns A promise that resolves to the User data.
  */
-export const getCurrentUser = async (): Promise<{ id: number; email: string } | null> => {
+export const getCurrentUser = async (): Promise<User | null> => {
     try {
         const response = await api.get("/api/v1/auth/me");
         return response.data;

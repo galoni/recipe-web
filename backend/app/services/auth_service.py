@@ -19,13 +19,13 @@ class AuthService:
             return None
         return user
 
-    async def register_new_user(self, email: str, password: str):
+    async def register_new_user(self, email: str, password: str, full_name: str | None = None):
         existing = await user_crud.get_by_email(self.db, email)
         if existing:
             return None
         # Create user
         logger.info("Registering new user", extra={"props": {"email": email}})
-        return await user_crud.create(self.db, email=email, password=password)
+        return await user_crud.create(self.db, email=email, password=password, full_name=full_name)
 
     def create_token_for_user(self, user_id: int):
         access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)

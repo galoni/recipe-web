@@ -153,7 +153,7 @@ async def register(
     Register a new user with email and password.
     """
     auth_service = AuthService(db)
-    user = await auth_service.register_new_user(user_in.email, user_in.password)
+    user = await auth_service.register_new_user(user_in.email, user_in.password, user_in.full_name)
     if not user:
         raise HTTPException(
             status_code=400,

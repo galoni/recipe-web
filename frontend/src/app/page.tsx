@@ -41,7 +41,7 @@ export default function LandingPage() {
             <motion.div
               animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
               transition={{ duration: 5, repeat: Infinity }}
-              className="absolute top-1/4 left-10 md:left-20 px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl rotate-[-12deg]"
+              className="absolute top-1/4 left-5 md:left-20 px-4 md:px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl rotate-[-12deg] hidden sm:flex"
             >
               <div className="flex items-center gap-2">
                 <Youtube className="size-4 text-red-500" />
@@ -51,7 +51,7 @@ export default function LandingPage() {
             <motion.div
               animate={{ y: [0, 20, 0], x: [0, -15, 0] }}
               transition={{ duration: 7, repeat: Infinity }}
-              className="absolute bottom-1/3 right-10 md:right-20 px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl rotate-[8deg]"
+              className="absolute bottom-1/3 right-5 md:right-20 px-4 md:px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl rotate-[8deg] hidden sm:flex"
             >
               <div className="flex items-center gap-2">
                 <Cpu className="size-4 text-primary" />
@@ -85,7 +85,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 1 }}
-              className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-8 leading-[0.9]"
+              className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-8 leading-[0.9]"
             >
               Your <span className="font-serif italic text-primary">own</span> <br />
               Creative Kitchen.

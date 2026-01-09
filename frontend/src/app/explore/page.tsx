@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Navbar } from "@/components/shared/navbar";
 import { SearchBar } from "@/components/ui/search-bar";
 import { RecipeCard } from "@/components/shared/recipe-card";
@@ -13,6 +13,7 @@ import { Loader2, Compass, Sparkles } from "lucide-react";
 
 function ExploreContent() {
     const searchParams = useSearchParams();
+    const router = useRouter();
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
@@ -37,10 +38,14 @@ function ExploreContent() {
 
     const handleSearch = (query: string) => {
         setSearchQuery(query);
-        fetchRecipes(query);
-        // Update URL without full reload
-        const newUrl = query ? `/explore?q=${encodeURIComponent(query)}` : '/explore';
-        window.history.pushState({}, '', newUrl);
+        // Update URL
+        const params = new URLSearchParams(searchParams.toString());
+        if (query) {
+            params.set("q", query);
+        } else {
+            params.delete("q");
+        }
+        router.push(`/explore?${params.toString()}`);
     };
 
     return (

@@ -1,7 +1,7 @@
-from fastapi import Depends, HTTPException, status, Request
-from jose import jwt, JWTError
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import Depends, HTTPException, Request, status
+from jose import JWTError, jwt
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.database import get_db
@@ -71,7 +71,7 @@ async def get_current_user_optional(
         user_id: str = payload.get("sub")
         if user_id is None:
             return None
-            
+
         result = await db.execute(select(User).where(User.id == int(user_id)))
         return result.scalar_one_or_none()
     except (JWTError, ValueError):

@@ -1,12 +1,13 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.database import get_db
+from app.models.db import Recipe as RecipeModel
 from app.schemas.recipe import RecipeCreate, RecipeGenerateRequest
+from app.services.cache import CacheService
 from app.services.gemini import GeminiService
 from app.services.youtube import YouTubeService
-from app.services.cache import CacheService
-from app.models.db import Recipe as RecipeModel
-from sqlalchemy import select
 
 router = APIRouter()
 
@@ -26,16 +27,20 @@ async def extract_recipe(
         # 2. Check for existing public recipes (Instant result)
         # Using filter_by(source_url=...) or checking video_id embedded in source_url
         # Since source_url is stored, we can search by it.
-        stmt = select(RecipeModel).where(RecipeModel.source_url.like(f"%{video_id}%")).limit(1)
+        stmt = (
+            select(RecipeModel)
+            .where(RecipeModel.source_url.like(f"%{video_id}%"))
+            .limit(1)
+        )
         result = await db.execute(stmt)
         existing_recipe = result.scalar_one_or_none()
-        
+
         if existing_recipe:
             recipe_data = existing_recipe.data
             return RecipeCreate(
                 id=str(existing_recipe.id),
                 **recipe_data,
-                is_public=existing_recipe.is_public
+                is_public=existing_recipe.is_public,
             )
 
         # 3. Check Cache

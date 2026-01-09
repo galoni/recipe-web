@@ -1,16 +1,19 @@
-import pytest
-from unittest.mock import AsyncMock, MagicMock
-from app.services.discovery import DiscoveryService
-from app.models.db import Recipe as RecipeModel
-from datetime import datetime
 import uuid
+from datetime import datetime
+from unittest.mock import AsyncMock, MagicMock
+
+import pytest
+
+from app.models.db import Recipe as RecipeModel
+from app.services.discovery import DiscoveryService
+
 
 @pytest.mark.asyncio
 async def test_search_recipes_no_query():
     # Setup
     mock_db = AsyncMock()
     service = DiscoveryService(mock_db)
-    
+
     mock_recipe = MagicMock(spec=RecipeModel)
     mock_recipe.id = uuid.uuid4()
     mock_recipe.is_public = True
@@ -21,37 +24,39 @@ async def test_search_recipes_no_query():
         "video_url": "http://test.com",
         "ingredients": [],
         "steps": [],
-        "dietary_tags": []
+        "dietary_tags": [],
     }
-    
+
     mock_result = MagicMock()
     mock_result.scalars.return_value.all.return_value = [mock_recipe]
     mock_db.execute.return_value = mock_result
-    
+
     # Act
     results = await service.search_recipes()
-    
+
     # Assert
     assert len(results) == 1
     assert results[0].title == "Test Recipe"
     mock_db.execute.assert_called_once()
+
 
 @pytest.mark.asyncio
 async def test_search_recipes_with_query():
     # Setup
     mock_db = AsyncMock()
     service = DiscoveryService(mock_db)
-    
+
     mock_result = MagicMock()
     mock_result.scalars.return_value.all.return_value = []
     mock_db.execute.return_value = mock_result
-    
+
     # Act
     results = await service.search_recipes(query="chicken")
-    
+
     # Assert
     assert len(results) == 0
     mock_db.execute.assert_called_once()
+
 
 @pytest.mark.asyncio
 async def test_search_recipes_exception():
@@ -59,7 +64,7 @@ async def test_search_recipes_exception():
     mock_db = AsyncMock()
     mock_db.execute.side_effect = Exception("DB error")
     service = DiscoveryService(mock_db)
-    
+
     # Act & Assert
     with pytest.raises(Exception):
         await service.search_recipes()

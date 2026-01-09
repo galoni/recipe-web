@@ -1,19 +1,20 @@
+import secrets
 from datetime import timedelta
 from typing import Any
-from fastapi import APIRouter, Depends, HTTPException, status, Response
+
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.database import get_db
-from app.core.config import settings
-from app.core.security import create_access_token
-from app.services.auth_service import AuthService
-from app.schemas.auth import Token
-from app.services.oauth import GoogleOAuthProvider
-from app.schemas.user import UserCreate, User
-from app.core.logger import logger
 from app.api.deps import get_current_user
-import secrets
+from app.core.config import settings
+from app.core.database import get_db
+from app.core.logger import logger
+from app.core.security import create_access_token
+from app.schemas.auth import Token
+from app.schemas.user import User, UserCreate
+from app.services.auth_service import AuthService
+from app.services.oauth import GoogleOAuthProvider
 
 router = APIRouter()
 
@@ -153,7 +154,9 @@ async def register(
     Register a new user with email and password.
     """
     auth_service = AuthService(db)
-    user = await auth_service.register_new_user(user_in.email, user_in.password, user_in.full_name)
+    user = await auth_service.register_new_user(
+        user_in.email, user_in.password, user_in.full_name
+    )
     if not user:
         raise HTTPException(
             status_code=400,

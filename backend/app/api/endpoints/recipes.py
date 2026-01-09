@@ -1,15 +1,16 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
-from typing import List, Optional
 import uuid
+from typing import List, Optional
 
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.api.deps import get_current_user, get_current_user_optional
 from app.core.database import get_db
+from app.core.logger import logger
 from app.models.db import Recipe as RecipeModel
 from app.models.user import User as UserModel
-from app.api.deps import get_current_user, get_current_user_optional
 from app.schemas.recipe import Recipe, RecipeCreate
-from app.core.logger import logger
 from app.services.discovery import DiscoveryService
 
 router = APIRouter()
@@ -45,7 +46,9 @@ async def create_recipe(
             user_id=current_user.id,
             source_url=recipe.video_url,
             is_public=recipe.is_public,
-            data=recipe.model_dump(exclude={"id", "is_public"}),  # Stores title, description, ingredients, steps, etc.
+            data=recipe.model_dump(
+                exclude={"id", "is_public"}
+            ),  # Stores title, description, ingredients, steps, etc.
         )
 
         db.add(db_recipe)
@@ -54,9 +57,9 @@ async def create_recipe(
 
         # Map back to Recipe schema for response
         return Recipe(
-            id=str(db_recipe.id), 
-            **recipe.model_dump(exclude={"id"}), 
-            created_at=db_recipe.created_at
+            id=str(db_recipe.id),
+            **recipe.model_dump(exclude={"id"}),
+            created_at=db_recipe.created_at,
         )
     except Exception as e:
         logger.error(f"Error creating recipe: {e}")
@@ -88,12 +91,11 @@ async def read_recipes(
         for r in db_recipes:
             # Data field in DB contains the original schema fields
             data = r.data
-            recipes.append(Recipe(
-                id=str(r.id), 
-                **data, 
-                is_public=r.is_public,
-                created_at=r.created_at
-            ))
+            recipes.append(
+                Recipe(
+                    id=str(r.id), **data, is_public=r.is_public, created_at=r.created_at
+                )
+            )
         return recipes
     except Exception as e:
         logger.error(f"Error reading recipes: {e}")
@@ -122,19 +124,23 @@ async def read_recipe(
         if not recipe:
             # Check if it's a public recipe even if not owned or not logged in
             result = await db.execute(
-                select(RecipeModel).where(RecipeModel.id == recipe_id, RecipeModel.is_public == True)
+                select(RecipeModel).where(
+                    RecipeModel.id == recipe_id, RecipeModel.is_public == True
+                )
             )
             recipe = result.scalar_one_or_none()
-            
+
         if not recipe:
-            raise HTTPException(status_code=404, detail="Recipe not found or access denied")
+            raise HTTPException(
+                status_code=404, detail="Recipe not found or access denied"
+            )
 
         data = recipe.data
         return Recipe(
-            id=str(recipe.id), 
-            **data, 
+            id=str(recipe.id),
+            **data,
             is_public=recipe.is_public,
-            created_at=recipe.created_at
+            created_at=recipe.created_at,
         )
 
     except HTTPException:
@@ -159,20 +165,20 @@ async def update_recipe_privacy(
     )
     result = await db.execute(stmt)
     recipe = result.scalar_one_or_none()
-    
+
     if not recipe:
         raise HTTPException(status_code=404, detail="Recipe not found or access denied")
-    
+
     if "is_public" in data:
         recipe.is_public = data["is_public"]
         await db.commit()
         await db.refresh(recipe)
-        
+
     return Recipe(
         id=str(recipe.id),
         **recipe.data,
         is_public=recipe.is_public,
-        created_at=recipe.created_at
+        created_at=recipe.created_at,
     )
 
 

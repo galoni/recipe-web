@@ -1,10 +1,12 @@
-from fastapi.testclient import TestClient
 from unittest.mock import patch
+
+from fastapi.testclient import TestClient
+
 from app.main import app
 
 client = TestClient(app)
 
-from app.models.recipe import RecipeData, Ingredient, InstructionStep
+from app.models.recipe import Ingredient, InstructionStep, RecipeData
 
 
 def test_extract_api_contract():

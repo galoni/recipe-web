@@ -1,14 +1,11 @@
-from unittest.mock import AsyncMock, MagicMock
 import uuid
 from datetime import datetime
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-from app.api.endpoints.recipes import (
-    create_recipe,
-    delete_recipe,
-    read_recipes,
-    read_recipe,
-)
+
+from app.api.endpoints.recipes import (create_recipe, delete_recipe,
+                                       read_recipe, read_recipes)
 from app.schemas.recipe import RecipeCreate
 
 

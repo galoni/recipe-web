@@ -1,6 +1,7 @@
-import pytest
 import shutil
 from pathlib import Path
+
+import pytest
 
 
 @pytest.fixture(scope="session")

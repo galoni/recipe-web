@@ -1,7 +1,8 @@
 from unittest.mock import AsyncMock, MagicMock, patch
+
 import pytest
 from fastapi import HTTPException, Request, status
-from jose import jwt, JWTError
+from jose import JWTError, jwt
 
 from app.api.deps import get_current_user
 from app.core.config import settings

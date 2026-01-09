@@ -35,6 +35,7 @@ pytest-cov = "^6.0.0"
 black = "^24.10.0"
 isort = "^5.13.2"
 flake8 = "^7.1.0"
+mypy = "^1.8.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -61,3 +62,40 @@ exclude_lines = [
     "raise NotImplementedError",
     "if __name__ == .__main__.:",
 ]
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = false  # Too strict for gradual typing
+warn_unused_configs = true
+disallow_untyped_defs = false  # Gradual typing: start permissive
+check_untyped_defs = false  # Don't check untyped functions yet
+warn_redundant_casts = true
+warn_unused_ignores = false  # Avoid noise during gradual typing
+warn_no_return = true
+warn_unreachable = true
+strict_optional = false  # Too strict for gradual typing
+ignore_missing_imports = true  # Ignore missing stubs for now
+
+# Exclude patterns
+exclude = [
+    "^tests/",
+    "^migrations/",
+    "^alembic/",
+]
+
+# Per-module options for gradual typing
+# These modules will have strict typing enforced
+[[tool.mypy.overrides]]
+module = "app.services.security_service"
+disallow_untyped_defs = false  # Will enable in Phase 3
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "app.services.email_service"
+disallow_untyped_defs = false  # Will enable in Phase 3
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "app.services.geoip"
+disallow_untyped_defs = false  # Will enable in Phase 3
+ignore_missing_imports = true

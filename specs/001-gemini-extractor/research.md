@@ -1,7 +1,7 @@
 # Research: Gemini AI Extractor
 
 **Decision**: Use Google Gemini 1.5 Flash for transcription summarization and recipe extraction.
-**Rationale**: 
+**Rationale**:
 - **Cost**: Flash is significantly cheaper than Pro/Ultra while maintaining high accuracy for text tasks.
 - **Context Window**: 1M context window allows passing full transcripts (text) for almost all cooking videos without complex chunking logic for standard cases.
 - **Performance**: Faster token generation speed is critical for the <15s latency target.

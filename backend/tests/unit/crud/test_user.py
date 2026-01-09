@@ -1,11 +1,10 @@
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.security import get_password_hash
 from app.crud.user import user as crud_user
 from app.models.user import User
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 @pytest.mark.asyncio

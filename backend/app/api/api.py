@@ -1,6 +1,5 @@
-from fastapi import APIRouter
-
 from app.api.endpoints import auth, extract, recipes, security
+from fastapi import APIRouter
 
 api_router = APIRouter()
 api_router.include_router(recipes.router, prefix="/recipes", tags=["recipes"])

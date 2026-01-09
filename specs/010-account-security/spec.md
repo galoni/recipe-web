@@ -1,8 +1,8 @@
 # Feature Specification: Account Security & Session Management
 
-**Feature Branch**: `010-account-security`  
-**Created**: 2026-01-09  
-**Status**: Draft  
+**Feature Branch**: `010-account-security`
+**Created**: 2026-01-09
+**Status**: Draft
 **Input**: User description: "I would like to implement Account Security: Last login, device management, 2FA settings"
 
 ## Overview
@@ -17,12 +17,12 @@ As a user, I want to see when and from where I last logged in, so I can detect u
 
 **Why this priority**: This is the foundation of security awareness. Users need basic visibility into their account activity before managing devices or enabling 2FA. It's the quickest win with immediate security value.
 
-**Independent Test (Automated)**: 
+**Independent Test (Automated)**:
 - Backend contract test: `POST /api/v1/auth/token` updates `last_login_at` and `last_login_ip` fields
 - Backend contract test: `GET /api/v1/auth/me` returns last login information
 - Unit test: Login endpoint records accurate timezone-aware timestamps
 
-**Manual Validation (Frontend)**: 
+**Manual Validation (Frontend)**:
 - User logs in successfully
 - User navigates to Profile or Settings page
 - User sees "Last Login" information showing timestamp and location/IP
@@ -44,14 +44,14 @@ As a user, I want to see all devices currently logged into my account and be abl
 
 **Why this priority**: After users can see their last login, the natural next step is managing all active sessions. This is crucial for security but requires more backend infrastructure than simple tracking.
 
-**Independent Test (Automated)**: 
+**Independent Test (Automated)**:
 - Backend contract test: `GET /api/v1/auth/sessions` returns list of active sessions with device info
 - Backend contract test: `DELETE /api/v1/auth/sessions/{session_id}` successfully revokes specific session
 - Backend contract test: `DELETE /api/v1/auth/sessions/all` revokes all sessions except current
 - Integration test: Revoked session cannot access protected endpoints
 - Unit test: Session metadata (device type, browser, OS) is correctly parsed from User-Agent
 
-**Manual Validation (Frontend)**: 
+**Manual Validation (Frontend)**:
 - User navigates to Settings > Security
 - User sees list of active sessions showing: device type, browser, location, last active time
 - Current session is clearly marked/highlighted
@@ -77,7 +77,7 @@ As a user, I want to enable Two-Factor Authentication using an authenticator app
 
 **Why this priority**: 2FA is important but requires the foundation of session management to be truly effective. Users should first understand their account activity before adding authentication complexity.
 
-**Independent Test (Automated)**: 
+**Independent Test (Automated)**:
 - Backend contract test: `POST /api/v1/auth/2fa/setup` generates TOTP secret and returns QR code data
 - Backend contract test: `POST /api/v1/auth/2fa/enable` verifies TOTP code and enables 2FA
 - Backend contract test: `POST /api/v1/auth/2fa/disable` disables 2FA after password + code verification
@@ -88,7 +88,7 @@ As a user, I want to enable Two-Factor Authentication using an authenticator app
 - Unit test: TOTP secret generation uses cryptographically secure randomness
 - Unit test: TOTP code validation accepts codes within time window (±30 seconds)
 
-**Manual Validation (Frontend)**: 
+**Manual Validation (Frontend)**:
 - User navigates to Settings > Security > Two-Factor Authentication
 - User clicks "Enable 2FA"
 - System displays QR code and manual entry key
@@ -121,14 +121,14 @@ As a user, I want to receive email notifications for critical security events (n
 
 **Why this priority**: This is an enhancement that adds proactive security monitoring. It's valuable but not critical for the MVP since users can manually check their sessions.
 
-**Independent Test (Automated)**: 
+**Independent Test (Automated)**:
 - Backend contract test: Login from new device triggers email notification
 - Backend contract test: 2FA enable/disable triggers email notification
 - Backend contract test: Password change triggers email notification
 - Integration test: Email contains correct device info, timestamp, and location
 - Unit test: Email is sent asynchronously and doesn't block login flow
 
-**Manual Validation (Frontend)**: 
+**Manual Validation (Frontend)**:
 - User logs in from new device
 - User receives email within 1 minute
 - Email contains: device type, browser, IP/location, timestamp, "Was this you?" link

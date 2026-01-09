@@ -1,11 +1,10 @@
 from typing import List, Optional
 
-from sqlalchemy import or_, select
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.logger import logger
 from app.models.db import Recipe as RecipeModel
 from app.schemas.recipe import Recipe as RecipeSchema
+from sqlalchemy import or_, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class DiscoveryService:

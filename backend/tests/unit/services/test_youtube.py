@@ -2,7 +2,6 @@ import os
 from unittest.mock import MagicMock, mock_open, patch
 
 import pytest
-
 from app.core.exceptions import NoTranscriptError
 from app.services.youtube import YouTubeService
 

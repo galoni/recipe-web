@@ -1,8 +1,8 @@
 # Feature Specification: Gemini AI Extractor
 
-**Feature Branch**: `001-gemini-extractor`  
-**Created**: 2026-01-01  
-**Status**: Draft  
+**Feature Branch**: `001-gemini-extractor`
+**Created**: 2026-01-01
+**Status**: Draft
 **Input**: User description: "Build a Gemini-powered backend service to extract structured recipes from YouTube URLs"
 
 ## User Scenarios & Testing *(mandatory)*

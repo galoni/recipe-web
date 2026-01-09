@@ -1,14 +1,13 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-
 from app.api.api import api_router
 from app.core.config import settings
 from app.core.database import Base, engine
 from app.core.logger import logger
 from app.models import db as db_models  # Register models
 from app.models import user as user_models
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 
 @asynccontextmanager
@@ -29,10 +28,9 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
 )
 
+from app.core.exceptions import NoTranscriptError
 from fastapi import Request
 from fastapi.responses import JSONResponse
-
-from app.core.exceptions import NoTranscriptError
 
 
 @app.exception_handler(NoTranscriptError)

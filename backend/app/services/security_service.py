@@ -1,15 +1,14 @@
-import pyotp
 import uuid
 from datetime import datetime, timezone
 from typing import List, Optional
 
-from sqlalchemy import select, update, func, and_
-from sqlalchemy.ext.asyncio import AsyncSession
-from ua_parser import user_agent_parser
-
-from app.models.security import Session, SecurityEvent
+import pyotp
+from app.models.security import SecurityEvent, Session
 from app.models.user import User
 from app.services.email_service import EmailService
+from sqlalchemy import and_, func, select, update
+from sqlalchemy.ext.asyncio import AsyncSession
+from ua_parser import user_agent_parser
 
 
 class SecurityService:

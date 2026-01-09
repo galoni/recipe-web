@@ -1,8 +1,8 @@
 # Feature Specification: Search and Discovery
 
-**Feature Branch**: `008-search-and-discovery`  
-**Created**: 2026-01-03  
-**Status**: Draft  
+**Feature Branch**: `008-search-and-discovery`
+**Created**: 2026-01-03
+**Status**: Draft
 **Input**: Add search option, public recipes, private cookbooks, handle duplicate extractions.
 
 ## User Scenarios & Testing *(mandatory)*
@@ -13,11 +13,11 @@ As a user, I want to search for recipes by title, ingredients, or tags across al
 
 **Why this priority**: Core requirement for the "Search" option and "Public recipes" goal.
 
-**Independent Test (Automated)**: 
+**Independent Test (Automated)**:
 - Backend: `GET /api/endpoints/recipes/discovery?q=chicken` returns 200 and a list of matching recipes.
 - Backend: `GET /api/endpoints/recipes/discovery` returns all public recipes.
 
-**Manual Validation (Frontend)**: 
+**Manual Validation (Frontend)**:
 - User enters "Pasta" in a search bar on the landing page or a new Explore page and sees matching recipe cards.
 - User clicks a recipe card from the search results and is taken to the recipe view page.
 
@@ -33,10 +33,10 @@ As a user, I want the system to recognize if a video has already been analyzed b
 
 **Why this priority**: Explicitly requested to handle duplicates and skip re-analyzing.
 
-**Independent Test (Automated)**: 
+**Independent Test (Automated)**:
 - Backend: `POST /api/endpoints/extract` with a URL that exists in the database/cache returns the existing data without calling GeminiService.
 
-**Manual Validation (Frontend)**: 
+**Manual Validation (Frontend)**:
 - User pastes a YouTube URL that was previously extracted. The UI shows "Recipe Found!" and redirects to the recipe view almost immediately without the "Extracting..." wait time.
 
 **Acceptance Scenarios**:
@@ -50,12 +50,12 @@ As a user, I want my personal collection (Cookbook) to remain private to me, eve
 
 **Why this priority**: Essential for privacy as requested ("cookbooks will be private").
 
-**Independent Test (Automated)**: 
+**Independent Test (Automated)**:
 - Backend: `GET /api/endpoints/recipes/` only returns recipes owned by the current user.
 - Backend: `GET /api/endpoints/recipes/discovery` returns public recipes but does not expose user profile details unless intended.
 
-**Manual Validation (Frontend)**: 
-- User A checks their "Vault" (Cookbook) and sees only their recipes. 
+**Manual Validation (Frontend)**:
+- User A checks their "Vault" (Cookbook) and sees only their recipes.
 - User B cannot see User A's "Vault" even if they search for User A's specific recipes in Discovery.
 
 ---

@@ -7,7 +7,7 @@ This plan addresses critical feedback regarding the "broken" dark mode, "ugly" a
 
 ### 1. Global Visual Fixes
 - **Files**: `frontend/src/app/globals.css`, `frontend/tailwind.config.ts`
-- **Action**: 
+- **Action**:
     - Verify `:root` vs `.dark` specificity. Ensure variables like `--background` resolve to the dark values by default or force the class on `html`.
     - Flatten the CSS hierarchy if needed to ensure `bg-background` is actually black.
 
@@ -21,7 +21,7 @@ This plan addresses critical feedback regarding the "broken" dark mode, "ugly" a
 ### 3. Unified Layout for Auth & Dashboard
 - **New Component**: `frontend/src/components/shared/BackgroundLayout.tsx`
     - Contains the animated blobs/gradients so we don't copy-paste them everywhere.
-- **Files**: 
+- **Files**:
     - `frontend/src/app/login/page.tsx`
     - `frontend/src/app/register/page.tsx`
     - `frontend/src/app/dashboard/page.tsx`

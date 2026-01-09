@@ -98,4 +98,3 @@ As a new user, I want to understand how ChefStream works before I paste a link, 
 - **SC-001**: User (Stakeholder) approves the new design as "Stylish" and "Premium".
 - **SC-002**: Lighthouse Accessibility score remains > 90.
 - **SC-003**: Lighthouse Performance score remains > 90 (animations shouldn't tank user experience).
-

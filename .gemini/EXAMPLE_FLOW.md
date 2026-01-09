@@ -173,7 +173,7 @@ See: contracts/ratings-api.json
 
 ```sql
 CREATE VIEW recipe_ratings AS
-SELECT 
+SELECT
     recipe_id,
     AVG(stars) as average_rating,
     COUNT(*) as rating_count

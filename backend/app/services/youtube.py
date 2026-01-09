@@ -1,7 +1,6 @@
 import re
 
 import webvtt
-
 from app.core.exceptions import NoTranscriptError
 from app.core.logger import logger
 

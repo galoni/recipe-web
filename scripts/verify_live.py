@@ -30,13 +30,13 @@ async def main():
         print("3. Generating Recipe with Gemini (Real API Call)...")
         gemini = GeminiService()
         recipe = await gemini.extract_recipe(transcript, video_id)
-        
+
         print("\n--- Success! ---")
         print(f"Title: {recipe.title}")
         print(f"Ingredients: {len(recipe.ingredients)}")
         print(f"Steps: {len(recipe.instructions)}")
         print(f"Description: {recipe.description}")
-        
+
     except Exception as e:
         print(f"\n--- FAILED ---")
         print(e)

@@ -99,7 +99,7 @@ jobs:
     - Lint with Ruff
     - Format Check with Ruff
     - Test with Pytest & Coverage (80% Required)
-  
+
   frontend-qa:
     - Lint
     - Type Check

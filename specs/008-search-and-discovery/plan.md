@@ -5,7 +5,7 @@
 
 ## Summary
 
-This feature transforms ChefStream from a single-user extraction tool into a discoverable recipe platform. 
+This feature transforms ChefStream from a single-user extraction tool into a discoverable recipe platform.
 1.  **Duplicate Analysis Prevention**: The backend will check for existing extractions by `video_id` (regardless of user) to provide instant results and reduce AI costs.
 2.  **Privacy Model**: Recipes will have an `is_public` toggle. The "My Cookbook" (Vault) remains private, while public recipes are indexed for search.
 3.  **Global Search & Discovery**: A new "Explore" module with a search bar and a "Top Discoveries" section on the landing page.

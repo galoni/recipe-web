@@ -11,23 +11,23 @@ This feature implements a robust authentication system supporting **Google OAuth
 
 ## Operational & Security Context
 
-*   **Security**: 
+*   **Security**:
     *   **Auth**: OAuth2 state validation to prevent CSRF. Passwords hashed via Argon2.
     *   **Data Privacy**: PII (email, name) handling compliant with best practices.
     *   **Transport**: All tokens sent via HttpOnly, Secure, SameSite=Lax cookies.
-*   **Observability**: 
+*   **Observability**:
     *   Structured logs for `auth.login_success`, `auth.login_failure`, `auth.registration`.
     *   Metrics: Latency for third-party Google API calls.
-*   **Environment**: 
+*   **Environment**:
     *   **TRUE**: Dockerfile updates required to add `python-jose`, `passlib[argon2]`, `httpx` (for OAuth).
-*   **Docs Impact**: 
+*   **Docs Impact**:
     *   New `docs/architecture/auth_flow.md` (Mermaid diagram of OAuth).
     *   New `docs/setup/env_vars.md` (Google Client ID/Secret setup).
 
 ## Technical Context
 
 **Language/Version**: Python 3.11 (Backend), TypeScript/Next.js (Frontend)
-**Primary Dependencies**: 
+**Primary Dependencies**:
 *   Backend: `python-jose` (JWT), `passlib` (Hashing), `httpx` (Async OAuth requests).
 *   Frontend: Native `fetch` with credential support.
 **Storage**: PostgreSQL (Users table).
@@ -91,7 +91,7 @@ frontend/
 │       └── auth.ts           # Token handling / Fetch wrappers
 ```
 
-**Structure Decision**: Standard layered architecture (API -> Service -> CRUD -> Model). 
+**Structure Decision**: Standard layered architecture (API -> Service -> CRUD -> Model).
 *   **Why**: separation of concerns allows us to easily swap or add providers (e.g., adding GitHub Login later) without touching the API layer.
 
 ## Complexity Tracking

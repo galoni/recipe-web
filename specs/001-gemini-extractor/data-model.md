@@ -23,7 +23,7 @@ class RecipeData(BaseModel):
     ingredients: List[Ingredient]
     instructions: List[InstructionStep]
     dietary_tags: List[str] = []
-    
+
     # Validation rules
     # - ingredients array must not be empty
     # - instructions array must not be empty

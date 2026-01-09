@@ -2,9 +2,6 @@ import json
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.logger import logger
 from app.models.db import ExtractionCache
 from app.models.recipe import RecipeData
@@ -12,6 +9,8 @@ from app.schemas.recipe import (  # For mapping if needed, but we store JSON
     Ingredient,
     Step,
 )
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class CacheService:

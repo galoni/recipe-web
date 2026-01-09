@@ -26,7 +26,6 @@ export default defineConfig({
                 '**/*.config.*',
                 '.next/**',
                 'src/app/**', // E2E tested
-                'src/lib/**', // API/Auth logic
                 'tests/**', // E2E tests
             ],
         },

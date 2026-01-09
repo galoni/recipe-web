@@ -139,21 +139,21 @@
 
 ### Caching
 
-- [ ] T053 [P] [P4] Add Poetry cache to `.github/workflows/ci.yml` backend-qa job
-- [ ] T054 [P] [P4] Add npm cache to `.github/workflows/ci.yml` frontend-qa job
-- [ ] T055 [P4] Test CI with caching and measure build time improvement
+- [x] T053 [P] [P4] Add Poetry cache to `.github/workflows/ci.yml` backend-qa job
+- [x] T054 [P] [P4] Add npm cache to `.github/workflows/ci.yml` frontend-qa job
+- [x] T055 [P4] Test CI with caching and measure build time improvement
 
 ### Pre-commit Alignment
 
-- [ ] T056 [P4] Ensure CI backend-qa job runs all checks from `.pre-commit-config.yaml` (black, isort, mypy, flake8)
-- [ ] T057 [P4] Ensure CI frontend-qa job runs all checks from `.pre-commit-config.yaml` (eslint, tsc)
-- [ ] T058 [P4] Add clear error reporting to CI (coverage reports, test summaries)
+- [x] T056 [P4] Ensure CI backend-qa job runs all checks from `.pre-commit-config.yaml` (black, isort, mypy, flake8)
+- [x] T057 [P4] Ensure CI frontend-qa job runs all checks from `.pre-commit-config.yaml` (eslint, tsc)
+- [x] T058 [P4] Add clear error reporting to CI (coverage reports, test summaries)
 
 ### Optimization
 
-- [ ] T059 [P4] Optimize job parallelization (run backend-qa, frontend-qa, frontend-test, e2e-test in parallel)
-- [ ] T060 [P4] Measure total CI duration and optimize to <5 minutes
-- [ ] T061 [P4] Test full CI pipeline end-to-end
+- [x] T059 [P4] Optimize job parallelization (run backend-qa, frontend-qa, frontend-test, e2e-test in parallel)
+- [x] T060 [P4] Measure total CI duration and optimize to <5 minutes
+- [x] T061 [P4] Test full CI pipeline end-to-end
 
 **Definition of Done**: CI mirrors pre-commit, uses caching, completes in <5 minutes
 

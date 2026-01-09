@@ -4,7 +4,9 @@ import pytest
 from fastapi import HTTPException, Request, status
 from jose import JWTError, jwt
 
-from app.api.deps import get_current_user
+from jose import JWTError
+import pytest
+from app.api.deps import get_current_user, get_current_user_optional
 from app.core.config import settings
 from app.models.user import User
 
@@ -81,3 +83,75 @@ async def test_get_current_user_success(mock_request, mock_db):
 
     assert user == mock_user
     mock_db.execute.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_current_user_bearer_prefix(mock_request, mock_db):
+    mock_request.cookies = {"access_token": "Bearer valid_token"}
+
+    with patch("jose.jwt.decode", return_value={"sub": "123"}):
+        mock_user = MagicMock()
+        mock_result = MagicMock()
+        mock_result.scalar_one_or_none.return_value = mock_user
+        mock_db.execute.return_value = mock_result
+
+        user = await get_current_user(request=mock_request, db=mock_db)
+
+    assert user == mock_user
+
+
+@pytest.mark.asyncio
+async def test_get_current_user_optional_no_token(mock_request, mock_db):
+    mock_request.cookies = {}
+    user = await get_current_user_optional(request=mock_request, db=mock_db)
+    assert user is None
+
+
+@pytest.mark.asyncio
+async def test_get_current_user_optional_success(mock_request, mock_db):
+    mock_request.cookies = {"access_token": "valid_token"}
+
+    with patch("jose.jwt.decode", return_value={"sub": "123"}):
+        mock_user = MagicMock()
+        mock_result = MagicMock()
+        mock_result.scalar_one_or_none.return_value = mock_user
+        mock_db.execute.return_value = mock_result
+
+        user = await get_current_user_optional(request=mock_request, db=mock_db)
+
+    assert user == mock_user
+
+
+@pytest.mark.asyncio
+async def test_get_current_user_optional_invalid_token(mock_request, mock_db):
+    mock_request.cookies = {"access_token": "invalid"}
+
+    with patch("jose.jwt.decode", side_effect=JWTError):
+        user = await get_current_user_optional(request=mock_request, db=mock_db)
+
+    assert user is None
+
+
+@pytest.mark.asyncio
+async def test_get_current_user_optional_bearer_prefix(mock_request, mock_db):
+    mock_request.cookies = {"access_token": "Bearer valid_token"}
+
+    with patch("jose.jwt.decode", return_value={"sub": "123"}):
+        mock_user = MagicMock()
+        mock_result = MagicMock()
+        mock_result.scalar_one_or_none.return_value = mock_user
+        mock_db.execute.return_value = mock_result
+
+        user = await get_current_user_optional(request=mock_request, db=mock_db)
+
+    assert user == mock_user
+
+
+@pytest.mark.asyncio
+async def test_get_current_user_optional_no_sub(mock_request, mock_db):
+    mock_request.cookies = {"access_token": "valid_token"}
+
+    with patch("jose.jwt.decode", return_value={}):
+        user = await get_current_user_optional(request=mock_request, db=mock_db)
+
+    assert user is None

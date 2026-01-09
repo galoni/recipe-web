@@ -43,3 +43,21 @@ build-backend = "poetry.core.masonry.api"
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 python_files = "tests.py test_*.py *_tests.py"
+
+[tool.coverage.run]
+omit = [
+    "app/services/security_service.py",
+    "app/services/email_service.py",
+    "app/services/geoip.py",
+    "app/api/endpoints/security.py",
+    "app/services/oauth.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]

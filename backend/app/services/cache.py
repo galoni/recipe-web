@@ -9,7 +9,9 @@ from app.core.logger import logger
 from app.models.db import ExtractionCache
 from app.models.recipe import RecipeData
 from app.schemas.recipe import (  # For mapping if needed, but we store JSON
-    Ingredient, Step)
+    Ingredient,
+    Step,
+)
 
 
 class CacheService:

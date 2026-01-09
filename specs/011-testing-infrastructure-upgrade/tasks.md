@@ -51,16 +51,16 @@
 ### Component Tests
 
 - [x] T018 [P] [P1] Write tests for `LoginForm` component in `frontend/src/__tests__/components/auth/LoginForm.test.tsx` (rendering, validation, submission, error states)
-- [ ] T019 [P] [P1] Write tests for `RecipeCard` component in `frontend/src/__tests__/components/shared/RecipeCard.test.tsx` (props, interactions, edge cases, responsive)
-- [ ] T020 [P] [P1] Write tests for `Navbar` component in `frontend/src/__tests__/components/shared/Navbar.test.tsx` (navigation, auth state, mobile menu)
-- [ ] T021 [P] [P1] Write tests for at least 2 more critical components to reach 70% coverage
+- [x] T019 [P] [P1] Write tests for `RecipeCard` component in `frontend/src/__tests__/components/shared/RecipeCard.test.tsx` (props, interactions, edge cases, responsive)
+- [x] T020 [P] [P1] Write tests for `Navbar` component in `frontend/src/__tests__/components/shared/Navbar.test.tsx` (navigation, auth state, mobile menu)
+- [x] T021 [P] [P1] Write tests for at least 2 more critical components to reach 70% coverage
 
 ### CI Integration
 
-- [ ] T022 [P1] Update `.github/workflows/ci.yml` to add frontend-test job
-- [ ] T023 [P1] Configure frontend-test job to run `npm test` with coverage
-- [ ] T024 [P1] Configure frontend-test job to fail if coverage < 70%
-- [ ] T025 [P1] Test CI locally and verify coverage enforcement works
+- [x] T022 [P1] Update `.github/workflows/ci.yml` to add frontend-test job
+- [x] T023 [P1] Configure frontend-test job to run `npm test` with coverage
+- [x] T024 [P1] Configure frontend-test job to fail if coverage < 70%
+- [x] T025 [P1] Test CI locally and verify coverage enforcement works
 
 **Definition of Done**: `npm test` passes, coverage ≥70%, CI enforces coverage threshold
 
@@ -83,17 +83,17 @@
 ### E2E Tests
 
 - [x] T031 [P] [P2] Write auth flow E2E test in `frontend/tests/auth.spec.ts` (login, register, logout)
-- [ ] T032 [P] [P2] Write recipe extraction E2E test in `frontend/e2e/recipe-extraction.spec.ts` (URL input, extraction, display)
-- [ ] T033 [P] [P2] Write cookbook management E2E test in `frontend/e2e/cookbook.spec.ts` (save, view, delete recipes)
-- [ ] T034 [P] [P2] Write at least 2 more E2E tests for critical flows
+- [x] T032 [P] [P2] Write recipe extraction E2E test in `frontend/tests/recipe-extraction.spec.ts` (URL input, extraction, display)
+- [x] T033 [P] [P2] Write cookbook management E2E test in `frontend/tests/cookbook.spec.ts` (save, view, delete recipes)
+- [x] T034 [P] [P2] Write at least 2 more E2E tests for critical flows (Explore, Profile)
 
 ### CI Integration
 
-- [ ] T035 [P2] Update `.github/workflows/ci.yml` to add e2e-test job
-- [ ] T036 [P2] Configure e2e-test job to start Docker Compose services
-- [ ] T037 [P2] Configure e2e-test job to run Playwright in headless mode
-- [ ] T038 [P2] Configure e2e-test job to upload screenshots/traces as artifacts on failure
-- [ ] T039 [P2] Test E2E tests in CI and verify they pass
+- [x] T035 [P2] Update `.github/workflows/frontend-e2e.yml` to add e2e-test job
+- [x] T036 [P2] Configure e2e-test job to start Docker Compose services (Configured in `frontend-e2e.yml`)
+- [x] T037 [P2] Configure e2e-test job to run Playwright in headless mode
+- [x] T038 [P2] Configure e2e-test job to upload screenshots/traces as artifacts on failure
+- [x] T039 [P2] Test E2E tests in CI and verify they pass
 
 **Definition of Done**: E2E tests pass locally and in CI, screenshots captured on failure
 

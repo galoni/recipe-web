@@ -22,6 +22,11 @@ google-genai = "^1.0.0"
 webvtt-py = "^0.4.6"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 passlib = {extras = ["argon2"], version = "^1.7.4"}
+pyotp = "^2.9.0"
+qrcode = {extras = ["pil"], version = "^8.0.0"}
+ua-parser = "^0.18.0"
+bcrypt = "^4.2.0"
+geoip2 = "^4.8.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.0"

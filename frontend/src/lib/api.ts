@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Recipe, User } from "./types";
+import { Recipe, User, Session } from "./types";
 
 // Base URL for the API
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -83,6 +83,51 @@ export const toggleRecipePrivacy = async (recipeId: string | number, isPublic: b
 };
 
 /**
+ * Fetches all active sessions for the current user.
+ */
+export const getActiveSessions = async (): Promise<Session[]> => {
+    const response = await api.get<Session[]>("/api/v1/security/sessions");
+    return response.data;
+};
+
+/**
+ * Revokes a specific session.
+ */
+export const revokeSession = async (sessionId: string): Promise<void> => {
+    await api.post(`/api/v1/security/sessions/${sessionId}/revoke`);
+};
+
+/**
+ * Revokes all sessions except the current one.
+ */
+export const revokeAllOtherSessions = async (): Promise<void> => {
+    await api.post("/api/v1/security/sessions/revoke-others");
+};
+
+/**
+ * Initiates 2FA setup.
+ */
+export const getTwoFactorSetup = async (): Promise<{ secret: string; otpauth_url: string; qr_code_base64?: string }> => {
+    const response = await api.post("/api/v1/security/2fa/setup");
+    return response.data;
+};
+
+/**
+ * Enables 2FA with a code.
+ */
+export const enableTwoFactor = async (code: string, secret: string): Promise<{ backup_codes?: string[] }> => {
+    const response = await api.post("/api/v1/security/2fa/enable", { code, secret });
+    return response.data;
+};
+
+/**
+ * Disables 2FA.
+ */
+export const disableTwoFactor = async (): Promise<void> => {
+    await api.post("/api/v1/security/2fa/disable");
+};
+
+/**
  * Fetches the current authenticated user.
  * @returns A promise that resolves to the User data.
  */
@@ -93,4 +138,9 @@ export const getCurrentUser = async (): Promise<User | null> => {
     } catch {
         return null;
     }
+};
+
+export const toggleSecurityNotifications = async (enabled: boolean) => {
+    const response = await api.post('/api/v1/security/notifications/toggle', null, { params: { enabled } });
+    return response.data;
 };

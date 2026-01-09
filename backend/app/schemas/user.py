@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict, EmailStr
 
 
@@ -16,6 +17,10 @@ class UserCreate(BaseModel):
 class UserInDB(UserBase):
     id: int
     auth_provider: str
+    last_login_at: datetime | None = None
+    last_login_ip: str | None = None
+    is_2fa_enabled: bool = False
+    security_notifications_enabled: bool = True
 
     model_config = ConfigDict(from_attributes=True)
 

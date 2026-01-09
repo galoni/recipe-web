@@ -44,6 +44,23 @@ export async function logout() {
     window.location.href = '/login';
 }
 
+export async function verify2FA(code: string, challengeToken: string) {
+    const res = await fetch(`${API_URL}/auth/verify-2fa`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code, challenge_token: challengeToken }),
+        credentials: 'include',
+    });
+
+    if (!res.ok) {
+        throw new Error('2FA verification failed');
+    }
+
+    return res.json();
+}
+
 export function getGoogleLoginUrl() {
     // We will redirect to backend endpoint which generates the Google URL and redirects
     return `${API_URL}/auth/google/login`;

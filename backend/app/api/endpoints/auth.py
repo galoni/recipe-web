@@ -1,9 +1,10 @@
 import secrets
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Response, Request, status
 from fastapi.security import OAuth2PasswordRequestForm
+from jose import jwt, JWTError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user
@@ -11,7 +12,7 @@ from app.core.config import settings
 from app.core.database import get_db
 from app.core.logger import logger
 from app.core.security import create_access_token
-from app.schemas.auth import Token
+from app.schemas.auth import Token, TwoFactorVerify
 from app.schemas.user import User, UserCreate
 from app.services.auth_service import AuthService
 from app.services.oauth import GoogleOAuthProvider
@@ -29,6 +30,7 @@ async def get_me(current_user: User = Depends(get_current_user)):
 
 @router.post("/token", response_model=Token)
 async def login_access_token(
+    request: Request,
     response: Response,
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: AsyncSession = Depends(get_db),
@@ -45,9 +47,33 @@ async def login_access_token(
             detail="Incorrect email or password",
         )
 
-    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        subject=user.id, expires_delta=access_token_expires
+    if user.is_2fa_enabled:
+        # Create a short-lived challenge token
+        challenge_token = jwt.encode(
+            {
+                "sub": str(user.id),
+                "exp": datetime.now(timezone.utc) + timedelta(minutes=5),
+                "type": "2fa_challenge"
+            },
+            settings.SECRET_KEY,
+            algorithm=settings.ALGORITHM
+        )
+        return {
+            "requires_2fa": True,
+            "challenge_token": challenge_token
+        }
+
+    access_token, jti = auth_service.create_token_for_user(user.id)
+
+    # Create Session
+    from app.services.security_service import SecurityService
+
+    security_service = SecurityService(db)
+    await security_service.create_session(
+        user_id=user.id,
+        token_jti=jti,
+        user_agent=request.headers.get("user-agent", ""),
+        ip_address=request.client.host if request.client else "unknown",
     )
 
     # Set Cookie
@@ -64,6 +90,65 @@ async def login_access_token(
         "access_token": access_token,
         "token_type": "bearer",
     }
+
+
+@router.post("/verify-2fa", response_model=Token)
+async def verify_2fa(
+    request: Request,
+    response: Response,
+    data: TwoFactorVerify,
+    db: AsyncSession = Depends(get_db),
+) -> Any:
+    """
+    Verify 2FA code and complete login.
+    """
+    from app.models.user import User
+    from app.services.security_service import SecurityService
+    import pyotp
+
+    try:
+        payload = jwt.decode(
+            data.challenge_token, 
+            settings.SECRET_KEY, 
+            algorithms=[settings.ALGORITHM]
+        )
+        if payload.get("type") != "2fa_challenge":
+            raise HTTPException(status_code=400, detail="Invalid challenge token")
+        user_id = int(payload.get("sub"))
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid or expired challenge token")
+
+    result = await db.execute(select(User).where(User.id == user_id))
+    user = result.scalar_one_or_none()
+    if not user or not user.is_2fa_enabled:
+        raise HTTPException(status_code=400, detail="Invalid user or 2FA not enabled")
+
+    # Verify TOTP
+    totp = pyotp.TOTP(user.totp_secret)
+    if not totp.verify(data.code):
+        raise HTTPException(status_code=400, detail="Invalid verification code")
+
+    auth_service = AuthService(db)
+    access_token, jti = auth_service.create_token_for_user(user.id)
+
+    # Create Session
+    security_service = SecurityService(db)
+    await security_service.create_session(
+        user_id=user.id,
+        token_jti=jti,
+        user_agent=request.headers.get("user-agent", ""),
+        ip_address=request.client.host if request.client else "unknown",
+    )
+
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=settings.ENVIRONMENT == "production",
+        samesite="lax",
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
 @router.get("/google/login")
@@ -83,13 +168,10 @@ def login_google(response: Response):
 async def google_callback(
     code: str,
     state: str,
+    request: Request,
     response: Response,
-    # state_cookie: str = Cookie(None, alias="oauth_state"), # simplified
     db: AsyncSession = Depends(get_db),
 ):
-    # Retrieve state from cookie logic here ideally, skipping for MVP speed (User Story said Validate State)
-    # Real implementation needs Request object to read cookie
-
     provider = GoogleOAuthProvider()
     try:
         token_data = await provider.get_token(code)
@@ -116,18 +198,31 @@ async def google_callback(
             db, email=email, auth_provider="google", provider_id=google_id
         )
 
-    # Create Session
-    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        subject=existing_user.id, expires_delta=access_token_expires
-    )
+    if existing_user.is_2fa_enabled:
+        # Create a short-lived challenge token
+        challenge_token = jwt.encode(
+            {
+                "sub": str(existing_user.id),
+                "exp": datetime.now(timezone.utc) + timedelta(minutes=5),
+                "type": "2fa_challenge"
+            },
+            settings.SECRET_KEY,
+            algorithm=settings.ALGORITHM
+        )
+        return RedirectResponse(url=f"{settings.FRONTEND_URL}/login/2fa?token={challenge_token}")
 
-    response.set_cookie(
-        key="access_token",
-        value=access_token,
-        httponly=True,
-        secure=True,
-        samesite="lax",
+    # Create Session
+    auth_service = AuthService(db)
+    access_token, jti = auth_service.create_token_for_user(existing_user.id)
+
+    from app.services.security_service import SecurityService
+
+    security_service = SecurityService(db)
+    await security_service.create_session(
+        user_id=existing_user.id,
+        token_jti=jti,
+        user_agent=request.headers.get("user-agent", ""),
+        ip_address=request.client.host if request.client else "unknown",
     )
 
     # Redirect to frontend
@@ -166,10 +261,40 @@ async def register(
 
 
 @router.post("/logout")
-def logout(response: Response):
+async def logout(
+    request: Request,
+    response: Response,
+    db: AsyncSession = Depends(get_db),
+):
     """
-    Logout the user by clearing the cookies.
+    Logout the user by clearing the cookies and revoking the session.
     """
+    token = request.cookies.get("access_token")
+    if token:
+        if token.startswith("Bearer "):
+            token = token.replace("Bearer ", "", 1)
+        try:
+            from jose import jwt
+
+            payload = jwt.decode(
+                token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            )
+            jti = payload.get("jti")
+            if jti:
+                from app.models.security import Session
+                from sqlalchemy import update
+                from datetime import datetime, timezone
+
+                await db.execute(
+                    update(Session)
+                    .where(Session.token_jti == jti)
+                    .values(revoked_at=datetime.now(timezone.utc))
+                )
+                await db.commit()
+        except Exception:
+            # Token might be expired or invalid, still clear cookie
+            pass
+
     response.delete_cookie(
         key="access_token",
         httponly=True,

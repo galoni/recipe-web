@@ -65,6 +65,9 @@ async def test_register_new_user_exists():
 
 def test_create_token_for_user():
     service = AuthService(AsyncMock())
-    token = service.create_token_for_user(1)
-    assert token is not None
+    result = service.create_token_for_user(1)
+    assert result is not None
+    assert isinstance(result, tuple)
+    token, jti = result
     assert isinstance(token, str)
+    assert isinstance(jti, str)

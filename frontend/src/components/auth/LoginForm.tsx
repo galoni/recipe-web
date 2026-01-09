@@ -21,10 +21,15 @@ export default function LoginForm() {
         setError('');
 
         try {
-            await loginWithEmail(email, password);
+            const response = await loginWithEmail(email, password);
+            if (response.requires_2fa) {
+                router.push(`/login/2fa?token=${response.challenge_token}`);
+                return;
+            }
             await queryClient.invalidateQueries({ queryKey: ["currentUser"] });
             router.push('/dashboard');
-        } catch {
+        } catch (err) {
+            console.error("Login attempt failed:", err);
             setError('Invalid email or password.');
         } finally {
             setLoading(false);

@@ -1,7 +1,8 @@
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
-from sqlalchemy import Boolean, DateTime, String
+from sqlalchemy import Boolean, DateTime, String, JSON
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
@@ -24,5 +25,13 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+    last_login_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    last_login_ip: Mapped[Optional[str]] = mapped_column(String(45), nullable=True)
+    is_2fa_enabled: Mapped[bool] = mapped_column(Boolean, default=False)
+    totp_secret: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    backup_codes_hashed: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+    security_notifications_enabled: Mapped[bool] = mapped_column(Boolean, default=True)
 
     recipes: Mapped[List["Recipe"]] = relationship(back_populates="owner")

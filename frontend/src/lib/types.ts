@@ -24,5 +24,13 @@ export interface Recipe {
     ingredients: Ingredient[];
     steps: Step[];
     dietary_tags: string[];
+    is_public?: boolean;
     created_at?: string;
+}
+
+export interface User {
+    id: number;
+    email: string;
+    full_name?: string | null;
+    is_active: boolean;
 }

@@ -1,9 +1,11 @@
-import pytest
-from unittest.mock import AsyncMock, MagicMock
-from app.services.cache import CacheService
-from app.models.recipe import RecipeData
-from app.models.db import ExtractionCache
 from datetime import datetime, timedelta
+from unittest.mock import AsyncMock, MagicMock
+
+import pytest
+
+from app.models.db import ExtractionCache
+from app.models.recipe import RecipeData
+from app.services.cache import CacheService
 
 
 @pytest.fixture

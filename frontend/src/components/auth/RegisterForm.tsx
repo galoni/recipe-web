@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { registerWithEmail } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, Loader2, Mail, Lock } from 'lucide-react';
+import { ArrowRight, Loader2, Mail, Lock, User } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export default function RegisterForm() {
+    const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ export default function RegisterForm() {
         setError('');
 
         try {
-            await registerWithEmail(email, password);
+            await registerWithEmail(email, password, fullName);
             // Auto login or ask to login? Usually auto login is better experience but requires separate call or return token.
             // Current draft spec just says "creates new user".
             // Let's redirect to login for MVP or show success.
@@ -58,6 +59,17 @@ export default function RegisterForm() {
             </AnimatePresence>
 
             <div className="space-y-4">
+                <div className="relative">
+                    <User className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                        type="text"
+                        placeholder="Full name"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        className="w-full rounded-xl border border-border bg-background/50 py-3 pl-10 pr-4 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                        required
+                    />
+                </div>
                 <div className="relative">
                     <Mail className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
                     <input

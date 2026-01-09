@@ -1,7 +1,7 @@
-from fastapi import Depends, HTTPException, status, Request
-from jose import jwt, JWTError
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import Depends, HTTPException, Request, status
+from jose import JWTError, jwt
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.database import get_db
@@ -48,3 +48,31 @@ async def get_current_user(
         raise HTTPException(status_code=404, detail="User not found")
 
     return user
+
+
+async def get_current_user_optional(
+    request: Request, db: AsyncSession = Depends(get_db)
+) -> User | None:
+    """
+    Get current user if token is present, otherwise return None.
+    Does not raise 401.
+    """
+    token = request.cookies.get("access_token")
+    if not token:
+        return None
+
+    if token.startswith("Bearer "):
+        token = token.replace("Bearer ", "", 1)
+
+    try:
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            return None
+
+        result = await db.execute(select(User).where(User.id == int(user_id)))
+        return result.scalar_one_or_none()
+    except (JWTError, ValueError):
+        return None

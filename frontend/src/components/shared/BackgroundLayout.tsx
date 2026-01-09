@@ -33,7 +33,7 @@ export function BackgroundLayout({ children }: { children: React.ReactNode }) {
                 />
 
                 {/* Subtle Grain Overlay */}
-                <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[url('https://grain-y.com/images/grain-dark.png')] mix-blend-overlay" />
+                <div className="absolute inset-0 opacity-[0.04] pointer-events-none mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
             </div>
 
             <div className="relative z-10 flex-grow flex flex-col">

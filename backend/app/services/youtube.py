@@ -1,7 +1,9 @@
-from app.core.exceptions import NoTranscriptError
 import re
-from app.core.logger import logger
+
 import webvtt
+
+from app.core.exceptions import NoTranscriptError
+from app.core.logger import logger
 
 
 class YouTubeService:
@@ -20,10 +22,11 @@ class YouTubeService:
         Fetches transcript using yt-dlp which is more robust than youtube_transcript_api.
         Downloads the lowest quality audio (skip download) but grabs subtitles.
         """
-        import yt_dlp
-        import os
         import glob
+        import os
         import uuid
+
+        import yt_dlp
 
         # Create a unique temp filename to avoid collisions
         temp_id = str(uuid.uuid4())

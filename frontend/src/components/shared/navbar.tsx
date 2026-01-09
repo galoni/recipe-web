@@ -2,14 +2,18 @@
 
 import Link from "next/link";
 import { PillButton } from "@/components/ui/PillButton";
-import { ChefHat, Menu, LogOut, User as UserIcon } from "lucide-react";
+import { ChefHat, Menu, LogOut, User as UserIcon, X, Settings as SettingsIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "@/lib/api";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
     const pathname = usePathname();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     const { data: user, isLoading } = useQuery({
         queryKey: ["currentUser"],
         queryFn: getCurrentUser,
@@ -18,6 +22,11 @@ export function Navbar() {
 
     const isAuthed = !!user;
     const isActive = (path: string) => pathname === path;
+
+    // Close menu when route changes
+    useEffect(() => {
+        setIsMenuOpen(false);
+    }, [pathname]);
 
     return (
         <header className="fixed top-0 inset-x-0 z-[100] p-4 md:p-6 pointer-events-none">
@@ -36,6 +45,7 @@ export function Navbar() {
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center gap-2 p-1 rounded-full bg-white/5 border border-white/5">
                         <NavLink href="/" active={isActive('/') && pathname === '/'}>Gallery</NavLink>
+                        <NavLink href="/explore" active={isActive('/explore')}>Explore</NavLink>
                         {isAuthed && (
                             <NavLink href="/dashboard" active={isActive('/dashboard')}>Studio</NavLink>
                         )}
@@ -46,9 +56,14 @@ export function Navbar() {
 
                     {/* Right Actions */}
                     <div className="flex items-center gap-3">
-                        {/* Mobile Menu */}
-                        <PillButton variant="ghost" size="sm" className="md:hidden w-10 px-0">
-                            <Menu className="size-5" />
+                        {/* Mobile Menu Toggle */}
+                        <PillButton
+                            variant="ghost"
+                            size="sm"
+                            className="md:hidden w-10 px-0 z-[110]"
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        >
+                            {isMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
                         </PillButton>
 
                         {!isAuthed && !isLoading ? (
@@ -72,6 +87,12 @@ export function Navbar() {
                                     </div>
                                     <span className="text-xs font-bold text-white/70">Profile</span>
                                 </Link>
+                                <Link href="/settings" className="hidden sm:flex items-center gap-2 pr-4 pl-1 py-1 rounded-full border border-white/10 hover:bg-white/5 transition-colors">
+                                    <div className="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                                        <SettingsIcon className="size-4" />
+                                    </div>
+                                    <span className="text-xs font-bold text-white/70">Settings</span>
+                                </Link>
                                 <PillButton
                                     variant="ghost"
                                     size="sm"
@@ -90,6 +111,55 @@ export function Navbar() {
                     </div>
                 </nav>
             </div>
+
+            {/* Mobile Navigation Drawer */}
+            <AnimatePresence>
+                {isMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="fixed inset-0 top-0 z-[90] bg-background/95 backdrop-blur-2xl p-6 pt-24 pointer-events-auto md:hidden"
+                    >
+                        <div className="flex flex-col gap-4">
+                            <MobileNavLink href="/" active={isActive('/') && pathname === '/'}>Gallery</MobileNavLink>
+                            <MobileNavLink href="/explore" active={isActive('/explore')}>Explore</MobileNavLink>
+                            {isAuthed && (
+                                <>
+                                    <MobileNavLink href="/dashboard" active={isActive('/dashboard')}>Studio</MobileNavLink>
+                                    <MobileNavLink href="/cookbook" active={isActive('/cookbook')}>Library</MobileNavLink>
+                                    <MobileNavLink href="/profile" active={isActive('/profile')}>Profile</MobileNavLink>
+                                    <MobileNavLink href="/settings" active={isActive('/settings')}>Settings</MobileNavLink>
+                                </>
+                            )}
+
+                            {!isAuthed && !isLoading && (
+                                <div className="grid grid-cols-2 gap-4 mt-8">
+                                    <Link href="/login">
+                                        <PillButton variant="ghost" className="w-full">Log in</PillButton>
+                                    </Link>
+                                    <Link href="/register">
+                                        <PillButton className="w-full">Sign Up</PillButton>
+                                    </Link>
+                                </div>
+                            )}
+
+                            {isAuthed && (
+                                <button
+                                    onClick={async () => {
+                                        const { logout } = await import("@/lib/auth");
+                                        await logout();
+                                    }}
+                                    className="mt-8 flex items-center justify-center gap-2 p-4 rounded-3xl border border-destructive/20 bg-destructive/5 text-destructive font-bold uppercase tracking-widest text-xs"
+                                >
+                                    <LogOut className="size-4" />
+                                    Sign Out
+                                </button>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </header>
     );
 }
@@ -99,10 +169,26 @@ function NavLink({ href, active, children }: { href: string; active?: boolean; c
         <Link
             href={href}
             className={cn(
-                "px-6 py-2 rounded-full text-xs font-bold transition-all duration-500 uppercase tracking-widest",
+                "px-6 py-2 rounded-full text-xs font-bold transition-all duration-500 uppercase tracking-widest text-center",
                 active
                     ? "bg-primary text-primary-foreground shadow-[0_5px_15px_hsla(var(--primary),0.2)]"
                     : "text-white/50 hover:text-white hover:bg-white/5"
+            )}
+        >
+            {children}
+        </Link>
+    );
+}
+
+function MobileNavLink({ href, active, children }: { href: string; active?: boolean; children: React.ReactNode }) {
+    return (
+        <Link
+            href={href}
+            className={cn(
+                "p-4 rounded-2xl text-lg font-bold transition-all duration-300 flex items-center justify-center",
+                active
+                    ? "bg-primary/20 text-primary border border-primary/20"
+                    : "text-white/40 hover:text-white hover:bg-white/5"
             )}
         >
             {children}

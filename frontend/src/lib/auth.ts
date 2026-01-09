@@ -19,13 +19,13 @@ export async function loginWithEmail(email: string, password: string) {
     return res.json();
 }
 
-export async function registerWithEmail(email: string, password: string) {
+export async function registerWithEmail(email: string, password: string, fullName: string) {
     const res = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, full_name: fullName }),
         credentials: 'include',
     });
 

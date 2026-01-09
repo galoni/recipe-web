@@ -1,11 +1,13 @@
-from sqlalchemy import String, Integer, JSON, ForeignKey, DateTime, Text
+import uuid
+from datetime import datetime
+from typing import Optional
+
+from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
-from datetime import datetime
+
 from app.core.database import Base
-from sqlalchemy.dialects.postgresql import UUID, JSONB
-import uuid
-from typing import Optional
 
 
 class Recipe(Base):
@@ -21,6 +23,7 @@ class Recipe(Base):
 
     source_url: Mapped[str] = mapped_column(Text, nullable=False)
     data: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    is_public: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

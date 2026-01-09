@@ -1,8 +1,10 @@
 from typing import Optional
-from sqlalchemy.ext.asyncio import AsyncSession
+
 from sqlalchemy import select
-from app.models.user import User
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.security import get_password_hash, verify_password
+from app.models.user import User
 
 
 class CRUDUser:
@@ -15,12 +17,14 @@ class CRUDUser:
         db: AsyncSession,
         email: str,
         password: Optional[str] = None,
+        full_name: Optional[str] = None,
         auth_provider: str = "email",
         provider_id: Optional[str] = None,
     ) -> User:
         hashed_password = get_password_hash(password) if password else None
         db_obj = User(
             email=email,
+            full_name=full_name,
             hashed_password=hashed_password,
             auth_provider=auth_provider,
             provider_id=provider_id,

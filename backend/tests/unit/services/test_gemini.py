@@ -1,7 +1,9 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
-from app.services.gemini import GeminiService
+
+import pytest
+
 from app.models.recipe import RecipeData
+from app.services.gemini import GeminiService
 
 
 @pytest.fixture

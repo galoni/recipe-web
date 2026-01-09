@@ -1,6 +1,7 @@
-from pydantic import BaseModel, ConfigDict
 from datetime import datetime
-from typing import Optional, List
+from typing import List, Optional
+
+from pydantic import BaseModel, ConfigDict
 
 # --- Shared Models ---
 
@@ -33,13 +34,14 @@ class RecipeBase(BaseModel):
     ingredients: List[Ingredient]
     steps: List[Step]
     dietary_tags: List[str] = []
+    is_public: bool = True
 
 
 # --- Create/Update Models ---
 
 
 class RecipeCreate(RecipeBase):
-    pass
+    id: Optional[str] = None
 
 
 class RecipeGenerateRequest(BaseModel):

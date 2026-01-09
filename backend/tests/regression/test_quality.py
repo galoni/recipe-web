@@ -1,8 +1,10 @@
-import pytest
 import json
-from app.services.gemini import GeminiService
+from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
+
 from app.models.recipe import RecipeData
-from unittest.mock import AsyncMock, patch, MagicMock
+from app.services.gemini import GeminiService
 
 
 # This test simulates checking quality against golden samples

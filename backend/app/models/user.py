@@ -1,10 +1,11 @@
-from typing import Optional
-from sqlalchemy import String, Boolean, DateTime
+from datetime import datetime
+from typing import TYPE_CHECKING, List, Optional
+
+from sqlalchemy import Boolean, DateTime, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
-from datetime import datetime
+
 from app.core.database import Base
-from typing import List, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .db import Recipe
@@ -15,6 +16,7 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     email: Mapped[str] = mapped_column(String, unique=True, index=True)
+    full_name: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     hashed_password: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     auth_provider: Mapped[str] = mapped_column(String, default="email")
     provider_id: Mapped[Optional[str]] = mapped_column(String, nullable=True)

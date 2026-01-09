@@ -1,8 +1,10 @@
-import pytest
 from datetime import timedelta
+
+import pytest
 from jose import jwt
-from app.core.security import create_access_token, verify_password, get_password_hash
+
 from app.core.config import settings
+from app.core.security import create_access_token, get_password_hash, verify_password
 
 
 def test_password_hashing():

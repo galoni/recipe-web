@@ -10,8 +10,8 @@ import { Sparkles } from 'lucide-react';
 export default function RegisterPage() {
     return (
         <BackgroundLayout>
-            <div className="flex-grow flex items-center justify-center p-6 pt-32">
-                <GlassCard variant="neon" className="w-full max-w-lg p-10 md:p-14">
+            <div className="flex-grow flex flex-col items-center justify-center p-4 md:p-8 pt-24 md:pt-32 pb-12">
+                <GlassCard variant="neon" className="w-full max-w-lg p-8 md:p-14">
                     <div className="flex flex-col items-center gap-8 mb-12">
                         <div className="size-20 rounded-3xl bg-secondary/10 flex items-center justify-center border border-white/10">
                             <Sparkles className="size-10 text-primary" />

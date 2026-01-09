@@ -130,8 +130,14 @@ get_highest_from_branches() {
 check_existing_branches() {
     local specs_dir="$1"
 
-    # Fetch all remotes to get latest branch info (suppress errors if no remotes)
-    git fetch --all --prune 2>/dev/null || true
+    # Fetch remotes to get latest branch info (suppress errors, with timeout)
+    # Use --prune to clean up deleted branches
+    # This might fail in environments with no network, so we use || true
+    if command -v timeout >/dev/null 2>&1; then
+        timeout 10s git fetch --all --prune 2>/dev/null || true
+    else
+        git fetch --all --prune 2>/dev/null || true
+    fi
 
     # Get highest number from ALL branches (not just matching short name)
     local highest_branch=$(get_highest_from_branches)
@@ -194,12 +200,17 @@ generate_branch_name() {
         [ -z "$word" ] && continue
         
         # Keep words that are NOT stop words AND (length >= 3 OR are potential acronyms)
+        # Keep words that are NOT stop words AND (length >= 3 OR are potential acronyms)
         if ! echo "$word" | grep -qiE "$stop_words"; then
             if [ ${#word} -ge 3 ]; then
                 meaningful_words+=("$word")
-            elif echo "$description" | grep -q "\b${word^^}\b"; then
+            else
                 # Keep short words if they appear as uppercase in original (likely acronyms)
-                meaningful_words+=("$word")
+                # bash 3.2 (macOS default) does not support ${word^^}, so we use tr
+                upper_word=$(echo "$word" | tr '[:lower:]' '[:upper:]')
+                if echo "$description" | grep -q "\b$upper_word\b"; then
+                    meaningful_words+=("$word")
+                fi
             fi
         fi
     done
@@ -272,7 +283,19 @@ if [ ${#BRANCH_NAME} -gt $MAX_BRANCH_LENGTH ]; then
 fi
 
 if [ "$HAS_GIT" = true ]; then
-    git checkout -b "$BRANCH_NAME"
+    if git show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
+        >&2 echo "[specify] Branch $BRANCH_NAME already exists, switching to it."
+        git checkout "$BRANCH_NAME"
+    else
+        # Try to create branch. If it fails, maybe it exists on remote but not local
+        if ! git checkout -b "$BRANCH_NAME" 2>/dev/null; then
+             >&2 echo "[specify] Could not create local branch $BRANCH_NAME, trying to track remote..."
+             if ! git checkout -t "origin/$BRANCH_NAME" 2>/dev/null; then
+                 >&2 echo "[specify] Could not find remote branch either, attempting forced switch..."
+                 git checkout "$BRANCH_NAME" || true
+             fi
+        fi
+    fi
 else
     >&2 echo "[specify] Warning: Git repository not detected; skipped branch creation for $BRANCH_NAME"
 fi
@@ -282,7 +305,17 @@ mkdir -p "$FEATURE_DIR"
 
 TEMPLATE="$REPO_ROOT/.gemini/templates/spec-template.md"
 SPEC_FILE="$FEATURE_DIR/spec.md"
-if [ -f "$TEMPLATE" ]; then cp "$TEMPLATE" "$SPEC_FILE"; else touch "$SPEC_FILE"; fi
+if [ -f "$SPEC_FILE" ]; then
+    >&2 echo "[specify] Spec file already exists at $SPEC_FILE, skipping template copy."
+else
+    if [ -f "$TEMPLATE" ]; then
+        cp "$TEMPLATE" "$SPEC_FILE"
+        >&2 echo "[specify] Created new spec file from template at $SPEC_FILE"
+    else
+        touch "$SPEC_FILE"
+        >&2 echo "[specify] Warning: Template not found at $TEMPLATE, created empty spec file at $SPEC_FILE"
+    fi
+fi
 
 # Set the SPECIFY_FEATURE environment variable for the current session
 export SPECIFY_FEATURE="$BRANCH_NAME"

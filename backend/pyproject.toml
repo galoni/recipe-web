@@ -46,13 +46,7 @@ asyncio_mode = "auto"
 python_files = "tests.py test_*.py *_tests.py"
 
 [tool.coverage.run]
-omit = [
-    "app/services/security_service.py",
-    "app/services/email_service.py",
-    "app/services/geoip.py",
-    "app/api/endpoints/security.py",
-    "app/services/oauth.py",
-]
+omit = []
 
 [tool.coverage.report]
 exclude_lines = [
@@ -85,17 +79,3 @@ exclude = [
 
 # Per-module options for gradual typing
 # These modules will have strict typing enforced
-[[tool.mypy.overrides]]
-module = "app.services.security_service"
-disallow_untyped_defs = false  # Will enable in Phase 3
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "app.services.email_service"
-disallow_untyped_defs = false  # Will enable in Phase 3
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "app.services.geoip"
-disallow_untyped_defs = false  # Will enable in Phase 3
-ignore_missing_imports = true

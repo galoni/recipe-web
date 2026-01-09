@@ -121,7 +121,7 @@ class SecurityService:
         await self.db.commit()
         return result.rowcount > 0
 
-    async def revoke_all_other_sessions(self, user_id: int, current_jti: str):
+    async def revoke_all_other_sessions(self, user_id: int, current_jti: str) -> None:
         await self.db.execute(
             update(Session)
             .where(Session.user_id == user_id, Session.token_jti != current_jti)
@@ -134,7 +134,9 @@ class SecurityService:
         # We don't save it yet; we wait for verification
         return secret
 
-    async def enable_2fa(self, user_id: int, secret: str, backup_codes: List[str]):
+    async def enable_2fa(
+        self, user_id: int, secret: str, backup_codes: List[str]
+    ) -> None:
         from passlib.context import CryptContext
 
         pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -160,7 +162,7 @@ class SecurityService:
         if user and user.security_notifications_enabled:
             await EmailService.send_2fa_enabled_email(user.email)
 
-    async def disable_2fa(self, user_id: int):
+    async def disable_2fa(self, user_id: int) -> None:
         await self.db.execute(
             update(User)
             .where(User.id == user_id)

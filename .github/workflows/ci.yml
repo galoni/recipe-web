@@ -24,6 +24,8 @@ jobs:
       run: poetry install --no-root
     - name: Lint with Black
       run: poetry run black . --check
+    - name: Type Check with MyPy
+      run: poetry run mypy app
     - name: Test with Pytest & Coverage (80% Required)
       run: |
         poetry run pytest -v --tb=short --cov=app --cov-report=term-missing --cov-fail-under=80

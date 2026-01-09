@@ -32,7 +32,7 @@ class EmailService:
     @staticmethod
     async def send_new_device_login_email(
         email_to: str, device_info: str, location: str, ip_address: str, timestamp: str
-    ):
+    ) -> None:
         await EmailService.send_email(
             email_to=email_to,
             subject="Security Alert: New sign-in to your ChefStream account",
@@ -46,7 +46,7 @@ class EmailService:
         )
 
     @staticmethod
-    async def send_2fa_enabled_email(email_to: str):
+    async def send_2fa_enabled_email(email_to: str) -> None:
         await EmailService.send_email(
             email_to=email_to,
             subject="Security Update: Two-Factor Authentication Enabled",
@@ -55,7 +55,7 @@ class EmailService:
         )
 
     @staticmethod
-    async def send_2fa_disabled_email(email_to: str):
+    async def send_2fa_disabled_email(email_to: str) -> None:
         await EmailService.send_email(
             email_to=email_to,
             subject="Security Alert: Two-Factor Authentication Disabled",

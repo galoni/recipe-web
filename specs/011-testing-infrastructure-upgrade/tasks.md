@@ -107,25 +107,25 @@
 
 ### Type Checking Setup
 
-- [ ] T040 [P] [P3] Add type annotations to `backend/app/services/security_service.py`
-- [ ] T041 [P] [P3] Add type annotations to `backend/app/services/email_service.py`
-- [ ] T042 [P] [P3] Add type annotations to `backend/app/services/geoip.py`
-- [ ] T043 [P3] Run `poetry run mypy app/` and fix any type errors
-- [ ] T044 [P3] Verify mypy passes with zero errors
+- [x] T040 [P] [P3] Add type annotations to `backend/app/services/security_service.py`
+- [x] T041 [P] [P3] Add type annotations to `backend/app/services/email_service.py`
+- [x] T042 [P] [P3] Add type annotations to `backend/app/services/geoip.py`
+- [x] T043 [P3] Run `poetry run mypy app/` and fix any type errors
+- [x] T044 [P3] Verify mypy passes with zero errors
 
 ### Unit Tests
 
-- [ ] T045 [P] [P3] Write unit tests for `SecurityService` in `backend/tests/unit/services/test_security_service.py` (2FA setup, verification, session management, device tracking)
-- [ ] T046 [P] [P3] Write unit tests for `EmailService` in `backend/tests/unit/services/test_email_service.py` (email sending, templates, error handling)
-- [ ] T047 [P] [P3] Write unit tests for `GeoIPService` in `backend/tests/unit/services/test_geoip.py` (location lookup, caching, error handling)
-- [ ] T048 [P3] Remove coverage omissions from `backend/pyproject.toml` (security_service, email_service, geoip, security endpoint)
-- [ ] T049 [P3] Run `poetry run pytest --cov=app --cov-fail-under=80` and verify passes
+- [x] T045 [P] [P3] Write unit tests for `SecurityService` in `backend/tests/unit/services/test_security_service.py` (2FA setup, verification, session management, device tracking)
+- [x] T046 [P] [P3] Write unit tests for `EmailService` in `backend/tests/unit/services/test_email_service.py` (email sending, templates, error handling)
+- [x] T047 [P] [P3] Write unit tests for `GeoIPService` in `backend/tests/unit/services/test_geoip.py` (location lookup, caching, error handling)
+- [x] T048 [P3] Remove coverage omissions from `backend/pyproject.toml` (security_service, email_service, geoip, security endpoint)
+- [x] T049 [P3] Run `poetry run pytest --cov=app --cov-fail-under=80` and verify passes
 
 ### CI Integration
 
-- [ ] T050 [P3] Update `.github/workflows/ci.yml` backend-qa job to run mypy
-- [ ] T051 [P3] Verify CI fails on type errors
-- [ ] T052 [P3] Verify CI fails if coverage drops below 80%
+- [x] T050 [P3] Update `.github/workflows/ci.yml` backend-qa job to run mypy
+- [x] T051 [P3] Verify CI fails on type errors
+- [x] T052 [P3] Verify CI fails if coverage drops below 80%
 
 **Definition of Done**: mypy passes, all services have tests, coverage ≥80%, no omissions
 

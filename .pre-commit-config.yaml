@@ -40,20 +40,19 @@ repos:
         args: ["--profile", "black"]
         files: ^backend/
 
-  # Python: mypy type checking (DISABLED until Phase 3)
-  # Will be enabled after adding proper type annotations in Phase 3
-  # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: v1.8.0
-  #   hooks:
-  #     - id: mypy
-  #       name: Type check Python (mypy)
-  #       files: ^backend/app/
-  #       args: ["--config-file=backend/pyproject.toml"]
-  #       additional_dependencies:
-  #         - pydantic>=2.0
-  #         - sqlalchemy>=2.0
-  #         - types-pyyaml
-  #         - types-requests
+  # Python: mypy type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        name: Type check Python (mypy)
+        files: ^backend/app/
+        args: ["--config-file=backend/pyproject.toml"]
+        additional_dependencies:
+          - pydantic>=2.0
+          - sqlalchemy>=2.0
+          - types-pyyaml
+          - types-requests
 
   # Frontend: ESLint
   - repo: local

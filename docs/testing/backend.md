@@ -13,6 +13,8 @@ We use **Pytest** for backend testing, using `asyncio` for async DB tests.
 ```bash
 cd backend
 poetry run pytest
+# Fallback if poetry not in PATH:
+# python3 -m poetry run pytest
 ```
 
 Configuration is in `pyproject.toml` under `[tool.pytest.ini_options]`.

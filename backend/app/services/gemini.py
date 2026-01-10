@@ -1,6 +1,6 @@
 import json
 
-from google import genai
+from google import genai  # type: ignore
 
 from app.core.config import settings
 from app.core.logger import logger

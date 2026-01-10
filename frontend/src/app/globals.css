@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 @layer theme {
+
+  /* Default theme (Dark) - Enhanced with more vibrant colors */
   :root {
-    /* Superside Deep Charcoal/Teal */
+    /* Deep Charcoal/Teal Background */
     --background: 174 51% 8%;
     --foreground: 0 0% 98%;
 
@@ -12,7 +14,7 @@
     --popover: 174 51% 8%;
     --popover-foreground: 0 0% 98%;
 
-    /* Superside Lime Green */
+    /* Vibrant Lime Green Primary */
     --primary: 80 100% 76%;
     --primary-foreground: 174 51% 5%;
 
@@ -22,7 +24,7 @@
     --muted: 174 20% 15%;
     --muted-foreground: 174 10% 70%;
 
-    /* Atmospheric Cyan/Teal */
+    /* Atmospheric Cyan/Teal Accent */
     --accent: 180 100% 50%;
     --accent-foreground: 0 0% 98%;
 
@@ -34,14 +36,63 @@
     --ring: 80 100% 76%;
 
     --radius: 2rem;
-    /* More rounded for Superside feel */
 
     --font-sans: var(--font-inter-tight);
     --font-serif: var(--font-instrument-serif);
   }
+
+  /* Light theme - Fresh and vibrant */
+  .light {
+    /* Soft white/cream background with subtle warmth */
+    --background: 40 20% 98%;
+    --foreground: 174 51% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 174 51% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 174 51% 12%;
+
+    /* Vibrant Green Primary (adjusted for light theme) */
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 15% 92%;
+    --secondary-foreground: 174 51% 12%;
+
+    --muted: 40 10% 94%;
+    --muted-foreground: 174 20% 40%;
+
+    /* Bright Teal Accent */
+    --accent: 180 80% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 10% 88%;
+    --input: 40 10% 88%;
+    --ring: 142 76% 36%;
+  }
 }
 
 @layer base {
+
+  /* Smooth theme transitions */
+  * {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Disable transitions for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition-duration: 0ms !important;
+      animation-duration: 0ms !important;
+    }
+  }
+
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));

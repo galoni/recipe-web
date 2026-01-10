@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export function Navbar() {
     const pathname = usePathname();
@@ -56,6 +57,11 @@ export function Navbar() {
 
                     {/* Right Actions */}
                     <div className="flex items-center gap-3">
+                        {/* Theme Toggle */}
+                        <div className="hidden sm:block">
+                            <ThemeToggle />
+                        </div>
+
                         {/* Mobile Menu Toggle */}
                         <PillButton
                             variant="ghost"
@@ -156,6 +162,11 @@ export function Navbar() {
                                     Sign Out
                                 </button>
                             )}
+
+                            {/* Theme Toggle for Mobile */}
+                            <div className="mt-8 flex justify-center">
+                                <ThemeToggle />
+                            </div>
                         </div>
                     </motion.div>
                 )}

@@ -6,14 +6,15 @@ from app.api.deps import get_current_user
 from app.core.config import settings
 from app.core.database import get_db
 from app.core.logger import logger
-from app.core.security import create_access_token
 from app.schemas.auth import Token, TwoFactorVerify
 from app.schemas.user import User, UserCreate
 from app.services.auth_service import AuthService
 from app.services.oauth import GoogleOAuthProvider
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi.responses import RedirectResponse
 from fastapi.security import OAuth2PasswordRequestForm
-from jose import JWTError, jwt
+from jose import jwt
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter()
@@ -149,8 +150,6 @@ async def verify_2fa(
 
 @router.get("/google/login")
 def login_google(response: Response):
-    from fastapi.responses import RedirectResponse
-
     provider = GoogleOAuthProvider()
     # Generate random state to prevent CSRF
     state = secrets.token_urlsafe(32)
@@ -223,9 +222,6 @@ async def google_callback(
         ip_address=request.client.host if request.client else "unknown",
     )
 
-    # Redirect to frontend
-    from fastapi.responses import RedirectResponse
-
     resp = RedirectResponse(url=f"{settings.FRONTEND_URL}/dashboard")
     resp.set_cookie(
         key="access_token",
@@ -279,10 +275,7 @@ async def logout(
             )
             jti = payload.get("jti")
             if jti:
-                from datetime import datetime, timezone
-
                 from app.models.security import Session
-                from sqlalchemy import update
 
                 await db.execute(
                     update(Session)

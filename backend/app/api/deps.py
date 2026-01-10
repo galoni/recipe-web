@@ -49,7 +49,9 @@ async def get_current_user(
         from sqlalchemy import update
 
         session_result = await db.execute(
-            select(Session).where(Session.token_jti == jti, Session.revoked_at == None)
+            select(Session).where(
+                Session.token_jti == jti, Session.revoked_at.is_(None)
+            )
         )
         session = session_result.scalar_one_or_none()
         if not session:
@@ -104,7 +106,7 @@ async def get_current_user_optional(
 
             session_result = await db.execute(
                 select(Session).where(
-                    Session.token_jti == jti, Session.revoked_at == None
+                    Session.token_jti == jti, Session.revoked_at.is_(None)
                 )
             )
             session = session_result.scalar_one_or_none()

@@ -15,6 +15,8 @@ class SessionBase(BaseModel):
     location_city: Optional[str] = None
     location_country: Optional[str] = None
     last_active_at: datetime
+    created_at: datetime
+    user_id: int
 
 
 class Session(SessionBase):

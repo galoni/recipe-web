@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 from urllib.parse import urlencode
 
 import httpx
@@ -9,7 +9,7 @@ class GoogleOAuthProvider:
     def __init__(self):
         self.client_id = settings.GOOGLE_CLIENT_ID
         self.client_secret = settings.GOOGLE_CLIENT_SECRET
-        self.redirect_uri = f"http://localhost:8000/api/v1/auth/google/callback"  # TODO: Update with env var
+        self.redirect_uri = "http://localhost:8000/api/v1/auth/google/callback"  # TODO: Update with env var
         self.discovery_url = (
             "https://accounts.google.com/.well-known/openid-configuration"
         )

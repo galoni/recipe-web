@@ -1,15 +1,12 @@
-from unittest.mock import patch
-
-from app.main import app
-from fastapi.testclient import TestClient
-
-client = TestClient(app)
-
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from app.core.database import get_db
+from app.main import app
 from app.models.recipe import Ingredient, InstructionStep, RecipeData
+from fastapi.testclient import TestClient
+
+client = TestClient(app)
 
 
 @pytest.fixture
@@ -33,7 +30,7 @@ def test_extract_api_contract(api_overrides):
         "app.services.cache.CacheService.get_cached_extraction"
     ) as mock_cache_get, patch(
         "app.services.cache.CacheService.save_extraction"
-    ) as mock_cache_save:
+    ):
 
         mock_yt.return_value = "Mock Transcript"
         mock_cache_get.return_value = None  # Force generation

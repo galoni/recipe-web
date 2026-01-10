@@ -1,6 +1,9 @@
+from typing import Any
+
 from app.core.database import get_db
 from app.models.db import Recipe as RecipeModel
-from app.schemas.recipe import RecipeCreate, RecipeGenerateRequest
+from app.models.recipe import RecipeData
+from app.schemas.recipe import Ingredient, RecipeCreate, RecipeGenerateRequest, Step
 from app.services.cache import CacheService
 from app.services.gemini import GeminiService
 from app.services.youtube import YouTubeService
@@ -35,24 +38,39 @@ async def extract_recipe(
         existing_recipe = result.scalar_one_or_none()
 
         if existing_recipe:
-            recipe_data = existing_recipe.data
+            recipe_data_dict: dict[str, Any] = existing_recipe.data
             return RecipeCreate(
                 id=str(existing_recipe.id),
-                **recipe_data,
                 is_public=existing_recipe.is_public,
+                title=recipe_data_dict.get("title", "Unknown"),
+                description=recipe_data_dict.get("description"),
+                video_url=request.video_url,
+                thumbnail_url=f"https://img.youtube.com/vi/{video_id}/maxresdefault.jpg",
+                servings=recipe_data_dict.get("servings"),
+                prep_time_minutes=recipe_data_dict.get("prep_time_minutes"),
+                cook_time_minutes=recipe_data_dict.get("cook_time_minutes"),
+                ingredients=[
+                    Ingredient(**i) if isinstance(i, dict) else i
+                    for i in recipe_data_dict.get("ingredients", [])
+                ],
+                steps=[
+                    Step(**s) if isinstance(s, dict) else s
+                    for s in recipe_data_dict.get("instructions", [])
+                ],
+                dietary_tags=recipe_data_dict.get("dietary_tags", []),
             )
 
         # 3. Check Cache
         cache_service = CacheService(db)
         cached_recipe = await cache_service.get_cached_extraction(video_id)
 
+        recipe_data: RecipeData
         if cached_recipe:
             recipe_data = cached_recipe
         else:
             # 3. Get Transcript (if not cached)
             yt_service = YouTubeService()
-            # This is synchronous (network I/O wrapper), maybe create an async wrapper if blocking loop
-            # For now running directly assuming it's fast enough or handled by threadpool in future
+            # This is synchronous (network I/O wrapper)
             transcript = yt_service.get_transcript(video_id)
 
             # 4. Generate Recipe
@@ -70,9 +88,14 @@ async def extract_recipe(
             servings=recipe_data.servings,
             prep_time_minutes=recipe_data.prep_time_minutes,
             cook_time_minutes=recipe_data.cook_time_minutes,
-            ingredients=[i.model_dump() for i in recipe_data.ingredients],
+            ingredients=[Ingredient(**i.model_dump()) for i in recipe_data.ingredients],
             steps=[
-                s.model_dump() for s in recipe_data.instructions
+                Step(
+                    step_number=s.step_number,
+                    instruction=s.instruction,
+                    duration_seconds=s.duration_seconds,
+                )
+                for s in recipe_data.instructions
             ],  # Mapping instructions -> steps
             dietary_tags=recipe_data.dietary_tags,
         )

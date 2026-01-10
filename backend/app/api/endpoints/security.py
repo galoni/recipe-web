@@ -11,7 +11,7 @@ from app.core.database import get_db
 from app.models.user import User
 from app.schemas.security import Session, TwoFactorEnable, TwoFactorSetup
 from app.services.security_service import SecurityService
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -40,7 +40,7 @@ async def list_sessions(
                 token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
             )
             current_jti = payload.get("jti")
-        except:
+        except Exception:
             pass
 
     return [
@@ -94,7 +94,7 @@ async def revoke_others(
                 token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
             )
             current_jti = payload.get("jti")
-        except:
+        except Exception:
             pass
 
     if not current_jti:

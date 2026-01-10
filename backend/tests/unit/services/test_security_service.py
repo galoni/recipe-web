@@ -1,9 +1,7 @@
 import asyncio
-from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-from app.models.security import Session
 from app.models.user import User
 from app.services.security_service import SecurityService
 
@@ -14,36 +12,25 @@ def mock_db():
     return db
 
 
-def async_return(result):
-    """Helper to return an awaitable compatible with side_effect of AsyncMock"""
-    # Alternatively simple AsyncMock(return_value=result) might work but side_effect on AsyncMock is tricky.
-    # If side_effect is a list, AsyncMock iterates it. If element is not awaitable, and method is async, it might fail?
-    # Actually AsyncMock documentation says: "If side_effect is an iterable, the mock will return the next value from the iterable... If the mock is async, the value is awaited?"
-    # No, AsyncMock wraps calculation.
-    # Let's ensure strictness.
-    f = asyncio.Future()
-    f.set_result(result)
-    return f
-
-
 @pytest.mark.asyncio
 async def test_create_session(mock_db):
     service = SecurityService(mock_db)
 
-    with patch("app.services.geoip.GeoIPService") as MockGeoIP:
+    with patch("app.services.security_service.GeoIPService") as MockGeoIP:
         MockGeoIP.get_location = AsyncMock(return_value=("TestCity", "TestCountry"))
 
-        with patch("app.services.email_service.EmailService") as MockEmail:
+        with patch("app.services.security_service.EmailService") as MockEmail:
+            # Mock the internal async methods
             MockEmail.send_new_device_login_email = AsyncMock()
 
-            # 1. Update User (returns cursor result, usually ignored or rowcount)
+            # 1. Update User
             mock_update_result = MagicMock()
 
-            # 2. Count Check (returns scalar result)
+            # 2. Count Check
             mock_count_result = MagicMock()
             mock_count_result.scalar.return_value = 0
 
-            # 3. User Fetch (returns scalar_one_or_none)
+            # 3. User Fetch
             mock_user = User(
                 id=1, email="test@example.com", security_notifications_enabled=True
             )
@@ -75,10 +62,10 @@ async def test_create_session(mock_db):
 async def test_create_session_existing_device(mock_db):
     service = SecurityService(mock_db)
 
-    with patch("app.services.geoip.GeoIPService") as MockGeoIP:
+    with patch("app.services.security_service.GeoIPService") as MockGeoIP:
         MockGeoIP.get_location = AsyncMock(return_value=("TestCity", "TestCountry"))
 
-        with patch("app.services.email_service.EmailService") as MockEmail:
+        with patch("app.services.security_service.EmailService") as MockEmail:
             MockEmail.send_new_device_login_email = AsyncMock()
 
             # 1. Update
@@ -118,7 +105,7 @@ async def test_revoke_session(mock_db):
 async def test_enable_2fa(mock_db):
     service = SecurityService(mock_db)
 
-    with patch("app.services.email_service.EmailService") as MockEmail:
+    with patch("app.services.security_service.EmailService") as MockEmail:
         MockEmail.send_2fa_enabled_email = AsyncMock()
 
         mock_user = User(
@@ -136,6 +123,9 @@ async def test_enable_2fa(mock_db):
         await service.enable_2fa(1, "secret", ["code1", "code2"])
 
         MockEmail.send_2fa_enabled_email.assert_called_with("test@example.com")
+        # Check event log
+        # mock_db.add is called for SecurityEvent
+        # The first call in enable_2fa is db.add(event)
         args, _ = mock_db.add.call_args
         assert args[0].event_type == "2fa_enabled"
 
@@ -144,7 +134,7 @@ async def test_enable_2fa(mock_db):
 async def test_disable_2fa(mock_db):
     service = SecurityService(mock_db)
 
-    with patch("app.services.email_service.EmailService") as MockEmail:
+    with patch("app.services.security_service.EmailService") as MockEmail:
         MockEmail.send_2fa_disabled_email = AsyncMock()
 
         mock_user = User(

@@ -67,7 +67,7 @@ class YouTubeService:
             # 3: "hey everybody it's"
             # We want to keep only unique content.
 
-            text_lines = []
+            text_lines: list[str] = []
             last_text = ""
 
             for caption in captions:
@@ -106,5 +106,5 @@ class YouTubeService:
             try:
                 for f in glob.glob(f"{output_template}*"):
                     os.remove(f)
-            except:
+            except Exception:
                 pass

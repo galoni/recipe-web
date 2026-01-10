@@ -124,7 +124,7 @@ async def read_recipe(
             # Check if it's a public recipe even if not owned or not logged in
             result = await db.execute(
                 select(RecipeModel).where(
-                    RecipeModel.id == recipe_id, RecipeModel.is_public == True
+                    RecipeModel.id == recipe_id, RecipeModel.is_public.is_(True)
                 )
             )
             recipe = result.scalar_one_or_none()

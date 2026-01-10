@@ -1,7 +1,5 @@
 import logging
-from typing import Any, Dict, Optional
-
-from app.core.config import settings
+from typing import Any, Dict
 
 logger = logging.getLogger(__name__)
 
@@ -20,12 +18,12 @@ class EmailService:
 
         # In a real implementation, you'd use a library like fast-mail or aiyomail
         # For now, we simulate success and log the "content"
-        print(f"\n--- SECURITY EMAIL SENT ---")
+        print("\n--- SECURITY EMAIL SENT ---")
         print(f"TO: {email_to}")
         print(f"SUBJECT: {subject}")
         print(f"TEMPLATE: {template_name}")
         print(f"DATA: {template_data}")
-        print(f"--- END EMAIL ---\n")
+        print("--- END EMAIL ---\n")
 
         return True
 

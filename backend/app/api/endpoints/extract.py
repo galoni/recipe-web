@@ -7,8 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
 from app.models.db import Recipe as RecipeModel
 from app.models.recipe import RecipeData
-from app.schemas.recipe import (Ingredient, RecipeCreate,
-                                RecipeGenerateRequest, Step)
+from app.schemas.recipe import Ingredient, RecipeCreate, RecipeGenerateRequest, Step
 from app.services.cache import CacheService
 from app.services.gemini import GeminiService
 from app.services.youtube import YouTubeService

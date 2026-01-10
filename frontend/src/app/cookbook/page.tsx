@@ -62,14 +62,14 @@ export default function CookbookPage() {
                         animate={{ opacity: 1, x: 0 }}
                         className="space-y-6"
                     >
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/50 text-[10px] font-bold tracking-[0.2em] uppercase">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/30 bg-secondary/30 text-muted-foreground text-[10px] font-bold tracking-[0.2em] uppercase">
                             <BookOpen className="size-3.5 text-primary" />
                             <span>Heritage Library</span>
                         </div>
-                        <h1 className="text-6xl md:text-8xl font-bold text-white leading-[0.9]">
+                        <h1 className="text-6xl md:text-8xl font-bold text-foreground leading-[0.9]">
                             Your <span className="font-serif italic text-primary">Vault</span>.
                         </h1>
-                        <p className="text-white/40 text-xl font-medium max-w-md">Your curated collection of neural-extracted recipes and techniques.</p>
+                        <p className="text-muted-foreground text-xl font-medium max-w-md">Your curated collection of neural-extracted recipes and techniques.</p>
                     </motion.div>
 
                     <motion.div
@@ -88,13 +88,13 @@ export default function CookbookPage() {
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-40 space-y-6">
                         <Loader2 className="size-16 text-primary animate-spin" />
-                        <p className="text-white/20 font-bold uppercase tracking-[0.2em] text-[10px]">Synchronizing Library...</p>
+                        <p className="text-muted-foreground/50 font-bold uppercase tracking-[0.2em] text-[10px]">Synchronizing Library...</p>
                     </div>
                 ) : error ? (
                     <div className="flex flex-col items-center justify-center py-40 space-y-6">
                         <div className="p-8 rounded-[2rem] bg-red-500/10 border border-red-500/20 text-center max-w-md">
                             <h3 className="text-2xl font-bold text-red-500 mb-4">Connection Terminated</h3>
-                            <p className="text-white/40 font-medium mb-8">Unable to synchronize with your neural library. Please ensure you are authenticated.</p>
+                            <p className="text-muted-foreground font-medium mb-8">Unable to synchronize with your neural library. Please ensure you are authenticated.</p>
                             <Link href="/login">
                                 <PillButton>Authenticate Identity</PillButton>
                             </Link>
@@ -135,8 +135,8 @@ export default function CookbookPage() {
                         </div>
 
                         <div className="space-y-4 relative z-10">
-                            <h3 className="text-4xl font-bold text-white">Your library is empty</h3>
-                            <p className="text-white/40 text-xl max-w-md mx-auto font-medium">
+                            <h3 className="text-4xl font-bold text-foreground">Your library is empty</h3>
+                            <p className="text-muted-foreground text-xl max-w-md mx-auto font-medium">
                                 Paste a source link on the dashboard to start building your personal AI-powered cookbook.
                             </p>
                         </div>

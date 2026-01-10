@@ -50,16 +50,16 @@ function TwoFactorVerifyContent() {
                     <Shield className="size-10 text-emerald-400" />
                 </div>
                 <div className="text-center space-y-4">
-                    <h1 className="text-5xl font-bold text-white leading-[0.9]">
+                    <h1 className="text-5xl font-bold text-foreground leading-[0.9]">
                         Secure <span className="font-serif italic text-emerald-400">Access</span>.
                     </h1>
-                    <p className="text-white/40 text-lg font-medium">Verify your secondary authentication layer.</p>
+                    <p className="text-muted-foreground text-lg font-medium">Verify your secondary authentication layer.</p>
                 </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="space-y-4">
-                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/20 px-4">
+                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/50 px-4">
                         Verification Code
                     </label>
                     <input
@@ -71,7 +71,7 @@ function TwoFactorVerifyContent() {
                             setError("");
                         }}
                         placeholder="000000"
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-center text-4xl font-mono tracking-[0.5em] text-white focus:outline-none focus:border-emerald-500/50 transition-colors"
+                        className="w-full bg-secondary/30 border border-border/30 rounded-2xl p-6 text-center text-4xl font-mono tracking-[0.5em] text-white focus:outline-none focus:border-emerald-500/50 transition-colors"
                         autoFocus
                     />
                     <AnimatePresence>
@@ -107,7 +107,7 @@ function TwoFactorVerifyContent() {
             <div className="text-center mt-10">
                 <button
                     onClick={() => router.push("/login")}
-                    className="text-white/30 hover:text-white transition-colors text-sm font-medium"
+                    className="text-muted-foreground/70 hover:text-foreground transition-colors text-sm font-medium"
                 >
                     Cancel and return to login
                 </button>

@@ -101,7 +101,7 @@ export default function SecuritySettingsPage() {
             <main className="container mx-auto max-w-4xl pt-32 p-6">
                 <Link
                     href="/settings"
-                    className="inline-flex items-center gap-2 text-white/40 hover:text-white mb-8 transition-colors group"
+                    className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors group"
                 >
                     <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
                     <span>Back to Control Center</span>
@@ -119,10 +119,10 @@ export default function SecuritySettingsPage() {
                                 <Shield className="size-6" />
                             </div>
                             <div>
-                                <h1 className="text-4xl font-bold text-white">
+                                <h1 className="text-4xl font-bold text-foreground">
                                     Neural <span className="font-serif italic text-emerald-400">Security</span>
                                 </h1>
-                                <p className="text-white/30 font-medium">Manage access and cryptographic protocols</p>
+                                <p className="text-muted-foreground/70 font-medium">Manage access and cryptographic protocols</p>
                             </div>
                         </div>
                     </div>
@@ -132,23 +132,23 @@ export default function SecuritySettingsPage() {
                         <section className="space-y-4">
                             <div className="flex items-center gap-2 px-2">
                                 <Shield size={14} className="text-emerald-400" />
-                                <h3 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Authentication Layers</h3>
+                                <h3 className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-[0.3em]">Authentication Layers</h3>
                             </div>
 
-                            <div className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                            <div className="p-6 rounded-[2rem] bg-white/[0.02] border border-border/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                                 <div className="flex gap-4">
-                                    <div className="size-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/40">
+                                    <div className="size-12 rounded-2xl bg-secondary/30 flex items-center justify-center text-muted-foreground">
                                         <Smartphone className="size-6" />
                                     </div>
                                     <div>
                                         <h4 className="text-white font-bold">Two-Factor Authentication</h4>
-                                        <p className="text-sm text-white/30">Add an extra layer of security to your account</p>
+                                        <p className="text-sm text-muted-foreground/70">Add an extra layer of security to your account</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-4">
                                     <span className={`px-3 py-1.5 rounded-full text-xs font-bold border ${user?.is_2fa_enabled
                                         ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                                        : "bg-white/5 text-white/30 border-white/10"
+                                        : "bg-secondary/30 text-muted-foreground/70 border-border/30"
                                         }`}>
                                         {user?.is_2fa_enabled ? "Active" : "Disabled"}
                                     </span>
@@ -182,16 +182,16 @@ export default function SecuritySettingsPage() {
                         <section className="space-y-4">
                             <div className="flex items-center gap-2 px-2">
                                 <Bell size={14} className="text-emerald-400" />
-                                <h3 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Communication Prefs</h3>
+                                <h3 className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-[0.3em]">Communication Prefs</h3>
                             </div>
-                            <div className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                            <div className="p-6 rounded-[2rem] bg-white/[0.02] border border-border/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                                 <div className="flex gap-4">
-                                    <div className="size-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/40">
+                                    <div className="size-12 rounded-2xl bg-secondary/30 flex items-center justify-center text-muted-foreground">
                                         <Bell className="size-6" />
                                     </div>
                                     <div>
                                         <h4 className="text-white font-bold">Security Alerts</h4>
-                                        <p className="text-sm text-white/30">Email notifications for new logins and 2FA changes</p>
+                                        <p className="text-sm text-muted-foreground/70">Email notifications for new logins and 2FA changes</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-4">
@@ -199,7 +199,7 @@ export default function SecuritySettingsPage() {
                                         type="button"
                                         onClick={() => user && toggleNotificationsMutation.mutate(!user.security_notifications_enabled)}
                                         disabled={toggleNotificationsMutation.isPending || !user}
-                                        className={`w-12 h-6 rounded-full transition-colors relative focus:outline-none focus:ring-2 focus:ring-emerald-500/50 ${user?.security_notifications_enabled ? 'bg-emerald-500' : 'bg-white/10'
+                                        className={`w-12 h-6 rounded-full transition-colors relative focus:outline-none focus:ring-2 focus:ring-emerald-500/50 ${user?.security_notifications_enabled ? 'bg-emerald-500' : 'bg-secondary/40'
                                             }`}
                                     >
                                         <motion.div
@@ -216,7 +216,7 @@ export default function SecuritySettingsPage() {
                             <div className="flex items-center justify-between px-2">
                                 <div className="flex items-center gap-2">
                                     <Clock size={14} className="text-emerald-400" />
-                                    <h3 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Authorized Devices</h3>
+                                    <h3 className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-[0.3em]">Authorized Devices</h3>
                                 </div>
                                 {sessions && sessions.length > 1 && (
                                     <button
@@ -244,15 +244,15 @@ export default function SecuritySettingsPage() {
                         <section className="space-y-4">
                             <div className="flex items-center gap-2 px-2">
                                 <AlertTriangle size={14} className="text-emerald-400" />
-                                <h3 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Incident Log</h3>
+                                <h3 className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-[0.3em]">Incident Log</h3>
                             </div>
-                            <div className="p-8 rounded-[2rem] border border-white/5 bg-white/[0.01] flex flex-col items-center justify-center text-center gap-4">
-                                <div className="size-12 rounded-full bg-white/5 flex items-center justify-center text-white/20">
+                            <div className="p-8 rounded-[2rem] border border-border/20 bg-white/[0.01] flex flex-col items-center justify-center text-center gap-4">
+                                <div className="size-12 rounded-full bg-secondary/30 flex items-center justify-center text-muted-foreground/50">
                                     <Fingerprint size={24} />
                                 </div>
                                 <div>
                                     <h5 className="text-white font-medium mb-1">Audit Trail</h5>
-                                    <p className="text-sm text-white/20 max-w-xs">Detailed security event logging is currently being synchronized.</p>
+                                    <p className="text-sm text-muted-foreground/50 max-w-xs">Detailed security event logging is currently being synchronized.</p>
                                 </div>
                             </div>
                         </section>
@@ -280,7 +280,7 @@ export default function SecuritySettingsPage() {
                         <AlertTriangle className="text-red-400 shrink-0" size={24} />
                         <div>
                             <h4 className="text-red-400 font-bold text-sm mb-1">Security Degradation Warning</h4>
-                            <p className="text-white/40 text-xs leading-relaxed">
+                            <p className="text-muted-foreground text-xs leading-relaxed">
                                 Disabling 2FA will significantly reduce your account&apos;s protection against unauthorized access.
                             </p>
                         </div>

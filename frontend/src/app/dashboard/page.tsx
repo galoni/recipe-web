@@ -60,16 +60,16 @@ export default function Dashboard() {
                         <motion.div
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/50 text-[10px] font-bold tracking-[0.2em] uppercase mb-10"
+                            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/30 bg-secondary/30 text-muted-foreground text-[10px] font-bold tracking-[0.2em] uppercase mb-10"
                         >
                             <Sparkles className="size-3.5 text-primary animate-pulse" />
                             <span>Neural Extraction Suite</span>
                         </motion.div>
-                        <h1 className="text-6xl md:text-7xl font-bold text-white leading-[0.9] mb-8">
+                        <h1 className="text-6xl md:text-7xl font-bold text-foreground leading-[0.9] mb-8">
                             Initialize <br />
                             <span className="font-serif italic text-primary">extraction</span>.
                         </h1>
-                        <p className="text-white/40 text-xl max-w-lg mx-auto font-medium">
+                        <p className="text-muted-foreground text-xl max-w-lg mx-auto font-medium">
                             Paste your source video stream below to begin neural processing.
                         </p>
                     </div>
@@ -77,14 +77,14 @@ export default function Dashboard() {
                     <GlassCard variant="neon" className="p-10 md:p-14">
                         <div className="flex flex-col gap-8">
                             <div className="space-y-4">
-                                <label className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] ml-1">Video Source URL</label>
+                                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] ml-1">Video Source URL</label>
                                 <ModernInput
-                                    icon={<Youtube className="size-6 text-white/20" />}
+                                    icon={<Youtube className="size-6 text-muted-foreground/50" />}
                                     placeholder="https://youtube.com/watch?v=..."
                                     value={videoUrl}
                                     onChange={(e) => setVideoUrl(e.target.value)}
                                     onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
-                                    className="bg-white/5 border-white/10 focus:border-primary/50 text-xl h-16 rounded-2xl"
+                                    className="bg-secondary/30 border-border/30 focus:border-primary/50 text-xl h-16 rounded-2xl"
                                 />
                             </div>
 

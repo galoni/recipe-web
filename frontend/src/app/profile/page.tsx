@@ -18,7 +18,7 @@ export default function ProfilePage() {
         <BackgroundLayout>
             <Navbar />
             <div className="flex h-screen items-center justify-center">
-                <p className="text-white/50">Please log in to view your profile.</p>
+                <p className="text-muted-foreground">Please log in to view your profile.</p>
             </div>
         </BackgroundLayout>
     );
@@ -37,7 +37,7 @@ export default function ProfilePage() {
                             <User className="size-16" />
                         </div>
                         <div className="text-center md:text-left">
-                            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+                            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-2">
                                 {user.full_name || "Chef Enigma"}
                             </h1>
                             <p className="text-xl text-primary font-serif italic">Kitchen Architect</p>
@@ -58,12 +58,12 @@ export default function ProfilePage() {
 
 function ProfileStat({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) {
     return (
-        <div className="p-6 rounded-3xl bg-white/5 border border-white/5 flex items-center gap-4">
-            <div className="size-10 rounded-2xl bg-white/5 flex items-center justify-center text-white/40">
+        <div className="p-6 rounded-3xl bg-secondary/30 border border-border/20 flex items-center gap-4">
+            <div className="size-10 rounded-2xl bg-secondary/30 flex items-center justify-center text-muted-foreground">
                 {icon}
             </div>
             <div>
-                <p className="text-xs font-bold text-white/20 uppercase tracking-widest mb-1">{label}</p>
+                <p className="text-xs font-bold text-muted-foreground/50 uppercase tracking-widest mb-1">{label}</p>
                 <p className="text-white font-medium">{value}</p>
             </div>
         </div>

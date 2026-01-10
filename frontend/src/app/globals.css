@@ -41,38 +41,38 @@
     --font-serif: var(--font-instrument-serif);
   }
 
-  /* Light theme - Fresh and vibrant with better contrast */
+  /* Light theme - High contrast and vibrant */
   .light {
-    /* Clean white background */
+    /* Pure white background with very dark text */
     --background: 0 0% 100%;
-    --foreground: 174 51% 8%;
+    --foreground: 174 60% 10%;
 
-    --card: 0 0% 98%;
-    --card-foreground: 174 51% 8%;
+    --card: 0 0% 97%;
+    --card-foreground: 174 60% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 174 51% 8%;
+    --popover-foreground: 174 60% 10%;
 
-    /* Vibrant Teal Primary (more saturated for light theme) */
-    --primary: 174 70% 41%;
+    /* Bold Teal Primary - highly saturated */
+    --primary: 174 85% 35%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 174 15% 90%;
-    --secondary-foreground: 174 51% 12%;
+    --secondary: 174 20% 88%;
+    --secondary-foreground: 174 60% 15%;
 
-    --muted: 174 10% 95%;
-    --muted-foreground: 174 20% 35%;
+    --muted: 174 15% 92%;
+    --muted-foreground: 174 30% 30%;
 
-    /* Bright Cyan Accent */
-    --accent: 180 85% 40%;
+    /* Vibrant Cyan Accent */
+    --accent: 180 90% 35%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 85% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 174 15% 85%;
-    --input: 174 15% 90%;
-    --ring: 174 70% 41%;
+    --border: 174 25% 75%;
+    --input: 174 20% 85%;
+    --ring: 174 85% 35%;
   }
 }
 

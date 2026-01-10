@@ -17,10 +17,10 @@ export default function LoginPage() {
                             <ChefHat className="size-10 text-primary" />
                         </div>
                         <div className="text-center space-y-4">
-                            <h1 className="text-5xl md:text-6xl font-bold text-white leading-[0.9]">
+                            <h1 className="text-5xl md:text-6xl font-bold text-foreground leading-[0.9]">
                                 Welcome <span className="font-serif italic text-primary">Back</span>.
                             </h1>
-                            <p className="text-white/40 text-lg font-medium">Access your global heritage cookbook.</p>
+                            <p className="text-muted-foreground text-lg font-medium">Access your global heritage cookbook.</p>
                         </div>
                     </div>
 
@@ -29,10 +29,10 @@ export default function LoginPage() {
 
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t border-white/10" />
+                                <span className="w-full border-t border-border/50" />
                             </div>
                             <div className="relative flex justify-center text-[10px] uppercase tracking-[0.2em] font-bold">
-                                <span className="bg-background/20 backdrop-blur-xl px-4 text-white/30">
+                                <span className="bg-background/20 backdrop-blur-xl px-4 text-muted-foreground/60">
                                     Or verify via email
                                 </span>
                             </div>
@@ -42,9 +42,9 @@ export default function LoginPage() {
                     </div>
 
                     <div className="text-center text-sm font-medium mt-10">
-                        <p className="text-white/30 text-lg font-medium">
+                        <p className="text-muted-foreground text-lg font-medium">
                             No access?{' '}
-                            <Link href="/register" className="font-bold text-primary hover:text-white transition-colors">
+                            <Link href="/register" className="font-bold text-primary hover:text-foreground transition-colors">
                                 Create Identity
                             </Link>
                         </p>

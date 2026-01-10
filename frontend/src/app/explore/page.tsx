@@ -56,14 +56,14 @@ function ExploreContent() {
                     animate={{ opacity: 1, y: 0 }}
                     className="space-y-6 max-w-3xl"
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/50 text-[10px] font-bold tracking-[0.2em] uppercase">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/30 bg-secondary/30 text-muted-foreground text-[10px] font-bold tracking-[0.2em] uppercase">
                         <Compass className="size-3.5 text-primary" />
                         <span>Global Discovery</span>
                     </div>
-                    <h1 className="text-6xl md:text-8xl font-bold text-white leading-[0.9]">
+                    <h1 className="text-6xl md:text-8xl font-bold text-foreground leading-[0.9]">
                         Explore the <span className="font-serif italic text-primary">Commons</span>.
                     </h1>
-                    <p className="text-white/40 text-xl font-medium mx-auto">
+                    <p className="text-muted-foreground text-xl font-medium mx-auto">
                         Browse recipes shared by the community or search for specific ingredients and techniques.
                     </p>
                 </motion.div>
@@ -79,7 +79,7 @@ function ExploreContent() {
             {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-40 space-y-6">
                     <Loader2 className="size-16 text-primary animate-spin" />
-                    <p className="text-white/20 font-bold uppercase tracking-[0.2em] text-[10px]">Scanning Neural Library...</p>
+                    <p className="text-muted-foreground/50 font-bold uppercase tracking-[0.2em] text-[10px]">Scanning Neural Library...</p>
                 </div>
             ) : recipes.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -105,11 +105,11 @@ function ExploreContent() {
                     animate={{ opacity: 1, scale: 1 }}
                     className="glass-card p-24 text-center space-y-8"
                 >
-                    <div className="size-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-4 border border-white/10">
+                    <div className="size-20 bg-secondary/30 rounded-3xl flex items-center justify-center mx-auto mb-4 border border-border/30">
                         <Sparkles className="size-10 text-primary/40" />
                     </div>
-                    <h2 className="text-3xl font-bold text-white">No recipes found</h2>
-                    <p className="text-white/40 text-lg max-w-sm mx-auto">
+                    <h2 className="text-3xl font-bold text-foreground">No recipes found</h2>
+                    <p className="text-muted-foreground text-lg max-w-sm mx-auto">
                         We couldn&apos;t find any recipes matching &quot;{searchQuery}&quot;. Try a different search or extract a new one!
                     </p>
                 </motion.div>

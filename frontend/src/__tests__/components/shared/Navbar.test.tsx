@@ -16,11 +16,25 @@ vi.mock('lucide-react', () => ({
 }))
 
 // Mock Framer Motion
+// Mock Framer Motion
+/* eslint-disable @typescript-eslint/no-explicit-any */
 vi.mock('framer-motion', () => ({
     motion: {
-        div: ({ children, className }: { children: React.ReactNode; className?: string }) => <div className={className}>{children}</div>,
+        div: ({ children, className, onClick }: any) => <div className={className} onClick={onClick}>{children}</div>,
+        button: ({ children, className, onClick, ...props }: any) => <button className={className} onClick={onClick} {...props}>{children}</button>,
+        svg: ({ children, className, ...props }: any) => <svg className={className} {...props}>{children}</svg>,
     },
     AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}))
+/* eslint-enable @typescript-eslint/no-explicit-any */
+
+// Mock next-themes
+vi.mock('next-themes', () => ({
+    useTheme: () => ({
+        theme: 'light',
+        setTheme: vi.fn(),
+        resolvedTheme: 'light',
+    }),
 }))
 
 // Mock API

@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 @layer theme {
+
+  /* Default theme (Dark) - Enhanced with more vibrant colors */
   :root {
-    /* Superside Deep Charcoal/Teal */
+    /* Deep Charcoal/Teal Background */
     --background: 174 51% 8%;
     --foreground: 0 0% 98%;
 
@@ -12,7 +14,7 @@
     --popover: 174 51% 8%;
     --popover-foreground: 0 0% 98%;
 
-    /* Superside Lime Green */
+    /* Vibrant Lime Green Primary */
     --primary: 80 100% 76%;
     --primary-foreground: 174 51% 5%;
 
@@ -22,7 +24,7 @@
     --muted: 174 20% 15%;
     --muted-foreground: 174 10% 70%;
 
-    /* Atmospheric Cyan/Teal */
+    /* Atmospheric Cyan/Teal Accent */
     --accent: 180 100% 50%;
     --accent-foreground: 0 0% 98%;
 
@@ -34,14 +36,63 @@
     --ring: 80 100% 76%;
 
     --radius: 2rem;
-    /* More rounded for Superside feel */
 
     --font-sans: var(--font-inter-tight);
     --font-serif: var(--font-instrument-serif);
   }
+
+  /* Light theme - High contrast and vibrant */
+  .light {
+    /* Pure white background with very dark text */
+    --background: 0 0% 100%;
+    --foreground: 174 60% 10%;
+
+    --card: 0 0% 97%;
+    --card-foreground: 174 60% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 174 60% 10%;
+
+    /* Bold Teal Primary - highly saturated */
+    --primary: 174 85% 35%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 174 20% 88%;
+    --secondary-foreground: 174 60% 15%;
+
+    --muted: 174 15% 92%;
+    --muted-foreground: 174 30% 30%;
+
+    /* Vibrant Cyan Accent */
+    --accent: 180 90% 35%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 174 25% 75%;
+    --input: 174 20% 85%;
+    --ring: 174 85% 35%;
+  }
 }
 
 @layer base {
+
+  /* Smooth theme transitions */
+  * {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Disable transitions for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition-duration: 0ms !important;
+      animation-duration: 0ms !important;
+    }
+  }
+
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
@@ -52,26 +103,31 @@
 }
 
 @layer utilities {
+
+  /* Theme-aware glass effect */
   .glass {
-    background: rgba(255, 255, 255, 0.03);
+    background: hsl(var(--background) / 0.6);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid hsl(var(--border));
   }
 
   .glass-card {
-    background: rgba(255, 255, 255, 0.03);
+    background: hsl(var(--card) / 0.8);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid hsl(var(--border));
     box-shadow:
-      0 10px 30px -10px rgba(0, 0, 0, 0.3),
-      0 4px 10px -5px rgba(0, 0, 0, 0.2);
+      0 10px 30px -10px hsl(var(--foreground) / 0.1),
+      0 4px 10px -5px hsl(var(--foreground) / 0.05);
     transition: all 400ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .glass-card:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(216, 255, 133, 0.3);
+    background: hsl(var(--card) / 0.9);
+    border-color: hsl(var(--primary) / 0.3);
     transform: translateY(-4px);
+    box-shadow:
+      0 20px 40px -15px hsl(var(--foreground) / 0.15),
+      0 8px 16px -8px hsl(var(--foreground) / 0.1);
   }
 
   .text-gradient {

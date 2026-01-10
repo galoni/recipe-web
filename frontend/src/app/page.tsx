@@ -38,34 +38,76 @@ export default function LandingPage() {
         <section className="relative w-full py-20 lg:py-32 flex flex-col items-center justify-center overflow-hidden">
           {/* Floating Elements */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {/* Animated gradient blobs */}
+            <motion.div
+              animate={{
+                x: [0, 100, 0],
+                y: [0, -100, 0],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute -top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl motion-reduce:animate-none"
+            />
+            <motion.div
+              animate={{
+                x: [0, -100, 0],
+                y: [0, 100, 0],
+                scale: [1, 1.3, 1],
+              }}
+              transition={{
+                duration: 25,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2
+              }}
+              className="absolute -bottom-1/4 -right-1/4 w-[500px] h-[500px] bg-accent/15 rounded-full blur-3xl motion-reduce:animate-none"
+            />
+            <motion.div
+              animate={{
+                x: [0, 50, 0],
+                y: [0, -50, 0],
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: 18,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 5
+              }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary/10 rounded-full blur-3xl motion-reduce:animate-none"
+            />
             <motion.div
               animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
               transition={{ duration: 5, repeat: Infinity }}
-              className="absolute top-1/4 left-5 md:left-20 px-4 md:px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl rotate-[-12deg] hidden sm:flex"
+              className="absolute top-1/4 left-5 md:left-20 px-4 md:px-6 py-2 rounded-full border border-border/30 bg-secondary/30 backdrop-blur-xl rotate-[-12deg] hidden sm:flex"
             >
               <div className="flex items-center gap-2">
                 <Youtube className="size-4 text-red-500" />
-                <span className="text-xs font-bold text-white/40 uppercase tracking-widest">Neural Source</span>
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Neural Source</span>
               </div>
             </motion.div>
             <motion.div
               animate={{ y: [0, 20, 0], x: [0, -15, 0] }}
               transition={{ duration: 7, repeat: Infinity }}
-              className="absolute bottom-1/3 right-5 md:right-20 px-4 md:px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl rotate-[8deg] hidden sm:flex"
+              className="absolute bottom-1/3 right-5 md:right-20 px-4 md:px-6 py-2 rounded-full border border-border/30 bg-secondary/30 backdrop-blur-xl rotate-[8deg] hidden sm:flex"
             >
               <div className="flex items-center gap-2">
                 <Cpu className="size-4 text-primary" />
-                <span className="text-xs font-bold text-white/40 uppercase tracking-widest">Processing v4.2</span>
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Processing v4.2</span>
               </div>
             </motion.div>
             <motion.div
               animate={{ y: [0, -30, 0], x: [0, 20, 0] }}
               transition={{ duration: 9, repeat: Infinity }}
-              className="absolute top-1/2 right-[15%] px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl rotate-[-5deg] hidden lg:block"
+              className="absolute top-1/2 right-[15%] px-6 py-2 rounded-full border border-border/30 bg-secondary/30 backdrop-blur-xl rotate-[-5deg] hidden lg:block"
             >
               <div className="flex items-center gap-2">
                 <Instagram className="size-4 text-pink-500" />
-                <span className="text-xs font-bold text-white/40 uppercase tracking-widest">Visual Hook</span>
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Visual Hook</span>
               </div>
             </motion.div>
           </div>
@@ -75,17 +117,17 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-10"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/30 bg-secondary/30 backdrop-blur-md mb-10"
             >
               <Sparkles className="size-3.5 text-primary animate-pulse" />
-              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/60">Now in Private Beta</span>
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground">Now in Private Beta</span>
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 1 }}
-              className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-8 leading-[0.9]"
+              className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight text-foreground mb-8 leading-[0.9]"
             >
               Your <span className="font-serif italic text-primary">own</span> <br />
               Creative Kitchen.
@@ -95,7 +137,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-xl md:text-2xl text-white/50 max-w-2xl mb-14 leading-relaxed font-medium"
+              className="text-xl md:text-2xl text-muted-foreground max-w-2xl mb-14 leading-relaxed font-medium"
             >
               Stop pausing videos. Extract ingredients instantly with neural parsing. The evolution of the home cook begins here.
             </motion.p>
@@ -141,10 +183,10 @@ export default function LandingPage() {
                 <h3 className="text-sm font-bold text-primary uppercase tracking-[0.3em] flex items-center gap-2">
                   <Compass className="size-4" /> Fresh Mentions
                 </h3>
-                <h2 className="text-4xl font-bold text-white">Community <span className="font-serif italic text-primary">Discoveries</span>.</h2>
+                <h2 className="text-4xl font-bold text-foreground">Community <span className="font-serif italic text-primary">Discoveries</span>.</h2>
               </div>
               <Link href="/explore">
-                <PillButton variant="ghost" className="text-white/40 hover:text-white">
+                <PillButton variant="ghost" className="text-muted-foreground hover:text-foreground">
                   View All <ArrowRight className="ml-2 size-4" />
                 </PillButton>
               </Link>
@@ -160,17 +202,17 @@ export default function LandingPage() {
         <InfiniteMarquee
           items={["Neural Parsing", "Smart Inventory", "Kitchen Display", "Cinematic AI", "Global Cookbook", "Recipe Sync"]}
           speed={60}
-          className="border-y border-white/5 my-10"
+          className="border-y border-border/30 my-10"
         />
 
         {/* WORKFLOW SECTION */}
-        <section ref={workflowRef} className="py-24 relative bg-white/[0.02] overflow-hidden">
+        <section ref={workflowRef} className="py-24 relative bg-secondary/10 overflow-hidden">
           <div className="container px-6 max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-20 items-stretch">
               <div className="relative">
                 <motion.div
                   style={{ y: y1 }}
-                  className="sticky top-40 rounded-[3rem] overflow-hidden border border-white/10 shadow-premium aspect-[4/5] md:aspect-video lg:aspect-square group"
+                  className="sticky top-40 rounded-[3rem] overflow-hidden border border-border/30 shadow-premium aspect-[4/5] md:aspect-video lg:aspect-square group"
                 >
                   <Image
                     src="/ai_workflow_abstract.png"
@@ -193,7 +235,7 @@ export default function LandingPage() {
                 <motion.h2
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  className="text-4xl md:text-7xl font-bold text-white leading-tight"
+                  className="text-4xl md:text-7xl font-bold text-foreground leading-tight"
                 >
                   From <span className="font-serif italic font-normal">Streaming</span> <br />
                   to the Stove.
@@ -228,8 +270,8 @@ export default function LandingPage() {
         <section className="py-32 relative">
           <div className="container px-6 max-w-7xl mx-auto">
             <div className="text-center mb-24">
-              <h2 className="text-4xl md:text-8xl font-bold text-white mb-8">Built for <span className="font-serif italic font-normal text-primary">Mastery</span>.</h2>
-              <p className="text-white/40 text-2xl max-w-3xl mx-auto font-medium leading-relaxed">Every tool you need to build your digital heritage collection using cutting-edge vision models.</p>
+              <h2 className="text-4xl md:text-8xl font-bold text-foreground mb-8">Built for <span className="font-serif italic font-normal text-primary">Mastery</span>.</h2>
+              <p className="text-muted-foreground text-2xl max-w-3xl mx-auto font-medium leading-relaxed">Every tool you need to build your digital heritage collection using cutting-edge vision models.</p>
             </div>
             <div className="grid md:grid-cols-3 gap-8">
               <FeatureCard
@@ -256,11 +298,11 @@ export default function LandingPage() {
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
-            className="absolute -top-1/2 -right-1/4 size-[1000px] border border-white/5 rounded-full pointer-events-none"
+            className="absolute -top-1/2 -right-1/4 size-[1000px] border border-border/20 rounded-full pointer-events-none"
           />
 
           <div className="container px-6 max-w-5xl mx-auto relative z-10">
-            <div className="glass-card rounded-[4rem] p-12 md:p-24 overflow-hidden relative border-white/10 shadow-premium">
+            <div className="glass-card rounded-[4rem] p-12 md:p-24 overflow-hidden relative border-border/30 shadow-premium">
               <motion.div
                 style={{ y: y2 }}
                 className="absolute top-0 right-0 p-10 opacity-[0.03]"
@@ -268,13 +310,13 @@ export default function LandingPage() {
                 <Monitor className="size-80 text-primary" />
               </motion.div>
 
-              <h2 className="text-5xl md:text-8xl font-bold text-white mb-20 text-center">
+              <h2 className="text-5xl md:text-8xl font-bold text-foreground mb-20 text-center">
                 The <span className="font-serif italic font-normal">Upgrade</span>.
               </h2>
 
-              <div className="grid md:grid-cols-2 gap-px bg-white/10 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl">
+              <div className="grid md:grid-cols-2 gap-px bg-border/30 rounded-[3rem] overflow-hidden border border-border/30 shadow-2xl">
                 <div className="p-12 md:p-16 bg-background/60 backdrop-blur-3xl">
-                  <h3 className="text-xs font-bold text-white/40 mb-10 uppercase tracking-[0.3em] flex items-center gap-3">
+                  <h3 className="text-xs font-bold text-muted-foreground mb-10 uppercase tracking-[0.3em] flex items-center gap-3">
                     <X className="size-4 text-destructive" /> The Old Way
                   </h3>
                   <ul className="space-y-8">
@@ -304,7 +346,7 @@ export default function LandingPage() {
                     Join the Evolution
                   </PillButton>
                 </Link>
-                <p className="mt-8 text-white/20 text-sm font-bold uppercase tracking-[0.2em]">Free during closed beta</p>
+                <p className="mt-8 text-muted-foreground/50 text-sm font-bold uppercase tracking-[0.2em]">Free during closed beta</p>
               </div>
             </div>
           </div>
@@ -334,7 +376,7 @@ function RecentDiscoveries() {
 
   if (isLoading) {
     return Array(3).fill(0).map((_, i) => (
-      <div key={i} className="h-96 rounded-[3.5rem] bg-white/5 animate-pulse border border-white/5" />
+      <div key={i} className="h-96 rounded-[3.5rem] bg-secondary/30 animate-pulse border border-border/20" />
     ));
   }
 
@@ -365,8 +407,8 @@ function WorkflowStep({ number, title, desc, delay }: { number: string, title: s
     >
       <span className="text-2xl font-serif italic text-primary/20 group-hover:text-primary transition-all duration-500 scale-150 origin-top-left">{number}</span>
       <div className="space-y-4">
-        <h4 className="text-3xl font-bold text-white group-hover:translate-x-2 transition-transform duration-500">{title}</h4>
-        <p className="text-xl text-white/30 leading-relaxed font-medium group-hover:text-white/50 transition-colors duration-500">{desc}</p>
+        <h4 className="text-3xl font-bold text-foreground group-hover:translate-x-2 transition-transform duration-500">{title}</h4>
+        <p className="text-xl text-muted-foreground leading-relaxed font-medium group-hover:text-muted-foreground/80 transition-colors duration-500">{desc}</p>
       </div>
     </motion.div>
   )
@@ -378,14 +420,14 @@ function FeatureCard({ icon, title, desc }: { icon: React.ReactNode, title: stri
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -15 }}
-      className="glass-card p-12 rounded-[3.5rem] group border-white/5 hover:border-primary/20 transition-all duration-700 hover:shadow-[0_30px_100px_-20px_rgba(0,0,0,0.8)]"
+      whileHover={{ y: -15, scale: 1.02 }}
+      className="glass-card p-12 rounded-[3.5rem] group border-border/20 hover:border-primary/30 transition-all duration-700 hover:shadow-[0_30px_100px_-20px_hsl(var(--primary)/0.3),0_0_60px_-15px_hsl(var(--primary)/0.2)]"
     >
-      <div className="size-20 rounded-[2rem] bg-white/5 flex items-center justify-center text-white/30 mb-10 group-hover:bg-primary group-hover:text-black transition-all duration-700 shadow-inner">
+      <div className="size-20 rounded-[2rem] bg-secondary/30 flex items-center justify-center text-muted-foreground mb-10 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-700 shadow-inner">
         {icon}
       </div>
-      <h3 className="text-3xl font-bold text-white mb-6 group-hover:text-primary transition-colors duration-500">{title}</h3>
-      <p className="text-xl text-white/30 leading-relaxed font-medium group-hover:text-white/50 transition-colors duration-500">{desc}</p>
+      <h3 className="text-3xl font-bold text-foreground mb-6 group-hover:text-primary transition-colors duration-500">{title}</h3>
+      <p className="text-xl text-muted-foreground leading-relaxed font-medium group-hover:text-muted-foreground/80 transition-colors duration-500">{desc}</p>
     </motion.div>
   )
 }
@@ -396,12 +438,12 @@ function ComparisonItem({ text, active }: { text: string, active?: boolean }) {
       whileHover={{ x: 10 }}
       className={cn(
         "flex items-center gap-6 text-xl font-medium transition-all duration-500",
-        active ? "text-white" : "text-white/20"
+        active ? "text-foreground" : "text-muted-foreground/50"
       )}
     >
       <div className={cn(
         "size-8 rounded-full flex items-center justify-center border transition-all duration-500",
-        active ? "bg-primary/20 border-primary/50 text-primary" : "bg-white/5 border-white/5 text-white/10"
+        active ? "bg-primary/20 border-primary/50 text-primary" : "bg-secondary/30 border-border/20 text-muted-foreground/30"
       )}>
         {active ? <Check className="size-5" /> : <X className="size-4" />}
       </div>

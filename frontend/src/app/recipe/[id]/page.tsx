@@ -49,7 +49,7 @@ export default function RecipeViewPage({ params }: { params: Promise<{ id: strin
                 <div className="flex-grow flex items-center justify-center p-6">
                     <GlassCard className="p-12 text-center max-w-md">
                         <h2 className="text-3xl font-bold text-red-500 mb-4">Error</h2>
-                        <p className="text-white/40 mb-8 text-lg font-medium">{error}</p>
+                        <p className="text-muted-foreground mb-8 text-lg font-medium">{error}</p>
                         <Link href="/cookbook">
                             <PillButton variant="secondary">Back to Library</PillButton>
                         </Link>
@@ -63,14 +63,14 @@ export default function RecipeViewPage({ params }: { params: Promise<{ id: strin
         <BackgroundLayout>
             <div className="container mx-auto px-6 py-12 max-w-7xl pt-32 md:pt-40">
                 {/* Back Button */}
-                <Link href="/cookbook" className="inline-flex items-center text-white/40 hover:text-primary mb-12 transition-all font-bold group text-sm uppercase tracking-[0.2em]">
+                <Link href="/cookbook" className="inline-flex items-center text-muted-foreground hover:text-primary mb-12 transition-all font-bold group text-sm uppercase tracking-[0.2em]">
                     <ChevronLeft className="size-5 mr-2 group-hover:-translate-x-1 transition-transform" />
                     Back to Library
                 </Link>
 
                 <div className="grid gap-12">
                     {/* Header Card */}
-                    <GlassCard className="p-0 overflow-hidden relative border-white/10">
+                    <GlassCard className="p-0 overflow-hidden relative border-border/30">
                         <div className="aspect-[21/9] w-full relative bg-neutral-900">
                             {recipe.thumbnail_url && (
                                 <div className="absolute inset-0">
@@ -86,7 +86,7 @@ export default function RecipeViewPage({ params }: { params: Promise<{ id: strin
                             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
 
                             <div className="absolute bottom-0 left-0 p-10 md:p-16 w-full">
-                                <h1 className="text-5xl md:text-8xl font-bold text-white mb-8 leading-[0.9] max-w-4xl">
+                                <h1 className="text-5xl md:text-8xl font-bold text-foreground mb-8 leading-[0.9] max-w-4xl">
                                     {recipe.title.split(' ').map((word, i) => (
                                         <span key={i} className={i % 4 === 2 ? "font-serif italic font-normal text-primary" : ""}>
                                             {word}{' '}
@@ -106,7 +106,7 @@ export default function RecipeViewPage({ params }: { params: Promise<{ id: strin
                     <div className="grid lg:grid-cols-[1fr_2fr] gap-12">
                         {/* Ingredients Column */}
                         <div className="space-y-8">
-                            <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-4">
+                            <h2 className="text-3xl font-bold text-foreground mb-8 flex items-center gap-4">
                                 <span className="font-serif italic font-normal text-primary text-4xl">01</span>
                                 Ingredients
                             </h2>
@@ -115,7 +115,7 @@ export default function RecipeViewPage({ params }: { params: Promise<{ id: strin
                                     {recipe.ingredients.map((ing: Ingredient, i: number) => (
                                         <li key={i} className="flex items-start gap-5 group">
                                             <div className="size-2 rounded-full bg-primary/20 mt-2.5 group-hover:bg-primary transition-all duration-500" />
-                                            <span className="text-white/50 leading-relaxed font-medium text-lg">
+                                            <span className="text-muted-foreground leading-relaxed font-medium text-lg">
                                                 <span className="text-white font-bold">{ing.quantity} {ing.unit}</span> {ing.item}
                                             </span>
                                         </li>
@@ -126,7 +126,7 @@ export default function RecipeViewPage({ params }: { params: Promise<{ id: strin
 
                         {/* Instructions Column */}
                         <div className="space-y-8">
-                            <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-4">
+                            <h2 className="text-3xl font-bold text-foreground mb-8 flex items-center gap-4">
                                 <span className="font-serif italic font-normal text-primary text-4xl">02</span>
                                 Extraction Path
                             </h2>
@@ -137,7 +137,7 @@ export default function RecipeViewPage({ params }: { params: Promise<{ id: strin
                                             <div className="text-5xl font-serif italic text-white/5 group-hover:text-primary/20 transition-all duration-700 shrink-0">
                                                 {(step.step_number || i + 1).toString().padStart(2, '0')}
                                             </div>
-                                            <p className="text-xl text-white/60 group-hover:text-white/90 leading-relaxed font-medium transition-colors">
+                                            <p className="text-xl text-muted-foreground/90 group-hover:text-white/90 leading-relaxed font-medium transition-colors">
                                                 {step.instruction}
                                             </p>
                                         </div>
@@ -158,7 +158,7 @@ function Badge({ icon, text, primary }: { icon: React.ReactNode, text: string, p
             "flex items-center gap-3 px-6 py-3 rounded-full border text-[10px] font-bold uppercase tracking-[0.2em] backdrop-blur-xl transition-all",
             primary
                 ? "bg-primary/10 border-primary/20 text-primary"
-                : "bg-white/5 border-white/10 text-white/60"
+                : "bg-secondary/30 border-border/30 text-muted-foreground/90"
         )}>
             <span className={primary ? "text-primary" : "text-primary"}>{icon}</span>
             <span>{text}</span>

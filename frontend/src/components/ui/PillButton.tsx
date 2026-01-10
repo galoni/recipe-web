@@ -23,7 +23,7 @@ export const PillButton = forwardRef<HTMLButtonElement, PillButtonProps>(
 
                     // Variants
                     variant === "primary" && "bg-primary text-primary-foreground hover:shadow-[0_0_30px_hsla(var(--primary),0.3)] hover:brightness-105",
-                    variant === "secondary" && "bg-secondary/30 border border-border/30 text-white hover:bg-secondary/40",
+                    variant === "secondary" && "bg-secondary/30 border border-border/30 text-foreground hover:bg-secondary/40",
                     variant === "outline" && "border-2 border-primary text-primary bg-transparent hover:bg-primary/5",
                     variant === "ghost" && "hover:bg-secondary/30 text-muted-foreground/95 hover:text-foreground",
 

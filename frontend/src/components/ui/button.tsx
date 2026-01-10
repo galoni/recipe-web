@@ -19,11 +19,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 className={cn(
                     "inline-flex items-center justify-center rounded-2xl font-black uppercase tracking-widest transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-50 active:scale-95",
                     {
-                        "bg-primary text-white shadow-glow hover:brightness-110": variant === "primary",
-                        "bg-secondary text-white shadow-soft hover:brightness-110": variant === "secondary",
-                        "border-2 border-border bg-transparent hover:bg-muted text-text-main": variant === "outline",
-                        "hover:bg-muted text-text-muted": variant === "ghost",
-                        "bg-red-500 text-white hover:bg-red-600": variant === "danger",
+                        "bg-primary text-primary-foreground shadow-glow hover:brightness-110": variant === "primary",
+                        "bg-secondary text-foreground shadow-soft hover:brightness-110": variant === "secondary",
+                        "border-2 border-border bg-transparent hover:bg-muted text-foreground": variant === "outline",
+                        "hover:bg-muted text-muted-foreground": variant === "ghost",
+                        "bg-destructive text-destructive-foreground hover:bg-destructive/90": variant === "danger",
                         "h-9 px-4 text-[10px]": size === "sm",
                         "h-12 px-6 text-xs": size === "md",
                         "h-14 px-8 text-sm": size === "lg",

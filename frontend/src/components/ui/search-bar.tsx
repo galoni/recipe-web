@@ -45,7 +45,7 @@ export function SearchBar({
                 "relative flex items-center h-16 md:h-20 px-6 rounded-3xl border transition-all duration-500 overflow-hidden",
                 isFocused
                     ? "bg-secondary/40 border-primary/50 shadow-[0_0_40px_rgba(0,240,255,0.1)] backdrop-blur-2xl"
-                    : "bg-secondary/30 border-border/30 backdrop-blur-xl hover:border-white/25"
+                    : "bg-secondary/30 border-border/30 backdrop-blur-xl hover:border-border/50"
             )}>
                 {/* Animated Glow Effect */}
                 <AnimatePresence>
@@ -72,7 +72,7 @@ export function SearchBar({
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     placeholder={placeholder}
-                    className="flex-grow bg-transparent border-none outline-none px-4 text-xl md:text-2xl text-white placeholder:text-muted-foreground/50 font-medium"
+                    className="flex-grow bg-transparent border-none outline-none px-4 text-xl md:text-2xl text-foreground placeholder:text-muted-foreground/50 font-medium"
                 />
 
                 <div className="flex items-center gap-3">

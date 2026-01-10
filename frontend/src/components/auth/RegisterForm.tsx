@@ -51,7 +51,7 @@ export default function RegisterForm() {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0 }}
-                        className="rounded-lg bg-red-500/10 p-3 text-sm text-red-500 text-center font-medium border border-red-500/20"
+                        className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive text-center font-medium border border-destructive/20"
                     >
                         {error}
                     </motion.div>

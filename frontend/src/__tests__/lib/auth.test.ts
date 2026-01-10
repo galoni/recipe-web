@@ -15,7 +15,7 @@ describe('Auth Library', () => {
         // We delete it first because it might be a read-only property
         try {
             delete (window as any).location;
-        } catch (e) {
+        } catch {
             // ignore
         }
         (window as any).location = { href: '' };

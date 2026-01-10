@@ -3,11 +3,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from uuid import uuid4
 
 import pytest
-from fastapi import status
 
 from app.api.endpoints.security import router
 from app.models.user import User
-from app.schemas.security import Session
 
 
 @pytest.fixture

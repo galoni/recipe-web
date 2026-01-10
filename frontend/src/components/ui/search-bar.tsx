@@ -44,8 +44,8 @@ export function SearchBar({
             <div className={cn(
                 "relative flex items-center h-16 md:h-20 px-6 rounded-3xl border transition-all duration-500 overflow-hidden",
                 isFocused
-                    ? "bg-white/10 border-primary/50 shadow-[0_0_40px_rgba(0,240,255,0.1)] backdrop-blur-2xl"
-                    : "bg-white/5 border-white/10 backdrop-blur-xl hover:border-white/25"
+                    ? "bg-secondary/40 border-primary/50 shadow-[0_0_40px_rgba(0,240,255,0.1)] backdrop-blur-2xl"
+                    : "bg-secondary/30 border-border/30 backdrop-blur-xl hover:border-white/25"
             )}>
                 {/* Animated Glow Effect */}
                 <AnimatePresence>
@@ -61,7 +61,7 @@ export function SearchBar({
 
                 <Search className={cn(
                     "size-6 transition-colors duration-500",
-                    isFocused ? "text-primary" : "text-white/30 group-hover:text-white/50"
+                    isFocused ? "text-primary" : "text-muted-foreground/70 group-hover:text-muted-foreground"
                 )} />
 
                 <input
@@ -72,7 +72,7 @@ export function SearchBar({
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     placeholder={placeholder}
-                    className="flex-grow bg-transparent border-none outline-none px-4 text-xl md:text-2xl text-white placeholder:text-white/20 font-medium"
+                    className="flex-grow bg-transparent border-none outline-none px-4 text-xl md:text-2xl text-white placeholder:text-muted-foreground/50 font-medium"
                 />
 
                 <div className="flex items-center gap-3">
@@ -84,13 +84,13 @@ export function SearchBar({
                         <button
                             type="button"
                             onClick={handleClear}
-                            className="p-2 rounded-full hover:bg-white/10 text-white/40 hover:text-white transition-colors"
+                            className="p-2 rounded-full hover:bg-secondary/40 text-muted-foreground hover:text-foreground transition-colors"
                         >
                             <X className="size-5" />
                         </button>
                     )}
 
-                    <div className="hidden md:flex items-center gap-1 px-2 py-1 rounded-lg border border-white/10 bg-white/5 text-[10px] font-bold text-white/30 uppercase tracking-widest">
+                    <div className="hidden md:flex items-center gap-1 px-2 py-1 rounded-lg border border-border/30 bg-secondary/30 text-[10px] font-bold text-muted-foreground/70 uppercase tracking-widest">
                         <span>Enter</span>
                     </div>
                 </div>

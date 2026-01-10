@@ -59,7 +59,7 @@ export const TwoFactorSetup = ({ onSuccess }: TwoFactorSetupProps) => {
         return (
             <div className="flex flex-col items-center justify-center p-12 text-center">
                 <RefreshCw className="animate-spin text-emerald-400 mb-4" size={32} />
-                <p className="text-white/40">Initializing secure channel...</p>
+                <p className="text-muted-foreground">Initializing secure channel...</p>
             </div>
         );
     }
@@ -76,8 +76,8 @@ export const TwoFactorSetup = ({ onSuccess }: TwoFactorSetupProps) => {
                         className="space-y-6"
                     >
                         <div className="text-center space-y-2">
-                            <h3 className="text-2xl font-bold text-white">Sync Authenticator</h3>
-                            <p className="text-white/40 text-sm">Scan the QR code with your preferred authentication app</p>
+                            <h3 className="text-2xl font-bold text-foreground">Sync Authenticator</h3>
+                            <p className="text-muted-foreground text-sm">Scan the QR code with your preferred authentication app</p>
                         </div>
 
                         <div className="flex justify-center p-4 bg-white rounded-3xl mx-auto w-fit">
@@ -87,13 +87,13 @@ export const TwoFactorSetup = ({ onSuccess }: TwoFactorSetupProps) => {
                             )}
                         </div>
 
-                        <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
-                            <p className="text-[10px] uppercase tracking-wider text-white/30 font-bold">Manual Entry Key</p>
+                        <div className="p-4 rounded-xl bg-secondary/30 border border-border/30 space-y-2">
+                            <p className="text-[10px] uppercase tracking-wider text-muted-foreground/70 font-bold">Manual Entry Key</p>
                             <div className="flex items-center justify-between gap-4">
                                 <code className="text-emerald-400 font-mono tracking-wider">{setupData?.secret}</code>
                                 <button
                                     onClick={copySecret}
-                                    className="text-white/20 hover:text-white transition-colors"
+                                    className="text-muted-foreground/50 hover:text-foreground transition-colors"
                                 >
                                     {copied ? <Check size={16} className="text-emerald-400" /> : <Copy size={16} />}
                                 </button>
@@ -115,8 +115,8 @@ export const TwoFactorSetup = ({ onSuccess }: TwoFactorSetupProps) => {
                         className="space-y-6"
                     >
                         <div className="text-center space-y-2">
-                            <h3 className="text-2xl font-bold text-white">Verify Code</h3>
-                            <p className="text-white/40 text-sm">Enter the 6-digit code from your app</p>
+                            <h3 className="text-2xl font-bold text-foreground">Verify Code</h3>
+                            <p className="text-muted-foreground text-sm">Enter the 6-digit code from your app</p>
                         </div>
 
                         <div className="space-y-4">
@@ -129,7 +129,7 @@ export const TwoFactorSetup = ({ onSuccess }: TwoFactorSetupProps) => {
                                     setError("");
                                 }}
                                 placeholder="000000"
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-center text-3xl font-mono tracking-[0.5em] text-white focus:outline-none focus:border-emerald-500/50 transition-colors"
+                                className="w-full bg-secondary/30 border border-border/30 rounded-2xl p-4 text-center text-3xl font-mono tracking-[0.5em] text-white focus:outline-none focus:border-emerald-500/50 transition-colors"
                             />
                             {error && (
                                 <div className="flex items-center gap-2 text-red-400 text-sm justify-center">
@@ -166,11 +166,11 @@ export const TwoFactorSetup = ({ onSuccess }: TwoFactorSetupProps) => {
                             <Check size={32} />
                         </div>
                         <div className="space-y-2">
-                            <h3 className="text-2xl font-bold text-white">Security Enabled</h3>
-                            <p className="text-white/40 text-sm">Neural link secured. Please save these backup codes in a safe place.</p>
+                            <h3 className="text-2xl font-bold text-foreground">Security Enabled</h3>
+                            <p className="text-muted-foreground text-sm">Neural link secured. Please save these backup codes in a safe place.</p>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-2 p-4 bg-black/40 rounded-2xl font-mono text-emerald-400/80 border border-white/5">
+                        <div className="grid grid-cols-1 gap-2 p-4 bg-black/40 rounded-2xl font-mono text-emerald-400/80 border border-border/20">
                             {backupCodes.map((code, idx) => (
                                 <div key={idx} className="flex items-center justify-center gap-2">
                                     <span className="text-white/10 text-xs">{idx + 1}.</span>

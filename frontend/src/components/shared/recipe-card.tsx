@@ -22,10 +22,10 @@ export function RecipeCard({ recipe, onDelete, onTogglePublic }: RecipeCardProps
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             whileHover={{ y: -10 }}
-            className="group relative glass-card p-0 overflow-hidden border-white/5 shadow-premium transition-all duration-700"
+            className="group relative glass-card p-0 overflow-hidden border-border/20 shadow-premium transition-all duration-700"
         >
             {/* Image Section */}
-            <div className="relative aspect-[16/10] overflow-hidden bg-white/5">
+            <div className="relative aspect-[16/10] overflow-hidden bg-secondary/30">
                 {recipe.thumbnail_url ? (
                     <Image
                         src={recipe.thumbnail_url}
@@ -46,7 +46,7 @@ export function RecipeCard({ recipe, onDelete, onTogglePublic }: RecipeCardProps
                     "absolute top-6 left-6 px-3 py-1.5 rounded-full backdrop-blur-xl border flex items-center gap-2 transition-all duration-500",
                     recipe.is_public !== false
                         ? "bg-primary/10 border-primary/20 text-primary"
-                        : "bg-white/5 border-white/10 text-white/40"
+                        : "bg-secondary/30 border-border/30 text-muted-foreground"
                 )}>
                     {recipe.is_public !== false ? <Globe className="size-3" /> : <Lock className="size-3" />}
                     <span className="text-[9px] font-bold uppercase tracking-widest">
@@ -63,7 +63,7 @@ export function RecipeCard({ recipe, onDelete, onTogglePublic }: RecipeCardProps
                                 e.stopPropagation();
                                 if (recipe.id) onTogglePublic(recipe.id, !!recipe.is_public);
                             }}
-                            className="size-10 rounded-full bg-black/40 backdrop-blur-xl text-white/40 hover:bg-white/10 hover:text-white transition-all flex items-center justify-center border border-white/10"
+                            className="size-10 rounded-full bg-black/40 backdrop-blur-xl text-muted-foreground hover:bg-secondary/40 hover:text-foreground transition-all flex items-center justify-center border border-border/30"
                             title={recipe.is_public !== false ? "Make Private" : "Make Public"}
                         >
                             {recipe.is_public !== false ? <Lock className="size-4" /> : <Globe className="size-4" />}
@@ -77,7 +77,7 @@ export function RecipeCard({ recipe, onDelete, onTogglePublic }: RecipeCardProps
                                 e.stopPropagation();
                                 if (recipe.id) onDelete(recipe.id);
                             }}
-                            className="size-10 rounded-full bg-black/40 backdrop-blur-xl text-white/40 hover:bg-destructive hover:text-white transition-all flex items-center justify-center border border-white/10"
+                            className="size-10 rounded-full bg-black/40 backdrop-blur-xl text-muted-foreground hover:bg-destructive hover:text-foreground transition-all flex items-center justify-center border border-border/30"
                             title="Delete Recipe"
                         >
                             <Trash2 className="size-4" />
@@ -92,17 +92,17 @@ export function RecipeCard({ recipe, onDelete, onTogglePublic }: RecipeCardProps
                     <h3 className="text-3xl font-bold text-white line-clamp-1 group-hover:text-primary transition-all duration-500">
                         {recipe.title}
                     </h3>
-                    <p className="text-lg text-white/30 line-clamp-2 leading-relaxed font-medium">
+                    <p className="text-lg text-muted-foreground/70 line-clamp-2 leading-relaxed font-medium">
                         {recipe.description || "Synthesized neural recipe extraction complete."}
                     </p>
                 </div>
 
-                <div className="flex items-center gap-4 text-[10px] font-bold text-white/40 uppercase tracking-[0.2em]">
-                    <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                <div className="flex items-center gap-4 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/30 border border-border/30">
                         <Clock className="size-3.5 text-primary" />
                         <span>{(recipe.prep_time_minutes || 0) + (recipe.cook_time_minutes || 0)}m</span>
                     </div>
-                    <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/30 border border-border/30">
                         <Users className="size-3.5 text-primary" />
                         <span>{recipe.servings || 2}</span>
                     </div>

@@ -34,13 +34,13 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
                         >
                             <button
                                 onClick={onClose}
-                                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/40 hover:text-white transition-colors"
+                                className="absolute top-6 right-6 p-2 rounded-full bg-secondary/30 hover:bg-secondary/40 text-muted-foreground hover:text-foreground transition-colors"
                             >
                                 <X size={20} />
                             </button>
 
                             {title && (
-                                <h2 className="text-2xl font-bold text-white mb-6 pr-12">{title}</h2>
+                                <h2 className="text-2xl font-bold text-foreground mb-6 pr-12">{title}</h2>
                             )}
 
                             <div className="relative z-10">

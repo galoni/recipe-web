@@ -39,13 +39,13 @@ export const SessionCard = ({ session, onRevoke, isRevoking }: SessionCardProps)
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className={`relative p-5 rounded-2xl border transition-all duration-300 ${session.is_current
-                ? "bg-white/10 border-white/20 shadow-[0_8px_32px_0_rgba(255,255,255,0.05)]"
-                : "bg-black/20 border-white/5 hover:border-white/10"
+                ? "bg-secondary/40 border-border/40 shadow-[0_8px_32px_0_rgba(255,255,255,0.05)]"
+                : "bg-black/20 border-border/20 hover:border-border/30"
                 }`}
         >
             <div className="flex items-start justify-between">
                 <div className="flex gap-4">
-                    <div className={`p-3 rounded-xl ${session.is_current ? "bg-white/10 text-white" : "bg-white/5 text-white/50"}`}>
+                    <div className={`p-3 rounded-xl ${session.is_current ? "bg-secondary/40 text-white" : "bg-secondary/30 text-muted-foreground"}`}>
                         <Icon size={24} />
                     </div>
 
@@ -61,7 +61,7 @@ export const SessionCard = ({ session, onRevoke, isRevoking }: SessionCardProps)
                             )}
                         </div>
 
-                        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-white/40">
+                        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
                             <div className="flex items-center gap-1.5">
                                 <Globe size={14} />
                                 <span>{session.ip_address}</span>
@@ -88,7 +88,7 @@ export const SessionCard = ({ session, onRevoke, isRevoking }: SessionCardProps)
                     <button
                         onClick={() => onRevoke(session.id)}
                         disabled={isRevoking}
-                        className="p-2 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-400/10 transition-colors disabled:opacity-50"
+                        className="p-2 rounded-lg text-muted-foreground/70 hover:text-red-400 hover:bg-red-400/10 transition-colors disabled:opacity-50"
                         title="Revoke access"
                     >
                         <X size={20} />

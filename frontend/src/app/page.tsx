@@ -38,6 +38,48 @@ export default function LandingPage() {
         <section className="relative w-full py-20 lg:py-32 flex flex-col items-center justify-center overflow-hidden">
           {/* Floating Elements */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {/* Animated gradient blobs */}
+            <motion.div
+              animate={{
+                x: [0, 100, 0],
+                y: [0, -100, 0],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute -top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl motion-reduce:animate-none"
+            />
+            <motion.div
+              animate={{
+                x: [0, -100, 0],
+                y: [0, 100, 0],
+                scale: [1, 1.3, 1],
+              }}
+              transition={{
+                duration: 25,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2
+              }}
+              className="absolute -bottom-1/4 -right-1/4 w-[500px] h-[500px] bg-accent/15 rounded-full blur-3xl motion-reduce:animate-none"
+            />
+            <motion.div
+              animate={{
+                x: [0, 50, 0],
+                y: [0, -50, 0],
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: 18,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 5
+              }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary/10 rounded-full blur-3xl motion-reduce:animate-none"
+            />
             <motion.div
               animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
               transition={{ duration: 5, repeat: Infinity }}
@@ -378,8 +420,8 @@ function FeatureCard({ icon, title, desc }: { icon: React.ReactNode, title: stri
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -15 }}
-      className="glass-card p-12 rounded-[3.5rem] group border-border/20 hover:border-primary/20 transition-all duration-700 hover:shadow-[0_30px_100px_-20px_hsl(var(--foreground)/0.2)]"
+      whileHover={{ y: -15, scale: 1.02 }}
+      className="glass-card p-12 rounded-[3.5rem] group border-border/20 hover:border-primary/30 transition-all duration-700 hover:shadow-[0_30px_100px_-20px_hsl(var(--primary)/0.3),0_0_60px_-15px_hsl(var(--primary)/0.2)]"
     >
       <div className="size-20 rounded-[2rem] bg-secondary/30 flex items-center justify-center text-muted-foreground mb-10 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-700 shadow-inner">
         {icon}

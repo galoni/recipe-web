@@ -32,19 +32,19 @@ export function Navbar() {
     return (
         <header className="fixed top-0 inset-x-0 z-[100] p-4 md:p-6 pointer-events-none">
             <div className="container mx-auto pointer-events-auto max-w-7xl">
-                <nav className="rounded-full px-4 md:px-6 h-16 md:h-20 flex items-center justify-between backdrop-blur-2xl bg-background/40 border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+                <nav className="rounded-full px-4 md:px-6 h-16 md:h-20 flex items-center justify-between backdrop-blur-2xl bg-background/40 border border-border/50 shadow-[0_8px_32px_hsl(var(--foreground)/0.1)]">
                     {/* Logo Area */}
                     <Link href="/" className="flex items-center gap-3 group">
                         <div className="size-10 rounded-full bg-primary flex items-center justify-center shadow-[0_0_20px_hsla(var(--primary),0.2)]">
                             <ChefHat className="size-5 text-primary-foreground" />
                         </div>
-                        <span className="text-xl font-bold tracking-tight text-white hidden sm:block">
+                        <span className="text-xl font-bold tracking-tight text-foreground hidden sm:block">
                             Chef<span className="font-serif italic text-primary">Stream</span>
                         </span>
                     </Link>
 
                     {/* Desktop Nav */}
-                    <div className="hidden md:flex items-center gap-2 p-1 rounded-full bg-white/5 border border-white/5">
+                    <div className="hidden md:flex items-center gap-2 p-1 rounded-full bg-secondary/30 border border-border/50">
                         <NavLink href="/" active={isActive('/') && pathname === '/'}>Gallery</NavLink>
                         <NavLink href="/explore" active={isActive('/explore')}>Explore</NavLink>
                         {isAuthed && (
@@ -87,17 +87,17 @@ export function Navbar() {
                             </div>
                         ) : isAuthed ? (
                             <div className="flex items-center gap-3">
-                                <Link href="/profile" className="hidden sm:flex items-center gap-2 pr-4 pl-1 py-1 rounded-full border border-white/10 hover:bg-white/5 transition-colors">
+                                <Link href="/profile" className="hidden sm:flex items-center gap-2 pr-4 pl-1 py-1 rounded-full border border-border/50 hover:bg-secondary/50 transition-colors">
                                     <div className="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
                                         <UserIcon className="size-4" />
                                     </div>
-                                    <span className="text-xs font-bold text-white/70">Profile</span>
+                                    <span className="text-xs font-bold text-muted-foreground">Profile</span>
                                 </Link>
-                                <Link href="/settings" className="hidden sm:flex items-center gap-2 pr-4 pl-1 py-1 rounded-full border border-white/10 hover:bg-white/5 transition-colors">
+                                <Link href="/settings" className="hidden sm:flex items-center gap-2 pr-4 pl-1 py-1 rounded-full border border-border/50 hover:bg-secondary/50 transition-colors">
                                     <div className="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
                                         <SettingsIcon className="size-4" />
                                     </div>
-                                    <span className="text-xs font-bold text-white/70">Settings</span>
+                                    <span className="text-xs font-bold text-muted-foreground">Settings</span>
                                 </Link>
                                 <PillButton
                                     variant="ghost"
@@ -112,7 +112,7 @@ export function Navbar() {
                                 </PillButton>
                             </div>
                         ) : (
-                            <div className="size-10 rounded-full bg-white/10 animate-pulse" />
+                            <div className="size-10 rounded-full bg-secondary/50 animate-pulse" />
                         )}
                     </div>
                 </nav>
@@ -183,7 +183,7 @@ function NavLink({ href, active, children }: { href: string; active?: boolean; c
                 "px-6 py-2 rounded-full text-xs font-bold transition-all duration-500 uppercase tracking-widest text-center",
                 active
                     ? "bg-primary text-primary-foreground shadow-[0_5px_15px_hsla(var(--primary),0.2)]"
-                    : "text-white/50 hover:text-white hover:bg-white/5"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
             )}
         >
             {children}
@@ -199,7 +199,7 @@ function MobileNavLink({ href, active, children }: { href: string; active?: bool
                 "p-4 rounded-2xl text-lg font-bold transition-all duration-300 flex items-center justify-center",
                 active
                     ? "bg-primary/20 text-primary border border-primary/20"
-                    : "text-white/40 hover:text-white hover:bg-white/5"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
             )}
         >
             {children}

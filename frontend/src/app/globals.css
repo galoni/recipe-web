@@ -41,38 +41,38 @@
     --font-serif: var(--font-instrument-serif);
   }
 
-  /* Light theme - Fresh and vibrant */
+  /* Light theme - Fresh and vibrant with better contrast */
   .light {
-    /* Soft white/cream background with subtle warmth */
-    --background: 40 20% 98%;
-    --foreground: 174 51% 12%;
+    /* Clean white background */
+    --background: 0 0% 100%;
+    --foreground: 174 51% 8%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 174 51% 12%;
+    --card: 0 0% 98%;
+    --card-foreground: 174 51% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 174 51% 12%;
+    --popover-foreground: 174 51% 8%;
 
-    /* Vibrant Green Primary (adjusted for light theme) */
-    --primary: 142 76% 36%;
+    /* Vibrant Teal Primary (more saturated for light theme) */
+    --primary: 174 70% 41%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 40 15% 92%;
+    --secondary: 174 15% 90%;
     --secondary-foreground: 174 51% 12%;
 
-    --muted: 40 10% 94%;
-    --muted-foreground: 174 20% 40%;
+    --muted: 174 10% 95%;
+    --muted-foreground: 174 20% 35%;
 
-    /* Bright Teal Accent */
-    --accent: 180 80% 45%;
+    /* Bright Cyan Accent */
+    --accent: 180 85% 40%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 10% 88%;
-    --input: 40 10% 88%;
-    --ring: 142 76% 36%;
+    --border: 174 15% 85%;
+    --input: 174 15% 90%;
+    --ring: 174 70% 41%;
   }
 }
 
@@ -103,26 +103,31 @@
 }
 
 @layer utilities {
+
+  /* Theme-aware glass effect */
   .glass {
-    background: rgba(255, 255, 255, 0.03);
+    background: hsl(var(--background) / 0.6);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid hsl(var(--border));
   }
 
   .glass-card {
-    background: rgba(255, 255, 255, 0.03);
+    background: hsl(var(--card) / 0.8);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid hsl(var(--border));
     box-shadow:
-      0 10px 30px -10px rgba(0, 0, 0, 0.3),
-      0 4px 10px -5px rgba(0, 0, 0, 0.2);
+      0 10px 30px -10px hsl(var(--foreground) / 0.1),
+      0 4px 10px -5px hsl(var(--foreground) / 0.05);
     transition: all 400ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .glass-card:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(216, 255, 133, 0.3);
+    background: hsl(var(--card) / 0.9);
+    border-color: hsl(var(--primary) / 0.3);
     transform: translateY(-4px);
+    box-shadow:
+      0 20px 40px -15px hsl(var(--foreground) / 0.15),
+      0 8px 16px -8px hsl(var(--foreground) / 0.1);
   }
 
   .text-gradient {

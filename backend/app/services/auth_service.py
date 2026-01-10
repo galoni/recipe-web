@@ -1,10 +1,11 @@
 from datetime import timedelta
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.config import settings
 from app.core.logger import logger
 from app.core.security import create_access_token
 from app.crud.user import user as user_crud
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class AuthService:

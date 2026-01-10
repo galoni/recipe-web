@@ -2,11 +2,12 @@ import uuid
 from datetime import datetime
 from typing import Optional
 
-from app.core.database import Base
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
+
+from app.core.database import Base
 
 
 class Session(Base):

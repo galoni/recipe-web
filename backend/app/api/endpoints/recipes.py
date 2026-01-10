@@ -1,6 +1,10 @@
 import uuid
 from typing import List, Optional
 
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.api.deps import get_current_user, get_current_user_optional
 from app.core.database import get_db
 from app.core.logger import logger
@@ -8,9 +12,6 @@ from app.models.db import Recipe as RecipeModel
 from app.models.user import User as UserModel
 from app.schemas.recipe import Recipe, RecipeCreate
 from app.services.discovery import DiscoveryService
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter()
 

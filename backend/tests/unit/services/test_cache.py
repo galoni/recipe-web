@@ -1,6 +1,7 @@
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+
 from app.models.db import ExtractionCache
 from app.models.recipe import RecipeData
 from app.services.cache import CacheService

@@ -3,6 +3,7 @@ from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+
 from app.models.db import Recipe as RecipeModel
 from app.services.discovery import DiscoveryService
 

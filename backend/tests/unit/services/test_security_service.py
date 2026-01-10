@@ -2,6 +2,7 @@ import asyncio
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+
 from app.models.user import User
 from app.services.security_service import SecurityService
 

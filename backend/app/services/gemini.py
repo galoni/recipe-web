@@ -1,9 +1,10 @@
 import json
 
+from google import genai
+
 from app.core.config import settings
 from app.core.logger import logger
 from app.models.recipe import Ingredient, InstructionStep, RecipeData
-from google import genai
 
 
 class GeminiService:

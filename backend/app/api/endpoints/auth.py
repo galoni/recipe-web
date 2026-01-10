@@ -2,6 +2,14 @@ import secrets
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
+from fastapi import (APIRouter, Depends, HTTPException, Request, Response,
+                     status)
+from fastapi.responses import RedirectResponse
+from fastapi.security import OAuth2PasswordRequestForm
+from jose import jwt
+from sqlalchemy import select, update
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.api.deps import get_current_user
 from app.core.config import settings
 from app.core.database import get_db
@@ -10,12 +18,6 @@ from app.schemas.auth import Token, TwoFactorVerify
 from app.schemas.user import User, UserCreate
 from app.services.auth_service import AuthService
 from app.services.oauth import GoogleOAuthProvider
-from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
-from fastapi.responses import RedirectResponse
-from fastapi.security import OAuth2PasswordRequestForm
-from jose import jwt
-from sqlalchemy import select, update
-from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter()
 
@@ -100,6 +102,7 @@ async def verify_2fa(
     Verify 2FA code and complete login.
     """
     import pyotp
+
     from app.models.user import User
     from app.services.security_service import SecurityService
 

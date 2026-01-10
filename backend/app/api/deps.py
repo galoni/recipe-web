@@ -1,10 +1,11 @@
-from app.core.config import settings
-from app.core.database import get_db
-from app.models.user import User
 from fastapi import Depends, HTTPException, Request, status
 from jose import JWTError, jwt
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.config import settings
+from app.core.database import get_db
+from app.models.user import User
 
 
 async def get_current_user(
@@ -45,8 +46,9 @@ async def get_current_user(
     if jti:
         from datetime import datetime, timezone
 
-        from app.models.security import Session
         from sqlalchemy import update
+
+        from app.models.security import Session
 
         session_result = await db.execute(
             select(Session).where(

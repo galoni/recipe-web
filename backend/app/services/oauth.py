@@ -2,6 +2,7 @@ from typing import Any, Dict
 from urllib.parse import urlencode
 
 import httpx
+
 from app.core.config import settings
 
 

@@ -3,10 +3,11 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from uuid import uuid4
 
 import pytest
+from fastapi import status
+
 from app.api.endpoints.security import router
 from app.models.user import User
 from app.schemas.security import Session
-from fastapi import status
 
 
 @pytest.fixture
@@ -82,9 +83,10 @@ async def test_revoke_session_success(mock_db, mock_user):
         service_instance = MockService.return_value
         service_instance.revoke_session = AsyncMock(return_value=True)
 
-        from app.api.deps import get_current_user, get_db
         from fastapi import FastAPI
         from httpx import ASGITransport, AsyncClient
+
+        from app.api.deps import get_current_user, get_db
 
         app = FastAPI()
         app.include_router(router)
@@ -108,9 +110,10 @@ async def test_setup_2fa_success(mock_db, mock_user):
             return_value="K7IUC2LMN5RWA3DP"
         )
 
-        from app.api.deps import get_current_user, get_db
         from fastapi import FastAPI
         from httpx import ASGITransport, AsyncClient
+
+        from app.api.deps import get_current_user, get_db
 
         app = FastAPI()
         app.include_router(router)
@@ -135,9 +138,10 @@ async def test_enable_2fa_success(mock_db, mock_user):
         service_instance.enable_2fa = AsyncMock()
 
         import pyotp
-        from app.api.deps import get_current_user, get_db
         from fastapi import FastAPI
         from httpx import ASGITransport, AsyncClient
+
+        from app.api.deps import get_current_user, get_db
 
         # Generate a valid code
         secret = "K7IUC2LMN5RWA3DP"
@@ -170,9 +174,10 @@ async def test_disable_2fa_success(mock_db):
         service_instance = MockService.return_value
         service_instance.disable_2fa = AsyncMock()
 
-        from app.api.deps import get_current_user, get_db
         from fastapi import FastAPI
         from httpx import ASGITransport, AsyncClient
+
+        from app.api.deps import get_current_user, get_db
 
         app = FastAPI()
         app.include_router(router)
@@ -190,9 +195,10 @@ async def test_disable_2fa_success(mock_db):
 
 @pytest.mark.asyncio
 async def test_toggle_notifications_success(mock_db, mock_user):
-    from app.api.deps import get_current_user, get_db
     from fastapi import FastAPI
     from httpx import ASGITransport, AsyncClient
+
+    from app.api.deps import get_current_user, get_db
 
     app = FastAPI()
     app.include_router(router)

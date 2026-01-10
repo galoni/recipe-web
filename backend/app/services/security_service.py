@@ -3,14 +3,15 @@ from datetime import datetime, timezone
 from typing import List, cast
 
 import pyotp
-from app.models.security import SecurityEvent, Session
-from app.models.user import User
-from app.services.email_service import EmailService
-from app.services.geoip import GeoIPService
 from sqlalchemy import and_, func, select, update
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncSession
 from ua_parser import user_agent_parser
+
+from app.models.security import SecurityEvent, Session
+from app.models.user import User
+from app.services.email_service import EmailService
+from app.services.geoip import GeoIPService
 
 
 class SecurityService:

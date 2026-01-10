@@ -44,12 +44,16 @@ async def get_current_user(
     # Check session revocation
     jti = payload.get("jti")
     if jti:
-        from app.models.security import Session
-        from sqlalchemy import update
         from datetime import datetime, timezone
 
+        from sqlalchemy import update
+
+        from app.models.security import Session
+
         session_result = await db.execute(
-            select(Session).where(Session.token_jti == jti, Session.revoked_at == None)
+            select(Session).where(
+                Session.token_jti == jti, Session.revoked_at.is_(None)
+            )
         )
         session = session_result.scalar_one_or_none()
         if not session:
@@ -104,7 +108,7 @@ async def get_current_user_optional(
 
             session_result = await db.execute(
                 select(Session).where(
-                    Session.token_jti == jti, Session.revoked_at == None
+                    Session.token_jti == jti, Session.revoked_at.is_(None)
                 )
             )
             session = session_result.scalar_one_or_none()

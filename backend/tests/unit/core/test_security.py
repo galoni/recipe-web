@@ -1,6 +1,5 @@
 from datetime import timedelta
 
-import pytest
 from jose import jwt
 
 from app.core.config import settings

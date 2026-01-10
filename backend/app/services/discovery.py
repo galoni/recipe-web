@@ -19,7 +19,7 @@ class DiscoveryService:
         Search for public recipes by title, ingredients, or tags.
         """
         try:
-            stmt = select(RecipeModel).where(RecipeModel.is_public == True)
+            stmt = select(RecipeModel).where(RecipeModel.is_public.is_(True))
 
             if query:
                 # Basic search logic - can be improved with PostgreSQL full-text search later

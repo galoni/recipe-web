@@ -2,13 +2,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from fastapi import HTTPException, Request, status
-from jose import JWTError, jwt
-
 from jose import JWTError
-import pytest
+
 from app.api.deps import get_current_user, get_current_user_optional
-from app.core.config import settings
-from app.models.user import User
 
 
 @pytest.fixture

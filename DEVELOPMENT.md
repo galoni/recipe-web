@@ -2,20 +2,69 @@
 
 This document outlines the coding standards, workflows, and CI/CD requirements to ensure development is smooth and stable.
 
-## 🚀 The "Pre-Push" Checklist
-**Always** run these before pushing to origin. The CI will fail if these are skipped.
+## 🎯 Pre-Commit Quality Checks (AUTOMATED)
 
-### Backend (Python)
-- [ ] **Format**: `python3 -m black .` (within `/backend`).
-- [ ] **Initialize**: Ensure every new directory has an `__init__.py` file.
-- [ ] **Tests**: `poetry run pytest --cov=app --cov-fail-under=80`.
-- [ ] **Config**: Ensure `DATABASE_URL` has a default in `config.py` (for CI).
-- [ ] **Poetry**: Set `package-mode = false` in `pyproject.toml`.
+**All quality checks are automated via pre-commit hooks.** These run automatically before each commit to catch issues early.
 
-### Frontend (Next.js)
-- [ ] **Lint**: `npm run lint` (ESLint warnings are treated as errors in CI).
-- [ ] **Types**: `npx tsc --noEmit`.
-- [ ] **Build**: `npm run build` to verify production readiness.
+### Initial Setup (One-Time)
+
+```bash
+# Install pre-commit (if not already installed)
+python3 -m pip install pre-commit
+
+# Install the git hooks
+python3 -m pre_commit install
+```
+
+### What Gets Checked Automatically
+
+All checks are defined in `.pre-commit-config.yaml` (the single source of truth):
+
+**Python (Backend)**:
+- ✅ Black formatting
+- ✅ isort import sorting
+- ✅ mypy type checking
+- ✅ Trailing whitespace, file endings
+
+**TypeScript/React (Frontend)**:
+- ✅ ESLint linting
+- ✅ TypeScript type checking
+- ✅ Trailing whitespace, file endings
+
+**Universal**:
+- ✅ YAML syntax
+- ✅ Merge conflict markers
+- ✅ Large files (>1MB)
+
+### When Hooks Run
+
+Pre-commit hooks are intended to run at the **END of feature development**, before your final commit. Work freely during development, then run quality checks before committing completed work.
+
+### Manual Execution
+
+```bash
+# Run all hooks on all files
+python3 -m pre_commit run --all-files
+
+# Run hooks on staged files only
+git commit  # Hooks run automatically
+
+# Skip hooks (EMERGENCY ONLY - must fix in follow-up commit)
+git commit --no-verify
+```
+
+### Troubleshooting
+
+- **Hooks fail**: Fix the reported issues and commit again
+- **Hooks too slow**: They only run on changed files by default
+- **Need to update hooks**: Edit `.pre-commit-config.yaml`
+
+### Legacy: Manual Pre-Push Checklist
+
+If pre-commit hooks are not installed, manually run:
+
+**Backend**: `cd backend && python3 -m black . && poetry run pytest --cov=app --cov-fail-under=80`
+**Frontend**: `cd frontend && npm run lint && npx tsc --noEmit && npm run build`
 
 ---
 

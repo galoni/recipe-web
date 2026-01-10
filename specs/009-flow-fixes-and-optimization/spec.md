@@ -1,8 +1,8 @@
 # Feature Specification: Flow Fixes and UX Optimization
 
-**Feature Branch**: `009-flow-fixes-and-optimization`  
-**Created**: 2026-01-09  
-**Status**: Draft  
+**Feature Branch**: `009-flow-fixes-and-optimization`
+**Created**: 2026-01-09
+**Status**: Draft
 **Input**: Fix 404 pages, broken buttons, and optimize site for responsiveness and functionality.
 
 ## User Scenarios & Testing *(mandatory)*
@@ -13,10 +13,10 @@ As a user, I want to navigate through all primary links in the navbar and footer
 
 **Why this priority**: Navigation is the backbone of the UX. Broken links at this level make the site feel unprofessional and prevent users from using key features.
 
-**Independent Test (Automated)**: 
+**Independent Test (Automated)**:
 - Frontend navigation test: Verify all links in the navbar/footer resolve to valid components.
 
-**Manual Validation (Frontend)**: 
+**Manual Validation (Frontend)**:
 - Click "Profile" link -> Should see User Profile page.
 - Click "Settings" link -> Should see Settings page.
 - Navigate to `/cookbook` -> Library should synchronize and display recipes.
@@ -33,11 +33,11 @@ As a user, I want to be able to click on any recipe card and see its full detail
 
 **Why this priority**: The primary value proposition of the site is extracting and viewing recipes. If viewing them is broken, the site is effectively useless.
 
-**Independent Test (Automated)**: 
+**Independent Test (Automated)**:
 - Backend: `GET /api/v1/recipes/{id}` returns correct recipe data.
 - Frontend: Recipe details page renders data correctly.
 
-**Manual Validation (Frontend)**: 
+**Manual Validation (Frontend)**:
 - Click "Access Vault" on a recipe card -> Should show the full recipe details (ingredients, instructions, etc.).
 
 **Acceptance Scenarios**:
@@ -51,10 +51,10 @@ As a mobile user, I want a functional navigation menu and readable, accessible f
 
 **Why this priority**: Mobile users are a large segment of web traffic. A broken hamburger menu or cut-off registration form is a major blocker.
 
-**Independent Test (Automated)**: 
+**Independent Test (Automated)**:
 - Lighthouse mobile accessibility and performance score > 90.
 
-**Manual Validation (Frontend)**: 
+**Manual Validation (Frontend)**:
 - Toggle window to 375x667.
 - Click hamburger icon -> Menu should open.
 - Go to `/login` -> Form should be centered and all fields visible.
@@ -71,10 +71,10 @@ As a user, I want to search for recipes and get relevant results, so that I can 
 
 **Why this priority**: Improves discovery as the library grows, but isn't strictly necessary for the core flow if there are few recipes.
 
-**Independent Test (Automated)**: 
+**Independent Test (Automated)**:
 - Backend: `GET /api/v1/recipes/search?q=...` returns matching recipes.
 
-**Manual Validation (Frontend)**: 
+**Manual Validation (Frontend)**:
 - Type "Pasta" in search bar and press Enter -> Results should filter to pasta recipes.
 
 ---

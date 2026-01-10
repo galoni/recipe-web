@@ -22,7 +22,7 @@ def create_access_token(
         )
     to_encode = {"exp": expire, "sub": str(subject)}
     if token_id:
-        to_encode["jti"] = token_jti = token_id
+        to_encode["jti"] = token_id
     encoded_jwt = jwt.encode(
         to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
     )

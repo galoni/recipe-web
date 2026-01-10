@@ -1,15 +1,17 @@
-import pyotp
 import uuid
 from datetime import datetime, timezone
-from typing import List, Optional
+from typing import List, cast
 
-from sqlalchemy import select, update, func, and_
+import pyotp
+from sqlalchemy import and_, func, select, update
+from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncSession
 from ua_parser import user_agent_parser
 
-from app.models.security import Session, SecurityEvent
+from app.models.security import SecurityEvent, Session
 from app.models.user import User
 from app.services.email_service import EmailService
+from app.services.geoip import GeoIPService
 
 
 class SecurityService:
@@ -31,8 +33,6 @@ class SecurityService:
             device_type = ua_result["device"]["family"]
         elif "Mobile" in user_agent:
             device_type = "Mobile"
-
-        from app.services.geoip import GeoIPService
 
         city, country = await GeoIPService.get_location(ip_address)
 
@@ -80,7 +80,7 @@ class SecurityService:
                 Session.ip_address == ip_address,
                 Session.browser_name == ua_result["user_agent"]["family"],
                 Session.token_jti != token_jti,
-                Session.revoked_at == None,
+                Session.revoked_at.is_(None),
             )
         )
         result = await self.db.execute(query)
@@ -108,7 +108,7 @@ class SecurityService:
     async def get_active_sessions(self, user_id: int) -> List[Session]:
         result = await self.db.execute(
             select(Session)
-            .where(Session.user_id == user_id, Session.revoked_at == None)
+            .where(Session.user_id == user_id, Session.revoked_at.is_(None))
             .order_by(Session.last_active_at.desc())
         )
         return list(result.scalars().all())
@@ -120,9 +120,9 @@ class SecurityService:
             .values(revoked_at=datetime.now(timezone.utc))
         )
         await self.db.commit()
-        return result.rowcount > 0
+        return cast(CursorResult, result).rowcount > 0
 
-    async def revoke_all_other_sessions(self, user_id: int, current_jti: str):
+    async def revoke_all_other_sessions(self, user_id: int, current_jti: str) -> None:
         await self.db.execute(
             update(Session)
             .where(Session.user_id == user_id, Session.token_jti != current_jti)
@@ -135,7 +135,9 @@ class SecurityService:
         # We don't save it yet; we wait for verification
         return secret
 
-    async def enable_2fa(self, user_id: int, secret: str, backup_codes: List[str]):
+    async def enable_2fa(
+        self, user_id: int, secret: str, backup_codes: List[str]
+    ) -> None:
         from passlib.context import CryptContext
 
         pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -161,7 +163,7 @@ class SecurityService:
         if user and user.security_notifications_enabled:
             await EmailService.send_2fa_enabled_email(user.email)
 
-    async def disable_2fa(self, user_id: int):
+    async def disable_2fa(self, user_id: int) -> None:
         await self.db.execute(
             update(User)
             .where(User.id == user_id)

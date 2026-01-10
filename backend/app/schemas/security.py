@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
 from uuid import UUID
+
 from pydantic import BaseModel, ConfigDict
 
 
@@ -14,6 +15,8 @@ class SessionBase(BaseModel):
     location_city: Optional[str] = None
     location_country: Optional[str] = None
     last_active_at: datetime
+    created_at: datetime
+    user_id: int
 
 
 class Session(SessionBase):

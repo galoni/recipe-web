@@ -2,16 +2,17 @@ import secrets
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Response, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi.responses import RedirectResponse
 from fastapi.security import OAuth2PasswordRequestForm
-from jose import jwt, JWTError
+from jose import jwt
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user
 from app.core.config import settings
 from app.core.database import get_db
 from app.core.logger import logger
-from app.core.security import create_access_token
 from app.schemas.auth import Token, TwoFactorVerify
 from app.schemas.user import User, UserCreate
 from app.services.auth_service import AuthService
@@ -99,9 +100,10 @@ async def verify_2fa(
     """
     Verify 2FA code and complete login.
     """
+    import pyotp
+
     from app.models.user import User
     from app.services.security_service import SecurityService
-    import pyotp
 
     try:
         payload = jwt.decode(
@@ -150,8 +152,6 @@ async def verify_2fa(
 
 @router.get("/google/login")
 def login_google(response: Response):
-    from fastapi.responses import RedirectResponse
-
     provider = GoogleOAuthProvider()
     # Generate random state to prevent CSRF
     state = secrets.token_urlsafe(32)
@@ -224,9 +224,6 @@ async def google_callback(
         ip_address=request.client.host if request.client else "unknown",
     )
 
-    # Redirect to frontend
-    from fastapi.responses import RedirectResponse
-
     resp = RedirectResponse(url=f"{settings.FRONTEND_URL}/dashboard")
     resp.set_cookie(
         key="access_token",
@@ -281,8 +278,6 @@ async def logout(
             jti = payload.get("jti")
             if jti:
                 from app.models.security import Session
-                from sqlalchemy import update
-                from datetime import datetime, timezone
 
                 await db.execute(
                     update(Session)

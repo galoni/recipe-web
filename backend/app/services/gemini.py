@@ -1,6 +1,6 @@
 import json
 
-from google import genai
+from google import genai  # type: ignore
 
 from app.core.config import settings
 from app.core.logger import logger
@@ -23,15 +23,15 @@ class GeminiService:
 
             prompt = f"""
             You are a professional chef. Extract a structured recipe from the following YouTube video transcript.
-            
+
             Transcript:
             {transcript[:30000]}
-            
+
             Return ONLY valid JSON matching this schema:
             {{
                 "title": "Recipe Title",
                 "description": "Brief description",
-                "servings": 4, 
+                "servings": 4,
                 "prep_time_minutes": 15,
                 "cook_time_minutes": 30,
                 "ingredients": [

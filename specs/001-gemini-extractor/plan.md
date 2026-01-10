@@ -10,7 +10,7 @@ Build a backend service `AI Extractor` in FastAPI that accepts a YouTube URL, fe
 ## Technical Context
 
 **Language/Version**: Python 3.11 (FastAPI)
-**Primary Dependencies**: 
+**Primary Dependencies**:
 - `fastapi` (Web Framework)
 - `yt-dlp` (Transcript Fetching)
 - `google-generativeai` (Gemini SDK)
